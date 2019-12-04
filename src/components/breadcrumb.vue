@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import pathToRegexp from 'path-to-regexp'
+  import pathToRegexp from 'path-to-regexp'
 
-export default {
+  export default {
   data() {
     return {
       levelList: null
@@ -33,7 +33,7 @@ export default {
       this.levelList = this.$route.matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
     },
     pathCompile(path) {
-      // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
+      // 处理面包屑中带 : 的链接  https://github.com/PanJiaChen/vue-element-admin/issues/561
       return pathToRegexp.compile(path)(this.$route.params)
     },
     handleLink(item) {

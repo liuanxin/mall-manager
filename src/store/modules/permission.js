@@ -1,6 +1,4 @@
 import { getRouter, resetRouter } from '@/router'
-import { isBlank } from '@/utils'
-import { getLocalData } from '@/utils/auth'
 
 const state = {
   routes: []

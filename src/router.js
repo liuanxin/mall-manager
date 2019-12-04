@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Layout from '@/layout/index'
-import { isBlank, isNotBlank } from '@/utils'
+import { isNotBlank } from '@/utils'
 import { getLocalData } from '@/utils/auth'
 
 Vue.use(VueRouter)
@@ -218,7 +218,6 @@ const checkChildRouter = (routers, parentPath, path) => {
 const createRouter = () => {
   return new VueRouter({
     mode: 'history', // https://router.vuejs.org/zh/guide/essentials/history-mode.html
-    scrollBehavior: () => ({ y: 0 }),
     routes: normalRouter()
   })
 }

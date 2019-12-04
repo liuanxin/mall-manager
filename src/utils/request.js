@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
-import { isNotBlank, toInt } from '@/utils/index'
+import { isNotBlank } from '@/utils/index'
 // import { getToken } from '@/utils/auth'
 
 // create an axios instance

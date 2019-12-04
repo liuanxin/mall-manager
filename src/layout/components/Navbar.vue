@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/breadcrumb'
-import Hamburger from '@/components/hamburger'
+  import { mapGetters } from 'vuex'
+  import Breadcrumb from '@/components/breadcrumb'
+  import Hamburger from '@/components/hamburger'
 
-export default {
+  export default {
   components: {
     Breadcrumb,
     Hamburger
@@ -47,9 +47,10 @@ export default {
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('logout')
-      location.reload()
+    logout() {
+      this.$store.dispatch('logout').then(() => {
+        location.reload()
+      })
     }
   }
 }
