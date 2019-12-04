@@ -47,7 +47,9 @@ service.interceptors.response.use(
 )
 
 const handleError = (data) => {
-  console.log('error: ' + JSON.stringify(data))
+  if (process.env.VUE_APP_ONLINE !== true) {
+    console.error('request: ' + JSON.stringify(this) + ', response:' + JSON.stringify(data))
+  }
 
   const code = data.code || (isNotBlank(data.response) ? data.response.status : 0)
   const msg = data.msg || (isNotBlank(data.response) ? data.response.data : null) || data.message

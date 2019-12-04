@@ -124,9 +124,6 @@ const admin = [
   }
 ]
 
-const normalRouter = () => {
-  return getRouter(getLocalData())
-}
 /**
  * 超级管理员返回: { ... 'hasAdmin': true } 如果 hasAdmin 为 true 则不需要返回 menus 数据
  * 普通用户返回: { ... 'hasAdmin': false, 'menus': XXX } 不是管理员则需要返回菜单数据, XXX 的格式跟上面的 admin 一致
@@ -215,17 +212,20 @@ const checkChildRouter = (routers, parentPath, path) => {
   return false
 }
 
-const createRouter = () => {
+const createRouter = (data) => {
   return new VueRouter({
     mode: 'history', // https://router.vuejs.org/zh/guide/essentials/history-mode.html
-    routes: normalRouter()
+    routes: getRouter(data)
   })
 }
-const router = createRouter()
+const router = createRouter(getLocalData())
 
 const resetRouter = (data) => {
+  // https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
   router.matcher = createRouter().matcher
-  router.addRoutes(getRouter(data))
+  const newRouter = getRouter(data)
+  router.addRoutes(newRouter)
+  // router.options.routes = newRouter
 }
 
 export default router

@@ -3,10 +3,10 @@ import 'nprogress/nprogress.css'
 
 import router, { checkRouter } from '@/router'
 import store from '@/store'
-import getPageTitle from '@/utils/get-page-title'
-import { isBlank } from '@/utils'
+import { isBlank, isNotBlank } from '@/utils'
 import { getToken } from '@/utils/auth'
 import { Message } from 'element-ui'
+import defaultSettings from '@/settings'
 
 NProgress.configure({ showSpinner: false })
 
@@ -20,6 +20,7 @@ router.beforeEach(async(to, from, next) => {
 
   const toPath = to.path
   const params = (isBlank(toPath) || ignoreParamPath.includes(toPath) ? '' : '?redirect=' + toPath)
+  const title = isNotBlank(to.meta.title) ? (to.meta.title + ' - ' + defaultSettings.title) : defaultSettings.title
 
   // 从本地获取 token, 如果没有值表示未登录, 导去登录(下一页不是登录则拼在参数上, 这样登录成功后可以导回来)
   // 有 token 值就从 vuex 中获取权限
@@ -34,7 +35,7 @@ router.beforeEach(async(to, from, next) => {
   const token = getToken()
   if (isBlank(token)) {
     if (toPath === login) {
-      document.title = getPageTitle(to.meta.title)
+      document.title = title
       next()
     } else {
       next(login + params)
@@ -49,7 +50,7 @@ router.beforeEach(async(to, from, next) => {
           next(index)
           NProgress.done()
         } else {
-          document.title = getPageTitle(to.meta.title)
+          document.title = title
           next()
         }
       } catch (error) {
@@ -65,14 +66,14 @@ router.beforeEach(async(to, from, next) => {
       } else if (!checkRouter(routers, toPath)) {
         // 如果用户访问的是没有权限的地址则往主页导, 主页也有可能没权限, 这是一个问题!!!
         Message({
-          message: '您无权访问(' + toPath + ')地址',
+          message: '不能访问(' + toPath + ')地址',
           type: 'error',
           duration: 1500
         })
         next(index)
         NProgress.done()
       } else {
-        document.title = getPageTitle(to.meta.title)
+        document.title = title
         next()
       }
     }
