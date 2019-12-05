@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
-import { isNotBlank, toInt } from '@/utils/index'
+import { isNotBlank, isNotTrue, toInt } from '@/utils/index'
 // import { getToken } from '@/utils/auth'
 
 // create an axios instance
@@ -47,7 +47,7 @@ service.interceptors.response.use(
 )
 
 const handleError = (data) => {
-  if (process.env.VUE_APP_ONLINE !== true) {
+  if (isNotTrue(process.env.VUE_APP_ONLINE)) {
     console.error('response error: ' + JSON.stringify(data))
   }
 

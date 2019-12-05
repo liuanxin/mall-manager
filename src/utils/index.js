@@ -12,6 +12,13 @@ const isNotBlank = (str) => {
   return !isBlank(str)
 }
 
+const isTrue = (str) => {
+  return isNotBlank(str) && (str === true || str === 'true')
+}
+const isNotTrue = (str) => {
+  return !isTrue(str)
+}
+
 /** 将对象转换成参数 */
 const serializeObject = (obj) => {
   if (isNotBlank(obj)) {
@@ -355,7 +362,7 @@ const param2Obj = (url) => {
   )
 }
 
-export { isBlank, isNotBlank }
+export { isBlank, isNotBlank, isTrue, isNotTrue }
 export { getData, removeNull, defaultValue }
 export { toInt, toFloat, greater0, less0 }
 export { foggy, checkPhone, checkEmail, checkImage, checkChinese }
