@@ -30,7 +30,7 @@ npm install
 │   │
 │   │    !!!!上面的是目录, 下面是文件!!!
 │   │
-│   ├── App.vue          d
+│   ├── App.vue          也不是很懂 public/index.html 和 main.js 和 App.vue 三者为什么要搞这么复杂
 │   ├── main.js          程序入口, 初始化 vue 实例、样式、插件、公共组件
 │   ├── permission.js    权限管理, 建一个同名目录, 里面放一个 index.js 是一样的
 │   ├── router.js        路由管理, 建一个同名目录, 里面放一个 index.js 是一样的
