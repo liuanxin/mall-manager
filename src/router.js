@@ -222,10 +222,10 @@ const router = createRouter(getLocalData())
 
 const resetRouter = (data) => {
   // https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-  router.matcher = createRouter().matcher
+  router.matcher = createRouter(data).matcher
 
-  const newRouter = getRouter(data)
-  router.addRoutes(newRouter)
+  // const newRouter = getRouter(data)
+  // router.addRoutes(newRouter)
   // router.options.routes = newRouter
 }
 

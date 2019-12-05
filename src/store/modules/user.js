@@ -82,15 +82,19 @@ const actions = {
   },
 
   // store.dispatch('logout')
-  logout(context) {
+  logout(context, backend) {
     return new Promise((resolve, reject) => {
       doLogout(context)
 
-      logout().then(() => {
+      if (backend === false) {
         resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      } else {
+        logout().then(() => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      }
     })
   }
 }

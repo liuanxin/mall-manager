@@ -38,6 +38,7 @@ router.beforeEach(async(to, from, next) => {
       document.title = title
       next()
     } else {
+      await store.dispatch('logout', false)
       next(login + params)
       NProgress.done()
     }

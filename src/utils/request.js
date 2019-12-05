@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
-import { isNotBlank } from '@/utils/index'
+import { isNotBlank, toInt } from '@/utils/index'
 // import { getToken } from '@/utils/auth'
 
 // create an axios instance
@@ -48,10 +48,10 @@ service.interceptors.response.use(
 
 const handleError = (data) => {
   if (process.env.VUE_APP_ONLINE !== true) {
-    console.error('request: ' + JSON.stringify(this) + ', response:' + JSON.stringify(data))
+    console.error('response error: ' + JSON.stringify(data))
   }
 
-  const code = data.code || (isNotBlank(data.response) ? data.response.status : 0)
+  const code = toInt(data.code || (isNotBlank(data.response) ? data.response.status : 0))
   const msg = data.msg || (isNotBlank(data.response) ? data.response.data : null) || data.message
   if (code === 401) {
     MessageBox.alert('您已被登出, 请重新登录').then(() => {
@@ -61,7 +61,7 @@ const handleError = (data) => {
     })
   } else {
     Message({
-      message: msg || (isNotBlank(code) ? ('返回了 ' + code + ' 错误码') : '请求无响应'),
+      message: msg || (code > 0 ? ('返回了 ' + code + ' 错误码') : '请求无响应'),
       type: 'error',
       duration: 5000
     })
