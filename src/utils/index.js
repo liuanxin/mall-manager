@@ -13,7 +13,7 @@ const isNotBlank = (str) => {
 }
 
 const isTrue = (str) => {
-  return isNotBlank(str) && (str === true || str === 'true')
+  return isNotBlank(str) && (str === true || String(str).trim().toLowerCase() === 'true')
 }
 const isNotTrue = (str) => {
   return !isTrue(str)
