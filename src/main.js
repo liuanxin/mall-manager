@@ -17,6 +17,7 @@ import '@/permission'
 
 Vue.use(ElementUI, { locale })
 
+/* https://cn.vuejs.org/v2/api/index.html#productionTip */
 Vue.config.productionTip = false
 
 new Vue({
