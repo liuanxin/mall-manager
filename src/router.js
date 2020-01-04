@@ -46,7 +46,7 @@ const routers = {
   'order': { path: '/order', component: Layout, meta: { icon: 'order' } },
   'manager': { path: '/manager', component: Layout, meta: { icon: 'password' } },
 
-  // 上面是一级菜单, 下面是相关的子菜单, hidden: true 的菜单将不显示
+  // 必须要有 path, 上面是一级菜单, 下面是相关的子菜单, hidden: true 的菜单将不显示
 
   'config-index': { path: 'config', component: () => import('@/views/common/config/index'), meta: { icon: 'table' } },
   'config-add': { path: 'config/add', component: () => import('@/views/common/config/add'), meta: { noCache: true }, hidden: true },
@@ -125,8 +125,8 @@ const admin = [
 ]
 
 /**
- * 超级管理员返回: { ... 'hasAdmin': true } 如果 hasAdmin 为 true 则不需要返回 menus 数据
- * 普通用户返回: { ... 'hasAdmin': false, 'menus': XXX } 不是管理员则需要返回菜单数据, XXX 的格式跟上面的 admin 一致
+ * 超级管理员返回: { id: 1, name: '张三', hasAdmin: true } 如果 hasAdmin 为 true 则不需要返回 menus 数据(id name 视情况而定)
+ * 普通用户返回: { id: 10, name: '李四', hasAdmin: false, menus: XXX } 不是管理员则需要返回菜单数据, XXX 的格式跟上面的 admin 一致
  *
  * 如果不传 data 或者 data 为 undefined 或 null 则返回未登录用户的权限
  */
