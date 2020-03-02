@@ -23,7 +23,7 @@ npm install
 │   ├── components       组件目录
 │   ├── icons            图标目录
 │   ├── layout           页面布局目录
-│   ├── store            vuex
+│   ├── store            vuex (如果状态不多, 像 permission 一样单独建一个文件也可以的)
 │   ├── styles           样式文件目录
 │   ├── utils            工具目录
 │   ├── views            页面目录
