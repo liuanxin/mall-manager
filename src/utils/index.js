@@ -12,15 +12,49 @@ const isNotBlank = (str) => {
   return !isBlank(str)
 }
 
+/** 参数是 true, 或者是不区分大小写的 true 字符串就返回 true */
 const isTrue = (str) => {
   return isNotBlank(str) && (str === true || String(str).trim().toLowerCase() === 'true')
 }
+/** 参数不是 true 且不是区分大小写的 true 字符串就返回 true */
 const isNotTrue = (str) => {
   return !isTrue(str)
 }
 
-/** 将对象转换成参数 */
-const serializeObject = (obj) => {
+/** 转换成整数, 失败则转换成 0 */
+const toInt = (str) => {
+  return isBlank(str) || isNaN(str) ? 0 : parseInt(str, 10)
+}
+/** 转换成浮点数, 失败则转换成 0 */
+const toFloat = (str) => {
+  return isBlank(str) || isNaN(str) ? 0 : parseFloat(str)
+}
+/** 传入的值大于 0 就返回 true */
+const greater0 = (str) => {
+  return toFloat(str) > 0
+}
+/** 传入的值小于等于 0 就返回 true */
+const less0 = (str) => {
+  return toFloat(str) <= 0
+}
+
+
+/** 参数转换为对象. 如 http://abc.xyz.com?id=123&name=tom 返回 { id: '123', name: 'tom' } */
+const param2Obj = (url) => {
+  const search = String(url).split('?')[1]
+  const obj = {}
+  if (isNotBlank(search)) {
+    search.split('&').forEach(function(e) {
+      const arr = e.split('=')
+      if (arr.length === 2) {
+        obj[arr[0]] = arr[1]
+      }
+    })
+  }
+  return obj
+}
+/** 将对象转换成参数. 如 { id: '123', name: 'tom' } 返回 id=123&name=tom */
+const obj2Param = (obj) => {
   if (isNotBlank(obj)) {
     const arr = []
     Object.keys(obj).forEach(function(k) {
@@ -86,24 +120,7 @@ const defaultValue = (obj, value) => {
   return isBlank(obj) ? value : obj
 }
 
-/** 转换成整数, 失败则转换成 0 */
-const toInt = (str) => {
-  return isBlank(str) || isNaN(str) ? 0 : parseInt(str, 10)
-}
-/** 转换成浮点数, 失败则转换成 0 */
-const toFloat = (str) => {
-  return isBlank(str) || isNaN(str) ? 0 : parseFloat(str)
-}
-/** 传入的值大于 0 就返回 true */
-const greater0 = (str) => {
-  return toFloat(str) > 0
-}
-/** 传入的值小于等于 0 就返回 true */
-const less0 = (str) => {
-  return toFloat(str) <= 0
-}
-
-/** 将字符串中指定位数的值模糊成 * 并返回. 索引位从 0 开始 */
+/** 将字符串中指定位数的值模糊成 * 并返回. 索引位从 0 开始. 如: foggy('13012345678', 3, 7) 返回 130****5678 */
 const foggy = (str, start, end) => {
   if (isBlank(str)) {
     return ''
@@ -113,7 +130,7 @@ const foggy = (str, start, end) => {
   if (s < 0 || e < s || e > str.length) {
     return str
   }
-  return str.substring(0, s) + str.substring(s, e).replace(/./g, "*") + str.substring(e)
+  return str.substring(0, s) + str.substring(s, e).replace(/./g, '*') + str.substring(e)
 }
 /** 是手机号就返回 true */
 const checkPhone = (str) => {
@@ -123,7 +140,7 @@ const checkPhone = (str) => {
 const checkEmail = (str) => {
   return isNotBlank(str) && /^\w[\w\-]*@([\w\-]+\.\w+)+$/.test(str)
 }
-/** 是图片就返回 true */
+/** 是图片后缀就返回 true */
 const checkImage = (str) => {
   return isNotBlank(str) && /\.(gif|jpeg|jpg|bmp|png)$/i.test(str)
 }
@@ -132,7 +149,7 @@ const checkChinese = (str) => {
   return isNotBlank(str) && /[\u4e00-\u9fa5]/.test(str)
 }
 
-/** 使用 base64 编码,  */
+/** 使用 base64 编码 */
 const base64Encode = (str) => {
   return window.btoa(unescape(encodeURIComponent(str)))
 }
@@ -140,7 +157,6 @@ const base64Encode = (str) => {
 const base64Decode = (str) => {
   return decodeURIComponent(escape(window.atob(str)))
 }
-
 /** 将 url 进行编码 */
 const encode = (url) => {
   return isBlank(url) ? '' : encodeURIComponent(url)
@@ -152,23 +168,23 @@ const decode = (url) => {
 
 /** 在 url 后面拼接 ? 或 & */
 const appendUrl = (url) => {
-  return isBlank(url) ? '' : (url + (url.includes("?") ? "&" : "?"))
+  return isBlank(url) ? '' : (url + (url.includes('?') ? '&' : '?'))
 }
 /** 在 path 前面加 / 返回 */
 const addPrefix = (path) => {
-  if (isBlank(path)) return "/"
-  if (path.startsWith("/")) { return path }
-  return "/" + path
+  if (isBlank(path)) { return '/' }
+  if (path.startsWith('/')) { return path }
+  return '/' + path
 }
 /** 在 path 后面加 / 返回 */
 const addSuffix = (path) => {
-  if (isBlank(path)) return "/"
-  if (path.endsWith("/")) { return path }
-  return path + "/"
+  if (isBlank(path)) { return '/' }
+  if (path.endsWith('/')) { return path }
+  return path + '/'
 }
-/** 返回文件后缀 */
+/** 返回文件后缀. 如 id.png 返回 .png */
 const getSuffix = (fileName) => {
-  return isNotBlank(fileName) && fileName.includes(".") ? fileName.substring(fileName.lastIndexOf(".")) : ''
+  return isNotBlank(fileName) && fileName.includes('.') ? fileName.substring(fileName.lastIndexOf('.')) : ''
 }
 /** 生成 uuid */
 const uuid = () => {
@@ -184,19 +200,21 @@ const uuid = () => {
 const escapeHtml = (html) => {
   if (isBlank(html)) {
     return null
+  } else {
+    return html.replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#039;')
   }
-  return html.replace(/&/g, "&amp")
-    .replace(/</g, "&lt").replace(/>/g, "&gt")
-    .replace(/"/g, "&quot").replace(/'/g, "&#039")
 }
 /** 反转义 */
 const unescapeHtml = (html) => {
   if (isBlank(html)) {
     return null
+  } else {
+    return html.replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&quot;/g, "'").replace(/&#039;/g, "'")
   }
-  return html.replace(/&amp/g, '&')
-    .replace(/&lt/g, '<').replace(/&gt/g, '>')
-    .replace(/&quot/g, '"').replace(/&#039/g, "'")
 }
 /** 用两个空格来格式化 json */
 const formatJson = (json) => {
@@ -210,10 +228,10 @@ const formatJson = (json) => {
   }
 }
 const placeZero = (n) => {
-  n = n.toString()
-  return n[1] ? n : '0' + n
+  return (String(n).length === 1) ? ('0' + n) : String(n)
 }
-const dateToHuman = (ms) => {
+/** 将毫秒格式化为可读性更强的, 如: 刚刚、3 分钟前、5 小时后、昨天、前天、明天、后天、10 天前、200 天后、2 年前 */
+const msToHuman = (ms) => {
   if (ms === 0) { return '刚刚' }
 
   const flag = (ms < 0)
@@ -258,12 +276,12 @@ const formatDate = (date, format) => {
     second = datetime.getSeconds(),
     milliSecond = datetime.getMilliseconds(),
 
-    yyyy = year + '',
+    yyyy = String(year),
     yy = yyyy.substr(2, 2),
-    M = month + 1,
+    M = String(month + 1),
     MM = placeZero(month + 1),
     dd = placeZero(day),
-    h = hour % 12,
+    h = String(hour % 12),
     hh = placeZero(h),
     HH = placeZero(hour),
     mm = placeZero(minute),
@@ -273,37 +291,39 @@ const formatDate = (date, format) => {
   return format.trim()
     .replace('yyyy', yyyy).replace('YYYY', yyyy).replace('yy', yy).replace('YY', yy).replace('y', yy).replace('Y', yy)
     .replace('MM', MM).replace('M', M)
-    .replace('dd', dd).replace('DD', dd).replace('D', dd).replace('d', day)
+    .replace('dd', dd).replace('DD', dd).replace('D', dd).replace('d', String(day))
 
-    .replace('hh', hh).replace('HH', HH).replace('h', h).replace('H', hour)
-    .replace('mm', mm).replace('MI', mm).replace('mi', mm).replace('m', minute)
-    .replace('ss', ss).replace('s', second)
+    .replace('hh', hh).replace('HH', HH).replace('h', h).replace('H', String(hour))
+    .replace('mm', mm).replace('MI', mm).replace('mi', mm).replace('m', String(minute))
+    .replace('ss', ss).replace('s', String(second))
 
-    .replace('SSS', milliSecond).replace('aaa', aaa).replace('a', aaa)
+    .replace('SSS', String(milliSecond)).replace('aaa', aaa).replace('a', aaa)
 }
 /** 分显示成元 */
 const cent2Yuan = (cent) => {
   if (isBlank(cent)) {
     return ''
   }
+
+  let money
   const v = (typeof cent)
-  let m
   if (v === 'number') {
-    m = String(cent)
+    money = String(cent)
   } else if (v === 'string') {
-    m = String(Number.parseInt(cent))
+    money = String(Number.parseInt(cent))
   } else {
     return ''
   }
-  const len = m.length
-  return (len < 2) ? ('0.' + m) : (m.substring(0, len - 2) + '.' + m.substring(len - 2))
+  const len = money.length
+  return (len < 2) ? ('0.' + money) : (money.substring(0, len - 2) + '.' + money.substring(len - 2))
 }
 /** 将数字转换成千分位, 如 12345678.123 返回 12,345,678.123 */
 const thousands = (num) => {
   if (isNaN(num)) {
     return num
   }
-  const number = (typeof num === 'number') ? num.toString() : num
+
+  const number = String(num)
   let first,second
   if (number.includes('.')) {
     const p = number.indexOf('.')
@@ -346,30 +366,10 @@ const hasEnter = (event) => {
   return handled
 }
 
-const param2Obj = (url) => {
-  const search = url.split('?')[1]
-  if (!search) {
-    return {}
-  }
-  return JSON.parse(
-    '{"' +
-    decodeURIComponent(search)
-      .replace(/"/g, '\\"')
-      .replace(/&/g, '","')
-      .replace(/=/g, '":"')
-      .replace(/\+/g, ' ') +
-    '"}'
-  )
-}
-
 export { isBlank, isNotBlank, isTrue, isNotTrue }
-export { getData, removeNull, defaultValue }
 export { toInt, toFloat, greater0, less0 }
+export { param2Obj, obj2Param, getData, removeNull, defaultValue }
 export { foggy, checkPhone, checkEmail, checkImage, checkChinese }
 export { base64Encode, base64Decode, encode, decode }
 export { appendUrl, addPrefix, addSuffix, getSuffix, uuid }
-export { escapeHtml, formatJson, dateToHuman, formatDate, cent2Yuan, thousands, hasEnter }
-
-export { param2Obj }
-
-
+export { escapeHtml, unescapeHtml, formatJson, msToHuman, formatDate, cent2Yuan, thousands, hasEnter }
