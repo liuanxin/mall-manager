@@ -21,6 +21,7 @@ const isNotTrue = (str) => {
   return !isTrue(str)
 }
 
+
 /** 转换成整数, 失败则转换成 0 */
 const toInt = (str) => {
   return isBlank(str) || isNaN(str) ? 0 : parseInt(str, 10)
@@ -120,6 +121,7 @@ const defaultValue = (obj, value) => {
   return isBlank(obj) ? value : obj
 }
 
+
 /** 将字符串中指定位数的值模糊成 * 并返回. 索引位从 0 开始. 如: foggy('13012345678', 3, 7) 返回 130****5678 */
 const foggy = (str, start, end) => {
   if (isBlank(str)) {
@@ -149,6 +151,7 @@ const checkChinese = (str) => {
   return isNotBlank(str) && /[\u4e00-\u9fa5]/.test(str)
 }
 
+
 /** 使用 base64 编码 */
 const base64Encode = (str) => {
   return window.btoa(unescape(encodeURIComponent(str)))
@@ -165,6 +168,7 @@ const encode = (url) => {
 const decode = (url) => {
   return isBlank(url) ? '' : decodeURIComponent(url)
 }
+
 
 /** 在 url 后面拼接 ? 或 & */
 const appendUrl = (url) => {
@@ -195,6 +199,7 @@ const uuid = () => {
     return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16)
   })
 }
+
 
 /** 转义 */
 const escapeHtml = (html) => {
@@ -227,8 +232,31 @@ const formatJson = (json) => {
     return json
   }
 }
-const placeZero = (n) => {
-  return (String(n).length === 1) ? ('0' + n) : String(n)
+
+
+/** 补全, 默认是不足 2 位就在前面补 0, 如 completionString(3) ==> 03, completionString(8, 3) ==> 008 */
+const completionString = (str, len, completion) => {
+  if (isBlank(str)) {
+    return ''
+  }
+
+  if (isBlank(len)) {
+    len = 2
+  }
+  const s = String(str)
+  if (s.length >= len) {
+    return s
+  }
+
+  if (isBlank(completion)) {
+    completion = '0'
+  }
+  let r = ''
+  const loop = len - s.length
+  for (let i = 0; i < loop; i++) {
+    r += completion
+  }
+  return r + s
 }
 /** 将毫秒格式化为可读性更强的, 如: 刚刚、3 分钟前、5 小时后、昨天、前天、明天、后天、10 天前、200 天后、2 年前 */
 const msToHuman = (ms) => {
@@ -254,8 +282,8 @@ const msToHuman = (ms) => {
 
   return Math.floor(day / 365) + ' 年' + state
 }
-/** 格式化 时间 或 时间戳 成 年-月-日 时:分:秒, 无参数则默认返回当前时间, 格式: yyyy-MM-dd HH:mm:ss SSS aaa */
-const formatDate = (date, format) => {
+/** 格式化 时间 或 时间戳 成 年-月-日 时:分:秒 毫秒, 无参数则默认返回当前时间, 格式: yyyy-MM-dd HH:mm:ss SSS aaa */
+const formatDateTimeMs = (date, format) => {
   let datetime
   if (date instanceof Date) {
     datetime = date
@@ -266,7 +294,7 @@ const formatDate = (date, format) => {
   }
 
   if (isBlank(format)) {
-    format = 'yyyy-MM-dd HH:mm:ss'
+    format = 'yyyy-MM-dd HH:mm:ss SSS'
   }
   const year = datetime.getFullYear(),
     month = datetime.getMonth(),
@@ -279,14 +307,17 @@ const formatDate = (date, format) => {
     yyyy = String(year),
     yy = yyyy.substr(2, 2),
     M = String(month + 1),
-    MM = placeZero(month + 1),
-    dd = placeZero(day),
+    MM = completionString(month + 1),
+    dd = completionString(day),
     h = String(hour % 12),
-    hh = placeZero(h),
-    HH = placeZero(hour),
-    mm = placeZero(minute),
-    ss = placeZero(second),
+    hh = completionString(h),
+    HH = completionString(hour),
+    mm = completionString(minute),
+    ss = completionString(second),
     aaa = hour < 12 ? 'AM' : 'PM'
+
+  // 补全毫秒, 不足 3 位的在前面补 0
+  const ms = completionString(milliSecond, 3)
 
   return format.trim()
     .replace('yyyy', yyyy).replace('YYYY', yyyy).replace('yy', yy).replace('YY', yy).replace('y', yy).replace('Y', yy)
@@ -297,8 +328,18 @@ const formatDate = (date, format) => {
     .replace('mm', mm).replace('MI', mm).replace('mi', mm).replace('m', String(minute))
     .replace('ss', ss).replace('s', String(second))
 
-    .replace('SSS', String(milliSecond)).replace('aaa', aaa).replace('a', aaa)
+    .replace('SSS', String(ms)).replace('aaa', aaa).replace('a', aaa)
 }
+/** 格式化 时间 或 时间戳 成 年-月-日 */
+const formatDate = (date) => {
+  return formatDateTimeMs(date, 'yyyy-MM-dd')
+}
+/** 格式化 时间 或 时间戳 成 年-月-日 时:分:秒 */
+const formatDateTime = (date) => {
+  return formatDateTimeMs(date, 'yyyy-MM-dd HH:mm:ss')
+}
+
+
 /** 分显示成元 */
 const cent2Yuan = (cent) => {
   if (isBlank(cent)) {
@@ -372,4 +413,6 @@ export { param2Obj, obj2Param, getData, removeNull, defaultValue }
 export { foggy, checkPhone, checkEmail, checkImage, checkChinese }
 export { base64Encode, base64Decode, encode, decode }
 export { appendUrl, addPrefix, addSuffix, getSuffix, uuid }
-export { escapeHtml, unescapeHtml, formatJson, msToHuman, formatDate, cent2Yuan, thousands, hasEnter }
+export { escapeHtml, unescapeHtml, formatJson }
+export { completionString, msToHuman, formatDateTimeMs, formatDate, formatDateTime }
+export { cent2Yuan, thousands, hasEnter }
