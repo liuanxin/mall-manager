@@ -56,17 +56,17 @@ const routers = {
   'banner-add': { path: 'banner/add', component: () => import('@/views/common/banner/add'), meta: { noCache: true }, hidden: true },
   'banner-edit': { path: 'banner/edit', component: () => import('@/views/common/banner/edit'), meta: { noCache: true }, hidden: true },
 
-  'user-index': { path: 'index', component: () => import('@/views/user/index'), meta: { icon: 'table' } },
-  'user-add': { path: 'add', component: () => import('@/views/user/add'), meta: { noCache: true }, hidden: true },
-  'user-edit': { path: 'edit', component: () => import('@/views/user/edit'), meta: { noCache: true }, hidden: true },
+  'user-index': { path: 'user', component: () => import('@/views/user/index'), meta: { icon: 'table' } },
+  'user-add': { path: 'user/add', component: () => import('@/views/user/add'), meta: { noCache: true }, hidden: true },
+  'user-edit': { path: 'user/edit', component: () => import('@/views/user/edit'), meta: { noCache: true }, hidden: true },
 
-  'product-index': { path: 'index', component: () => import('@/views/product/index'), meta: { icon: 'table' } },
-  'product-add': { path: 'add', component: () => import('@/views/product/add'), meta: { noCache: true }, hidden: true },
-  'product-edit': { path: 'edit', component: () => import('@/views/product/edit'), meta: { noCache: true }, hidden: true },
+  'product-index': { path: 'product', component: () => import('@/views/product/index'), meta: { icon: 'table' } },
+  'product-add': { path: 'product/add', component: () => import('@/views/product/add'), meta: { noCache: true }, hidden: true },
+  'product-edit': { path: 'product/edit', component: () => import('@/views/product/edit'), meta: { noCache: true }, hidden: true },
 
-  'order-index': { path: 'index', component: () => import('@/views/order/index'), meta: { icon: 'table' } },
-  'order-add': { path: 'add', component: () => import('@/views/order/add'), meta: { noCache: true }, hidden: true },
-  'order-edit': { path: 'edit', component: () => import('@/views/order/edit'), meta: { noCache: true }, hidden: true },
+  'order-index': { path: 'order', component: () => import('@/views/order/index'), meta: { icon: 'table' } },
+  'order-add': { path: 'order/add', component: () => import('@/views/order/add'), meta: { noCache: true }, hidden: true },
+  'order-edit': { path: 'order/edit', component: () => import('@/views/order/edit'), meta: { noCache: true }, hidden: true },
 
   'account-index': { path: 'account', component: () => import('@/views/manager/account/index'), meta: { icon: 'table' } },
   'account-add': { path: 'account/add', component: () => import('@/views/manager/account/add'), meta: { noCache: true }, hidden: true },
