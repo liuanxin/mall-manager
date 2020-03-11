@@ -1,6 +1,6 @@
-import defaultSettings from '@/settings'
+import globalConfig from '@/config'
 
-const { fixedHeader, sidebarLogo } = defaultSettings
+const { fixedHeader, sidebarLogo } = globalConfig
 
 const state = {
   fixedHeader: fixedHeader,
@@ -8,9 +8,9 @@ const state = {
 }
 
 const mutations = {
-  CHANGE_SETTING: (state, { key, value }) => {
-    if (state.hasOwnProperty(key)) {
-      state[key] = value
+  CHANGE_SETTING: (state, data) => {
+    if (state.hasOwnProperty(data.key)) {
+      state[data.key] = data.value
     }
   }
 }
@@ -26,4 +26,3 @@ export default {
   mutations,
   actions
 }
-

@@ -151,7 +151,7 @@ const fillRouter = (menus) => {
     menus.forEach((element) => {
       if (isNotBlank(element)) {
         const key = element['front']
-        const router = {...routers[key]}
+        const router = { ...routers[key] }
         // 没有 path 属性的忽略
         if (isNotBlank(router) && router.hasOwnProperty('path')) {
           // front 做 router 的 name
@@ -162,7 +162,7 @@ const fillRouter = (menus) => {
             if (router.hasOwnProperty('meta')) {
               router.meta.title = title
             } else {
-              router.meta = { 'title': title }
+              router.meta = { title: title }
             }
           }
           // 填充子路由

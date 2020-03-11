@@ -27,7 +27,7 @@ service.interceptors.request.use(
 */
 
 service.interceptors.response.use(
-  response => {
+  (response) => {
     return response.data
     /*
     const res = response.data
@@ -39,7 +39,7 @@ service.interceptors.response.use(
     }
     */
   },
-  error => {
+  (error) => {
     const msg = error.message
     handleError(error)
     return Promise.reject(msg)

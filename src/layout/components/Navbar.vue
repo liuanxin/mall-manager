@@ -7,8 +7,8 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img v-if="avatar" :src="avatar" class="user-avatar">
-          <span class="user-name" v-else>{{name}}</span>
+          <img v-if="avatar" :src="avatar" class="user-avatar" />
+          <span class="user-name" v-else>{{ name }}</span>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
@@ -27,21 +27,17 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import Breadcrumb from '@/components/breadcrumb'
-  import Hamburger from '@/components/hamburger'
+import { mapGetters } from 'vuex'
+import Breadcrumb from '@/components/breadcrumb'
+import Hamburger from '@/components/hamburger'
 
-  export default {
+export default {
   components: {
     Breadcrumb,
     Hamburger
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar',
-      'name'
-    ])
+    ...mapGetters(['sidebar', 'avatar', 'name'])
   },
   methods: {
     toggleSideBar() {
@@ -62,18 +58,18 @@
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
@@ -100,10 +96,10 @@
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }

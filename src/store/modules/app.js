@@ -9,7 +9,7 @@ const state = {
 }
 
 const mutations = {
-  TOGGLE_SIDEBAR: state => {
+  TOGGLE_SIDEBAR: (state) => {
     state.sidebar.opened = !state.sidebar.opened
     state.sidebar.withoutAnimation = false
     if (state.sidebar.opened) {
@@ -29,14 +29,14 @@ const mutations = {
 }
 
 const actions = {
-  toggleSideBar({ commit }) {
-    commit('TOGGLE_SIDEBAR')
+  toggleSideBar(context) {
+    context.commit('TOGGLE_SIDEBAR')
   },
-  closeSideBar({ commit }, { withoutAnimation }) {
-    commit('CLOSE_SIDEBAR', withoutAnimation)
+  closeSideBar(context, data) {
+    context.commit('CLOSE_SIDEBAR', data.withoutAnimation)
   },
-  toggleDevice({ commit }, device) {
-    commit('TOGGLE_DEVICE', device)
+  toggleDevice(context, device) {
+    context.commit('TOGGLE_DEVICE', device)
   }
 }
 

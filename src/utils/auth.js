@@ -22,4 +22,4 @@ const removeLocalData = () => {
   return localStorage.removeItem(TokenKey)
 }
 
-export { getToken, setToken, removeToken,  getLocalData, setLocalData, removeLocalData }
+export { getToken, setToken, removeToken, getLocalData, setLocalData, removeLocalData }

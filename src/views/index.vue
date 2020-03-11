@@ -11,10 +11,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Dashboard',
   computed: {
-    ...mapGetters([
-      'name',
-      'avatar'
-    ])
+    ...mapGetters(['name', 'avatar'])
   }
 }
 </script>

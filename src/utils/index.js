@@ -1,4 +1,3 @@
-
 /** 为空则返回 true */
 const isBlank = (str) => {
   if (str === undefined || str === null) {
@@ -21,7 +20,6 @@ const isNotTrue = (str) => {
   return !isTrue(str)
 }
 
-
 /** 转换成整数, 失败则转换成 0 */
 const toInt = (str) => {
   return isBlank(str) || isNaN(str) ? 0 : parseInt(str, 10)
@@ -38,7 +36,6 @@ const greater0 = (str) => {
 const less0 = (str) => {
   return toFloat(str) <= 0
 }
-
 
 /** 参数转换为对象. 如 http://abc.xyz.com?id=123&name=tom 返回 { id: '123', name: 'tom' } */
 const param2Obj = (url) => {
@@ -121,7 +118,6 @@ const defaultValue = (obj, value) => {
   return isBlank(obj) ? value : obj
 }
 
-
 /** 将字符串中指定位数的值模糊成 * 并返回. 索引位从 0 开始. 如: foggy('13012345678', 3, 7) 返回 130****5678 */
 const foggy = (str, start, end) => {
   if (isBlank(str)) {
@@ -151,7 +147,6 @@ const checkChinese = (str) => {
   return isNotBlank(str) && /[\u4e00-\u9fa5]/.test(str)
 }
 
-
 /** 使用 base64 编码 */
 const base64Encode = (str) => {
   return window.btoa(unescape(encodeURIComponent(str)))
@@ -169,21 +164,28 @@ const decode = (url) => {
   return isBlank(url) ? '' : decodeURIComponent(url)
 }
 
-
 /** 在 url 后面拼接 ? 或 & */
 const appendUrl = (url) => {
-  return isBlank(url) ? '' : (url + (url.includes('?') ? '&' : '?'))
+  return isBlank(url) ? '' : url + (url.includes('?') ? '&' : '?')
 }
 /** 在 path 前面加 / 返回 */
 const addPrefix = (path) => {
-  if (isBlank(path)) { return '/' }
-  if (path.startsWith('/')) { return path }
+  if (isBlank(path)) {
+    return '/'
+  }
+  if (path.startsWith('/')) {
+    return path
+  }
   return '/' + path
 }
 /** 在 path 后面加 / 返回 */
 const addSuffix = (path) => {
-  if (isBlank(path)) { return '/' }
-  if (path.endsWith('/')) { return path }
+  if (isBlank(path)) {
+    return '/'
+  }
+  if (path.endsWith('/')) {
+    return path
+  }
   return path + '/'
 }
 /** 返回文件后缀. 如 id.png 返回 .png */
@@ -196,19 +198,21 @@ const uuid = () => {
   return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (now + Math.random() * 16) % 16 | 0
     now = Math.floor(now / 16)
-    return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16)
+    return (c === 'x' ? r : (r & 0x7) | 0x8).toString(16)
   })
 }
-
 
 /** 转义 */
 const escapeHtml = (html) => {
   if (isBlank(html)) {
     return null
   } else {
-    return html.replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#039;')
+    return html
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;')
   }
 }
 /** 反转义 */
@@ -216,9 +220,12 @@ const unescapeHtml = (html) => {
   if (isBlank(html)) {
     return null
   } else {
-    return html.replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-      .replace(/&quot;/g, "'").replace(/&#039;/g, "'")
+    return html
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, "'")
+      .replace(/&#039;/g, "'")
   }
 }
 /** 用两个空格来格式化 json */
@@ -232,7 +239,6 @@ const formatJson = (json) => {
     return json
   }
 }
-
 
 /** 补全, 默认是不足 2 位就在前面补 0, 如 completionString(3) ==> 03, completionString(8, 3) ==> 008 */
 const completionString = (str, len, completion) => {
@@ -365,7 +371,7 @@ const thousands = (num) => {
   }
 
   const number = String(num)
-  let first,second
+  let first, second
   if (number.includes('.')) {
     const p = number.indexOf('.')
     first = number.substring(0, p)
