@@ -7,11 +7,11 @@ import { getLocalData } from '@/utils/auth'
 
 Vue.use(VueRouter)
 
-/** 全局路由开始 */
+/** 全局开始路由 */
 const globalRouterBegin = [
   { path: '/login', component: () => import('@/views/login'), meta: { title: '登录' }, hidden: true }
 ]
-/** 所有用户都有的路由开始 */
+/** 登陆用户都有的开始路由 */
 const globalAllUserRouterBegin = [
   {
     path: '/',
@@ -23,7 +23,7 @@ const globalAllUserRouterBegin = [
     ]
   }
 ]
-/** 所有用户都有的路由结束 */
+/** 登陆用户都有的结束路由 */
 const globalAllUserRouterEnd = [
   {
     path: '/profile',
@@ -35,7 +35,7 @@ const globalAllUserRouterEnd = [
     ]
   }
 ]
-/** 全局路由结束 */
+/** 全局结束路由 */
 const globalRouterEnd = [
   { path: '*', component: () => import('@/views/404'), meta: { title: '404' }, hidden: true }
 ]
