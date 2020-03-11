@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Layout from '@/layout/index'
+import Layout from '@/layout'
 import { isNotBlank } from '@/utils'
 import { getLocalData } from '@/utils/auth'
 
