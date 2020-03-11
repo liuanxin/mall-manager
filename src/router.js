@@ -78,7 +78,7 @@ const routers = {
 }
 
 /** 管理员权限格式, 用户登录后后端也返回下面的格式. 注意: front 的值跟上面 routers 的 key 要一一对应 */
-const admin = [
+const adminRouters = [
   {
     "name": "公共管理", "front": "common", "children": [
       { "name": "全局配置", "front": "config-index" },
@@ -136,7 +136,7 @@ const getRouter = (data) => {
   if (isNotBlank(data)) {
     returnRouter.push(...globalAllUserRouterBegin)
     // 如果是管理员就无视 menus 属性
-    const routers = fillRouter(data['hasAdmin'] === true ? admin : data['menus'])
+    const routers = fillRouter(data['hasAdmin'] === true ? adminRouters : data['menus'])
     if (routers.length > 0) {
       returnRouter.push(...routers)
     }
