@@ -77,49 +77,49 @@ const routers = {
   'role-edit': { path: 'role/edit', component: () => import('@/views/manager/role/edit'), meta: { noCache: true }, hidden: true }
 }
 
-/** 管理员权限格式, 用户在登录后后端也返回下面的格式. 主要有显示菜单名和子菜单, front 的值跟上面 routers 的 key 一一对应 */
+/** 管理员权限格式, 用户登录后后端也返回下面的格式. 注意: front 的值跟上面 routers 的 key 要一一对应 */
 const admin = [
   {
-    'name': '公共管理', 'front': 'common', 'children': [
-      { 'name': '全局配置', 'front': 'config-index' },
-      { 'name': '添加全局配置', 'front': 'config-add' },
-      { 'name': '编辑全局配置', 'front': 'config-edit' },
+    "name": "公共管理", "front": "common", "children": [
+      { "name": "全局配置", "front": "config-index" },
+      { "name": "添加全局配置", "front": "config-add" },
+      { "name": "编辑全局配置", "front": "config-edit" },
 
-      { 'name': 'banner', 'front': 'banner-index' },
-      { 'name': '添加 banner', 'front': 'banner-add' },
-      { 'name': '编辑 banner', 'front': 'banner-edit' }
+      { "name": "banner", "front": "banner-index" },
+      { "name": "添加 banner", "front": "banner-add" },
+      { "name": "编辑 banner", "front": "banner-edit" }
     ]
   },
   {
-    'name': '用户管理', 'front': 'user', 'children': [
-      { 'name': '用户列表', 'front': 'user-index' },
-      { 'name': '添加用户', 'front': 'user-add' },
-      { 'name': '编辑用户', 'front': 'user-edit' }
+    "name": "用户管理", "front": "user", "children": [
+      { "name": "用户列表", "front": "user-index" },
+      { "name": "添加用户", "front": "user-add" },
+      { "name": "编辑用户", "front": "user-edit" }
     ]
   },
   {
-    'name': '商品管理', 'front': 'product', 'children': [
-      { 'name': '商品列表', 'front': 'product-index' },
-      { 'name': '添加商品', 'front': 'product-add' },
-      { 'name': '编辑商品', 'front': 'product-edit' }
+    "name": "商品管理", "front": "product", "children": [
+      { "name": "商品列表", "front": "product-index" },
+      { "name": "添加商品", "front": "product-add" },
+      { "name": "编辑商品", "front": "product-edit" }
     ]
   },
   {
-    'name': '订单管理', 'front': 'order', 'children': [
-      { 'name': '订单列表', 'front': 'order-index' },
-      { 'name': '添加订单', 'front': 'order-add' },
-      { 'name': '编辑订单', 'front': 'order-edit' }
+    "name": "订单管理", "front": "order", "children": [
+      { "name": "订单列表", "front": "order-index" },
+      { "name": "添加订单", "front": "order-add" },
+      { "name": "编辑订单", "front": "order-edit" }
     ]
   },
   {
-    'name': '系统管理', 'front': 'manager', 'children': [
-      { 'name': '人员列表', 'front': 'account-index' },
-      { 'name': '添加人员', 'front': 'account-add' },
-      { 'name': '编辑人员', 'front': 'account-edit' },
+    "name": "系统管理", "front": "manager", "children": [
+      { "name": "人员列表", "front": "account-index" },
+      { "name": "添加人员", "front": "account-add" },
+      { "name": "编辑人员", "front": "account-edit" },
 
-      { 'name': '角色列表', 'front': 'role-index' },
-      { 'name': '添加角色', 'front': 'role-add' },
-      { 'name': '编辑角色', 'front': 'role-edit' }
+      { "name": "角色列表", "front": "role-index" },
+      { "name": "添加角色", "front": "role-add" },
+      { "name": "编辑角色", "front": "role-edit" }
     ]
   }
 ]
