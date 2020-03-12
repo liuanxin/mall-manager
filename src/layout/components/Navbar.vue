@@ -7,7 +7,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img v-if="avatar" :src="avatar" class="user-avatar" />
+          <img v-if="avatar" :src="avatar" class="user-avatar" >
           <span class="user-name" v-else>{{ name }}</span>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -111,7 +111,8 @@ export default {
         margin-top: 5px;
         position: relative;
 
-        .user-name, .user-avatar {
+        .user-name,
+        .user-avatar {
           cursor: pointer;
           border-radius: 10px;
         }

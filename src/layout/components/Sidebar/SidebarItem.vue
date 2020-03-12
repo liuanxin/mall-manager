@@ -18,7 +18,7 @@
         :is-nest="true"
         :item="child"
         :base-path="resolvePath(child.path)"
-        class="nest-menu" />
+        class="nest-menu"/>
     </el-submenu>
   </div>
 </template>
@@ -57,9 +57,11 @@ export default {
   },
   methods: {
     showTemplate() {
-      return this.hasOneShowingChild(this.item.children, this.item)
-        && (!this.onlyOneChild.children || this.onlyOneChild.noShowingChildren)
-        && !this.item.alwaysShow
+      return (
+        this.hasOneShowingChild(this.item.children, this.item) &&
+        (!this.onlyOneChild.children || this.onlyOneChild.noShowingChildren) &&
+        !this.item.alwaysShow
+      )
     },
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter((item) => {
