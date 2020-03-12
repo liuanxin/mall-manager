@@ -46,17 +46,18 @@ const routers = {
   'order': { path: '/order', component: Layout, meta: { icon: 'order' } },
   'manager': { path: '/manager', component: Layout, meta: { icon: 'password' } },
 
-  // 必须要有 path, 上面是一级菜单, 下面是相关的子菜单, hidden: true 的菜单将不显示
+  // !~! 如果没有 path 就用 key(见下面的 ~!~ 部分), 上面是一级菜单, 下面是相关的子菜单, hidden: true 的菜单将不显示
 
-  'config-index': { path: 'config', component: () => import('@/views/common/config/index'), meta: { icon: 'table' } },
-  'config-add': { path: 'config-add', component: () => import('@/views/common/config/add'), meta: { noCache: true }, hidden: true },
-  'config-edit': { path: 'config-edit', component: () => import('@/views/common/config/edit'), meta: { noCache: true }, hidden: true },
+  'config': { component: () => import('@/views/common/config/index'), meta: { icon: 'table' } },
+  'config-add': { component: () => import('@/views/common/config/add'), meta: { noCache: true }, hidden: true },
+  'config-edit': { component: () => import('@/views/common/config/edit'), meta: { noCache: true }, hidden: true },
 
-  'banner-index': { path: 'banner', component: () => import('@/views/common/banner/index'), meta: { icon: 'table' } },
-  'banner-add': { path: 'banner-add', component: () => import('@/views/common/banner/add'), meta: { noCache: true }, hidden: true },
-  'banner-edit': { path: 'banner-edit', component: () => import('@/views/common/banner/edit'), meta: { noCache: true }, hidden: true },
+  'banner': { component: () => import('@/views/common/banner/index'), meta: { icon: 'table' } },
+  'banner-add': { component: () => import('@/views/common/banner/add'), meta: { noCache: true }, hidden: true },
+  'banner-edit': { component: () => import('@/views/common/banner/edit'), meta: { noCache: true }, hidden: true },
 
-  // path 如果不是以 / 开头会把 parent 也拼进去, 所以下面的都是 index、add 和 edit
+  // path 如果不是以 / 开头会把 parent 也拼进去, 所以下面的 path 都是 index、add 和 edit
+
   'user-index': { path: 'index', component: () => import('@/views/user/index'), meta: { icon: 'table' } },
   'user-add': { path: 'add', component: () => import('@/views/user/add'), meta: { noCache: true }, hidden: true },
   'user-edit': { path: 'edit', component: () => import('@/views/user/edit'), meta: { noCache: true }, hidden: true },
@@ -68,13 +69,13 @@ const routers = {
   'order-index': { path: 'index', component: () => import('@/views/order/index'), meta: { icon: 'table' } },
   'order-id': { path: 'id', component: () => import('@/views/order/id'), meta: { noCache: true }, hidden: true },
 
-  'account-index': { path: 'account', component: () => import('@/views/manager/account/index'), meta: { icon: 'table' } },
-  'account-add': { path: 'account-add', component: () => import('@/views/manager/account/add'), meta: { noCache: true }, hidden: true },
-  'account-edit': { path: 'account-edit', component: () => import('@/views/manager/account/edit'), meta: { noCache: true }, hidden: true},
+  'account': { component: () => import('@/views/manager/account/index'), meta: { icon: 'table' } },
+  'account-add': { component: () => import('@/views/manager/account/add'), meta: { noCache: true }, hidden: true },
+  'account-edit': { component: () => import('@/views/manager/account/edit'), meta: { noCache: true }, hidden: true},
 
-  'role-index': { path: 'role', component: () => import('@/views/manager/role/index'), meta: { icon: 'table' } },
-  'role-add': { path: 'role-add', component: () => import('@/views/manager/role/add'), meta: { noCache: true }, hidden: true },
-  'role-edit': { path: 'role-edit', component: () => import('@/views/manager/role/edit'), meta: { noCache: true }, hidden: true }
+  'role': { component: () => import('@/views/manager/role/index'), meta: { icon: 'table' } },
+  'role-add': { component: () => import('@/views/manager/role/add'), meta: { noCache: true }, hidden: true },
+  'role-edit': { component: () => import('@/views/manager/role/edit'), meta: { noCache: true }, hidden: true }
 }
 
 /** 管理员权限格式, 用户登录后后端也返回下面的格式. 注意: front 的值跟上面 routers 的 key 要一一对应 */
@@ -151,8 +152,11 @@ const fillRouter = (menus) => {
       if (isNotBlank(element)) {
         const key = element['front']
         const router = { ...routers[key] }
-        // 没有 path 属性的忽略
-        if (isNotBlank(router) && router.hasOwnProperty('path')) {
+        if (isNotBlank(router)) {
+          // ~!~ 规则里如果没有配置 path 就用 key 来填充(见上面的 !~! 部分)
+          if (!router.hasOwnProperty('path')) {
+            router.path = key
+          }
           // front 做 router 的 name
           router.name = key
           // name 做 router 的 title
