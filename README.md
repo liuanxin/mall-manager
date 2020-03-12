@@ -27,7 +27,7 @@ yarn
 │   ├── utils           工具目录
 │   ├── views           页面目录
 │   │
-│   │    !!!!上面的是目录, 下面是文件!!!
+│   │    !!!上面的是目录, 下面是文件!!!
 │   │
 │   ├── App.vue         也不是很懂 public/index.html 和 main.js 和 App.vue 三者为什么要搞这么复杂
 │   ├── config.js       项目全局配置
