@@ -49,12 +49,12 @@ const routers = {
   // 必须要有 path, 上面是一级菜单, 下面是相关的子菜单, hidden: true 的菜单将不显示
 
   'config-index': { path: 'config', component: () => import('@/views/common/config/index'), meta: { icon: 'table' } },
-  'config-add': { path: 'config/add', component: () => import('@/views/common/config/add'), meta: { noCache: true }, hidden: true },
-  'config-edit': { path: 'config/edit', component: () => import('@/views/common/config/edit'), meta: { noCache: true }, hidden: true },
+  'config-add': { path: 'config-add', component: () => import('@/views/common/config/add'), meta: { noCache: true }, hidden: true },
+  'config-edit': { path: 'config-edit', component: () => import('@/views/common/config/edit'), meta: { noCache: true }, hidden: true },
 
   'banner-index': { path: 'banner', component: () => import('@/views/common/banner/index'), meta: { icon: 'table' } },
-  'banner-add': { path: 'banner/add', component: () => import('@/views/common/banner/add'), meta: { noCache: true }, hidden: true },
-  'banner-edit': { path: 'banner/edit', component: () => import('@/views/common/banner/edit'), meta: { noCache: true }, hidden: true },
+  'banner-add': { path: 'banner-add', component: () => import('@/views/common/banner/add'), meta: { noCache: true }, hidden: true },
+  'banner-edit': { path: 'banner-edit', component: () => import('@/views/common/banner/edit'), meta: { noCache: true }, hidden: true },
 
   // path 如果不是以 / 开头会把 parent 也拼进去, 所以下面的都是 index、add 和 edit
   'user-index': { path: 'index', component: () => import('@/views/user/index'), meta: { icon: 'table' } },
@@ -66,16 +66,15 @@ const routers = {
   'product-edit': { path: 'edit', component: () => import('@/views/product/edit'), meta: { noCache: true }, hidden: true },
 
   'order-index': { path: 'index', component: () => import('@/views/order/index'), meta: { icon: 'table' } },
-  'order-add': { path: 'add', component: () => import('@/views/order/add'), meta: { noCache: true }, hidden: true },
-  'order-edit': { path: 'edit', component: () => import('@/views/order/edit'), meta: { noCache: true }, hidden: true },
+  'order-id': { path: 'id', component: () => import('@/views/order/id'), meta: { noCache: true }, hidden: true },
 
   'account-index': { path: 'account', component: () => import('@/views/manager/account/index'), meta: { icon: 'table' } },
-  'account-add': { path: 'account/add', component: () => import('@/views/manager/account/add'), meta: { noCache: true }, hidden: true },
-  'account-edit': { path: 'account/edit', component: () => import('@/views/manager/account/edit'), meta: { noCache: true }, hidden: true},
+  'account-add': { path: 'account-add', component: () => import('@/views/manager/account/add'), meta: { noCache: true }, hidden: true },
+  'account-edit': { path: 'account-edit', component: () => import('@/views/manager/account/edit'), meta: { noCache: true }, hidden: true},
 
   'role-index': { path: 'role', component: () => import('@/views/manager/role/index'), meta: { icon: 'table' } },
-  'role-add': { path: 'role/add', component: () => import('@/views/manager/role/add'), meta: { noCache: true }, hidden: true },
-  'role-edit': { path: 'role/edit', component: () => import('@/views/manager/role/edit'), meta: { noCache: true }, hidden: true }
+  'role-add': { path: 'role-add', component: () => import('@/views/manager/role/add'), meta: { noCache: true }, hidden: true },
+  'role-edit': { path: 'role-edit', component: () => import('@/views/manager/role/edit'), meta: { noCache: true }, hidden: true }
 }
 
 /** 管理员权限格式, 用户登录后后端也返回下面的格式. 注意: front 的值跟上面 routers 的 key 要一一对应 */
@@ -108,8 +107,7 @@ const adminRouters = [
   {
     "name": "订单管理", "front": "order", "children": [
       { "name": "订单列表", "front": "order-index" },
-      { "name": "添加订单", "front": "order-add" },
-      { "name": "编辑订单", "front": "order-edit" }
+      { "name": "订单详情", "front": "order-id" }
     ]
   },
   {
