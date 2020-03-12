@@ -8,7 +8,10 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-if="avatar" :src="avatar" class="user-avatar" />
-          <span class="user-name" v-else>{{ name }}</span>
+          <template v-else>
+            <svg-icon icon-class="profile" />
+            <span class="user-name">{{ name }}</span>
+          </template>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
