@@ -59,10 +59,12 @@ const routers = {
   // path 如果不是以 / 开头会把 parent 也拼进去, 所以下面的 path 都是 index、add 和 edit
 
   'user-index': { path: 'index', component: () => import('@/views/user/index'), meta: { icon: 'table' } },
+  'user-id': { path: 'id', component: () => import('@/views/user/id'), meta: { noCache: true }, hidden: true },
   'user-add': { path: 'add', component: () => import('@/views/user/add'), meta: { noCache: true }, hidden: true },
   'user-edit': { path: 'edit', component: () => import('@/views/user/edit'), meta: { noCache: true }, hidden: true },
 
   'product-index': { path: 'index', component: () => import('@/views/product/index'), meta: { icon: 'table' } },
+  'product-id': { path: 'id', component: () => import('@/views/product/id'), meta: { icon: 'table' } },
   'product-add': { path: 'add', component: () => import('@/views/product/add'), meta: { noCache: true }, hidden: true },
   'product-edit': { path: 'edit', component: () => import('@/views/product/edit'), meta: { noCache: true }, hidden: true },
 
@@ -94,6 +96,7 @@ const adminRouters = [
   {
     "name": "用户管理", "front": "user", "children": [
       { "name": "用户列表", "front": "user-index" },
+      { "name": "用户详情", "front": "user-index" },
       { "name": "添加用户", "front": "user-add" },
       { "name": "编辑用户", "front": "user-edit" }
     ]
@@ -101,6 +104,7 @@ const adminRouters = [
   {
     "name": "商品管理", "front": "product", "children": [
       { "name": "商品列表", "front": "product-index" },
+      { "name": "商品详情", "front": "product-index" },
       { "name": "添加商品", "front": "product-add" },
       { "name": "编辑商品", "front": "product-edit" }
     ]
