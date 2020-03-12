@@ -1031,7 +1031,7 @@
     source-map "~0.6.1"
     vue-template-es2015-compiler "^1.9.0"
 
-"@vue/component-compiler-utils@^3.1.0":
+"@vue/component-compiler-utils@^3.0.0", "@vue/component-compiler-utils@^3.1.0":
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/@vue/component-compiler-utils/download/@vue/component-compiler-utils-3.1.1.tgz#d4ef8f80292674044ad6211e336a302e4d2a6575"
   integrity sha1-1O+PgCkmdARK1iEeM2owLk0qZXU=
@@ -3217,6 +3217,17 @@ eslint-config-prettier@6.10.0:
   integrity sha1-exXjA7+clWh1yUj2shUA5I3tan8=
   dependencies:
     get-stdin "^6.0.0"
+
+eslint-plugin-prettier-vue@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.npm.taobao.org/eslint-plugin-prettier-vue/download/eslint-plugin-prettier-vue-2.0.2.tgz#89788d01c3286ae732c96bbcff4f813ed104d614"
+  integrity sha1-iXiNAcMoaucyyWu8/0+BPtEE1hQ=
+  dependencies:
+    "@vue/component-compiler-utils" "^3.0.0"
+    chalk "^2.4.2"
+    prettier "^1.18.2"
+    prettier-linter-helpers "^1.0.0"
+    vue-template-compiler "^2.0.0"
 
 eslint-plugin-prettier@3.1.2:
   version "3.1.2"
@@ -8514,7 +8525,7 @@ vue-style-loader@^4.1.0:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-template-compiler@2.6.11:
+vue-template-compiler@2.6.11, vue-template-compiler@^2.0.0:
   version "2.6.11"
   resolved "https://registry.npm.taobao.org/vue-template-compiler/download/vue-template-compiler-2.6.11.tgz#c04704ef8f498b153130018993e56309d4698080"
   integrity sha1-wEcE749JixUxMAGJk+VjCdRpgIA=

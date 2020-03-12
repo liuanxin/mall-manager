@@ -1,0 +1,13 @@
+/build
+/config
+
+/dist
+/node_modules
+/src/assets
+/*.js
+*.svg
+
+/src/permission.js
+/src/router.js
+/src/utils/index.js
+/src/utils/request.js
