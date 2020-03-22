@@ -1,7 +1,8 @@
+
+import * as util from '@/utils/index'
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
-import store from '@/store'
-import { isNotBlank, isNotTrue, toInt } from '@/utils/index'
+// import store from '@/store'
 // import { getToken } from '@/utils/auth'
 
 // create an axios instance
@@ -11,25 +12,35 @@ const service = axios.create({
   timeout: 10000 // request timeout
 })
 
-/*
 service.interceptors.request.use(
   config => {
-    if (store.getters.token) {
+    if (util.isNotTrue(process.env.VUE_APP_ONLINE)) {
+      console.debug('request config: ' + JSON.stringify(config))
+    }
+    /* if (store.getters.token) {
       config.headers['x-token'] = getToken()
+    } */
+    if (util.isTrue(process.env.VUE_APP_MOCK) {
+      const method = config.method.toLowerCase()
+      // mock 时, 将 POST /user/info 请求转换成 GET /post-user-info
+      config.method = 'GET'
+      config.url = method + '-' + config.url.replace('/', '-')
     }
     return config
   },
-  error => {
-    console.log(error)
-    return Promise.reject(error)
+  (error) => {
+    if (util.isNotTrue(process.env.VUE_APP_ONLINE)) {
+      console.error('request error: ' + JSON.stringify(error))
+    }
+    return Promise.reject(new Error(error))
   }
 )
-*/
 
 service.interceptors.response.use(
   (response) => {
     return response.data
     /*
+    // 响应状态是 200, 返回的数据里面用 code 返回了 400 500 这种, 就解开下面的
     const res = response.data
     if (res.code === 200) {
       return res
@@ -40,19 +51,18 @@ service.interceptors.response.use(
     */
   },
   (error) => {
-    const msg = error.message
     handleError(error)
-    return Promise.reject(msg)
+    return Promise.reject(new Error(error.message))
   }
 )
 
 const handleError = (data) => {
-  if (isNotTrue(process.env.VUE_APP_ONLINE)) {
+  if (util.isNotTrue(process.env.VUE_APP_ONLINE)) {
     console.error('response error: ' + JSON.stringify(data))
   }
 
-  const code = toInt(data.code || (isNotBlank(data.response) ? data.response.status : 0))
-  const msg = data.msg || (isNotBlank(data.response) ? data.response.data : null) || data.message
+  const code = toInt(data.code || (util.isNotBlank(data.response) ? data.response.status : 0))
+  const msg = data.msg || (util.isNotBlank(data.response) ? data.response.data : null) || data.message
   if (code === 401) {
     MessageBox.alert('您已被登出, 请重新登录').then(() => {
       store.dispatch('logout').then(() => {
