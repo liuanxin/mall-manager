@@ -6,8 +6,8 @@ yarn
 ```
 
 本地运行: `yarn dev`  
-构建测试环境: `yarn test`  
-构建生产环境 `yarn build`
+打包测试环境: `yarn test`  
+打包生产环境: `yarn build`
 
 ```text
 ├── dist             打包以后的文件存放目录

@@ -3,7 +3,7 @@ import 'nprogress/nprogress.css'
 
 import router, { checkRouter } from '@/router'
 import store from '@/store'
-import { isBlank, isNotBlank } from '@/utils'
+import { isBlank, isNotBlank, isNotTrue } from '@/utils'
 import { getToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 import globalConfig from '@/config'
@@ -55,7 +55,9 @@ router.beforeEach(async (to, from, next) => {
           next()
         }
       } catch (error) {
-        console.debug(error || 'Has Error')
+        if (isNotTrue(process.env.VUE_APP_ONLINE)) {
+          console.error('handle user.js#getInfo() error: ' + (error || 'Has Error'))
+        }
         await store.dispatch('logout')
         next(login + params)
         NProgress.done()

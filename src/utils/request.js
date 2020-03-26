@@ -1,5 +1,5 @@
 
-import * as util from '@/utils/index'
+import { isTrue, isNotTrue, isNotBlank, toInt } from '@/utils'
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 // import store from '@/store'
@@ -14,22 +14,22 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
-    if (util.isNotTrue(process.env.VUE_APP_ONLINE)) {
+    if (isNotTrue(process.env.VUE_APP_ONLINE)) {
       console.debug('request config: ' + JSON.stringify(config))
     }
     /* if (store.getters.token) {
       config.headers['x-token'] = getToken()
     } */
-    if (util.isTrue(process.env.VUE_APP_MOCK) {
+    if (isTrue(process.env.VUE_APP_MOCK)) {
       const method = config.method.toLowerCase()
       // mock 时, 将 POST /user/info 请求转换成 GET /post-user-info
       config.method = 'GET'
-      config.url = method + '-' + config.url.replace('/', '-')
+      config.url = method + (config.url.startsWith('/') ? '' : '-') + config.url.replace(/\//g, '-')
     }
     return config
   },
   (error) => {
-    if (util.isNotTrue(process.env.VUE_APP_ONLINE)) {
+    if (isNotTrue(process.env.VUE_APP_ONLINE)) {
       console.error('request error: ' + JSON.stringify(error))
     }
     return Promise.reject(new Error(error))
@@ -57,12 +57,12 @@ service.interceptors.response.use(
 )
 
 const handleError = (data) => {
-  if (util.isNotTrue(process.env.VUE_APP_ONLINE)) {
+  if (isNotTrue(process.env.VUE_APP_ONLINE)) {
     console.error('response error: ' + JSON.stringify(data))
   }
 
-  const code = toInt(data.code || (util.isNotBlank(data.response) ? data.response.status : 0))
-  const msg = data.msg || (util.isNotBlank(data.response) ? data.response.data : null) || data.message
+  const code = toInt(data.code || (isNotBlank(data.response) ? data.response.status : 0))
+  const msg = data.msg || (isNotBlank(data.response) ? data.response.data : null) || data.message
   if (code === 401) {
     MessageBox.alert('您已被登出, 请重新登录').then(() => {
       store.dispatch('logout').then(() => {
