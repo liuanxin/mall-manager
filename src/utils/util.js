@@ -94,7 +94,7 @@ const getData = (data, properties) => {
   const arr = properties.split('.')
   for (let i in arr) {
     const property = arr[i]
-    if (tmp.hasOwnProperty(property)) {
+    if (isNotBlank(tmp) && tmp.hasOwnProperty(property)) {
       tmp = tmp[property]
     } else {
       return null

@@ -3,7 +3,7 @@ import 'nprogress/nprogress.css'
 
 import router, { checkRouter } from '@/router'
 import store from '@/store'
-import { isBlank, isNotBlank, isNotTrue } from '@/utils'
+import { isBlank, isNotBlank, isNotTrue } from '@/utils/util'
 import { getToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 import globalConfig from '@/config'

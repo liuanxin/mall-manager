@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Layout from '@/layout'
-import { isNotBlank } from '@/utils'
+import { isNotBlank } from '@/utils/util'
 import { getLocalData } from '@/utils/auth'
 
 Vue.use(VueRouter)
@@ -48,36 +48,36 @@ const routers = {
 
   // !~! 如果没有 path 就用 key(见下面的 ~!~ 部分), 上面是一级菜单, 下面是相关的子菜单, hidden: true 的菜单将不显示
 
-  'config': { component: () => import('@/views/common/config/index'), meta: { icon: 'table' } },
-  'config-add': { component: () => import('@/views/common/config/add'), meta: { noCache: true }, hidden: true },
-  'config-edit': { component: () => import('@/views/common/config/edit'), meta: { noCache: true }, hidden: true },
+  'config': { component: () => import('@/views/common/config/config'), meta: { icon: 'table' } },
+  'config-add': { component: () => import('@/views/common/config/config-add'), meta: { noCache: true }, hidden: true },
+  'config-edit': { component: () => import('@/views/common/config/config-edit'), meta: { noCache: true }, hidden: true },
 
-  'banner': { component: () => import('@/views/common/banner/index'), meta: { icon: 'table' } },
-  'banner-add': { component: () => import('@/views/common/banner/add'), meta: { noCache: true }, hidden: true },
-  'banner-edit': { component: () => import('@/views/common/banner/edit'), meta: { noCache: true }, hidden: true },
+  'banner': { component: () => import('@/views/common/banner/banner'), meta: { icon: 'table' } },
+  'banner-add': { component: () => import('@/views/common/banner/banner-add'), meta: { noCache: true }, hidden: true },
+  'banner-edit': { component: () => import('@/views/common/banner/banner-edit'), meta: { noCache: true }, hidden: true },
 
   // path 如果不是以 / 开头会把 parent 也拼进去, 所以下面的 path 都是 index、add 和 edit
 
-  'user-index': { path: 'index', component: () => import('@/views/user/index'), meta: { icon: 'table' } },
-  'user-id': { path: 'id', component: () => import('@/views/user/id'), meta: { noCache: true }, hidden: true },
-  'user-add': { path: 'add', component: () => import('@/views/user/add'), meta: { noCache: true }, hidden: true },
-  'user-edit': { path: 'edit', component: () => import('@/views/user/edit'), meta: { noCache: true }, hidden: true },
+  'user-index': { path: 'index', component: () => import('@/views/user/user'), meta: { icon: 'table' } },
+  'user-id': { path: 'id', component: () => import('@/views/user/user-id'), meta: { noCache: true }, hidden: true },
+  'user-add': { path: 'add', component: () => import('@/views/user/user-add'), meta: { noCache: true }, hidden: true },
+  'user-edit': { path: 'edit', component: () => import('@/views/user/user-edit'), meta: { noCache: true }, hidden: true },
 
-  'product-index': { path: 'index', component: () => import('@/views/product/index'), meta: { icon: 'table' } },
-  'product-id': { path: 'id', component: () => import('@/views/product/id'), meta: { icon: 'table' } },
-  'product-add': { path: 'add', component: () => import('@/views/product/add'), meta: { noCache: true }, hidden: true },
-  'product-edit': { path: 'edit', component: () => import('@/views/product/edit'), meta: { noCache: true }, hidden: true },
+  'product-index': { path: 'index', component: () => import('@/views/product/product'), meta: { icon: 'table' } },
+  'product-id': { path: 'id', component: () => import('@/views/product/product-id'), meta: { icon: 'table' } },
+  'product-add': { path: 'add', component: () => import('@/views/product/product-add'), meta: { noCache: true }, hidden: true },
+  'product-edit': { path: 'edit', component: () => import('@/views/product/product-edit'), meta: { noCache: true }, hidden: true },
 
-  'order-index': { path: 'index', component: () => import('@/views/order/index'), meta: { icon: 'table' } },
-  'order-id': { path: 'id', component: () => import('@/views/order/id'), meta: { noCache: true }, hidden: true },
+  'order-index': { path: 'index', component: () => import('@/views/order/order'), meta: { icon: 'table' } },
+  'order-id': { path: 'id', component: () => import('@/views/order/order-id'), meta: { noCache: true }, hidden: true },
 
-  'account': { component: () => import('@/views/manager/account/index'), meta: { icon: 'table' } },
-  'account-add': { component: () => import('@/views/manager/account/add'), meta: { noCache: true }, hidden: true },
-  'account-edit': { component: () => import('@/views/manager/account/edit'), meta: { noCache: true }, hidden: true},
+  'account': { component: () => import('@/views/manager/account/account'), meta: { icon: 'table' } },
+  'account-add': { component: () => import('@/views/manager/account/account-add'), meta: { noCache: true }, hidden: true },
+  'account-edit': { component: () => import('@/views/manager/account/account-edit'), meta: { noCache: true }, hidden: true},
 
-  'role': { component: () => import('@/views/manager/role/index'), meta: { icon: 'table' } },
-  'role-add': { component: () => import('@/views/manager/role/add'), meta: { noCache: true }, hidden: true },
-  'role-edit': { component: () => import('@/views/manager/role/edit'), meta: { noCache: true }, hidden: true }
+  'role': { component: () => import('@/views/manager/role/role'), meta: { icon: 'table' } },
+  'role-add': { component: () => import('@/views/manager/role/role-add'), meta: { noCache: true }, hidden: true },
+  'role-edit': { component: () => import('@/views/manager/role/role-edit'), meta: { noCache: true }, hidden: true }
 }
 
 /** 管理员权限格式, 用户登录后后端也返回下面的格式. 注意: front 的值跟上面 routers 的 key 要一一对应 */

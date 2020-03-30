@@ -32,8 +32,8 @@ yarn
 │   ├── App.vue         也不是很懂 public/index.html 和 main.js 和 App.vue 三者为什么要搞这么复杂
 │   ├── config.js       项目全局配置
 │   ├── main.js         程序入口, 初始化 vue 实例、样式、插件、公共组件
-│   ├── permission.js   权限控制(调度路由), 建一个同名目录, 里面放一个 index.js 是一样的
-│   └── router.js       路由管理, 建一个同名目录, 里面放一个 index.js 是一样的
+│   ├── permission.js   权限控制(调度路由), 建一个同名目录, 里面放一个 util.js 是一样的
+│   └── router.js       路由管理, 建一个同名目录, 里面放一个 util.js 是一样的
 │
 ├── .babelrc          打包时将一些语法(比如 import('/a/b/c') 这种)转换成 es 标准的工具配置
 ├── .editorconfig     编辑器配置, 给 ide 用的

@@ -1,6 +1,6 @@
 import { getInfo, login, logout } from '@/api/user'
 import { getLocalData, getToken, removeLocalData, removeToken, setLocalData, setToken } from '@/utils/auth'
-import { isBlank } from '@/utils'
+import { isBlank } from '@/utils/util'
 
 const state = {
   name: '',

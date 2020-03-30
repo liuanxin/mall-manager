@@ -1,5 +1,5 @@
 
-import { isTrue, isNotTrue, toInt, getData } from '@/utils'
+import { isTrue, isNotTrue, toInt, getData } from '@/utils/util'
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 // import store from '@/store'
