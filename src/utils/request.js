@@ -1,5 +1,5 @@
 
-import { isTrue, isNotTrue, isNotBlank, toInt } from '@/utils'
+import { isTrue, isNotTrue, toInt, getData } from '@/utils'
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 // import store from '@/store'
@@ -63,8 +63,10 @@ const handleError = (data) => {
     console.error('response error: ' + JSON.stringify(data))
   }
 
-  const code = toInt(data.code || (isNotBlank(data.response) ? data.response.status : 0))
-  const msg = data.msg || (isNotBlank(data.response) ? data.response.data : null) || data.message
+  // toInt(date.code || data.response.status)
+  const code = toInt(getData(data, 'code') || getData(data, 'response.status'))
+  // data.msg || data.response.data || data.message
+  const msg = getData(data, 'msg') || getData(data, 'response.data') || getData(data, 'message')
   if (code === 401) {
     MessageBox.alert('您已被登出, 请重新登录').then(() => {
       store.dispatch('logout').then(() => {
