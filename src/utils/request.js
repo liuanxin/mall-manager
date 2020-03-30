@@ -14,17 +14,18 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
+    // if (store.getters.token) {
+    //   config.headers['x-token'] = getToken()
+    // }
+    if (isTrue(process.env.VUE_APP_MOCK)) {
+      const realMethod = config.method.toLowerCase()
+      const realUrl = config.url
+      // mock 时, 将 POST /user/info 请求改成 GET /post-user-info
+      config.method = 'GET'
+      config.url = realMethod + (realUrl.startsWith('/') ? '' : '-') + realUrl.replace(/\//g, '-')
+    }
     if (isNotTrue(process.env.VUE_APP_ONLINE)) {
       console.debug('request config: ' + JSON.stringify(config))
-    }
-    /* if (store.getters.token) {
-      config.headers['x-token'] = getToken()
-    } */
-    if (isTrue(process.env.VUE_APP_MOCK)) {
-      const method = config.method.toLowerCase()
-      // mock 时, 将 POST /user/info 请求转换成 GET /post-user-info
-      config.method = 'GET'
-      config.url = method + (config.url.startsWith('/') ? '' : '-') + config.url.replace(/\//g, '-')
     }
     return config
   },
@@ -37,10 +38,14 @@ service.interceptors.request.use(
 )
 
 service.interceptors.response.use(
+  // 后端响应通常是两种, 后端一般会使用第 2 种方式(微信小程序只支持使用这样的方式)来返回
+  // 1. HttpStatus 返回 400 500 这样的非 200 的错误码则: 不解析到 json result, 处理 response.message
+  // 2. HttpStatus 返回 200 且 json result 是 { "code": 500, "msg": "xxx 错误" } 格式
   (response) => {
     return response.data
     /*
-    // 响应状态是 200, 返回的数据里面用 code 返回了 400 500 这种, 就解开下面的
+    // 上面的第 2 种
+    // HttpStatus 是 200, 但是返回的 json 数据里面用 code 返回了 400 500 这种, 就解开下面的
     const res = response.data
     if (res.code === 200) {
       return res
@@ -51,6 +56,7 @@ service.interceptors.response.use(
     */
   },
   (error) => {
+    // 上面的第 1 种方式
     handleError(error)
     return Promise.reject(new Error(error.message))
   }
