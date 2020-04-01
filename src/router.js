@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Layout from '@/layout'
-import { isNotBlank } from '@/utils/util'
+import { isNotBlank, isTrue } from '@/utils/util'
 import { getLocalData } from '@/utils/auth'
 
 Vue.use(VueRouter)
@@ -140,7 +140,7 @@ const getRouter = (data) => {
   if (isNotBlank(data)) {
     returnRouter.push(...globalAllUserRouterBegin)
     // 如果是管理员就无视 menus 属性
-    const routers = fillRouter(data['hasAdmin'] === true ? adminRouters : data['menus'])
+    const routers = fillRouter(isTrue(data['hasAdmin']) ? adminRouters : data['menus'])
     if (routers.length > 0) {
       returnRouter.push(...routers)
     }
@@ -193,7 +193,7 @@ const checkRouter = (routers, path) => {
     } else {
       if (isNotBlank(r.children)) {
         const flag = checkChildRouter(r.children, r.path, path)
-        if (flag === true) {
+        if (isTrue(flag)) {
           return true
         }
       }
@@ -210,7 +210,7 @@ const checkChildRouter = (routers, parentPath, path) => {
     } else {
       if (isNotBlank(r.children)) {
         const flag = checkChildRouter(r.children, newParentPath, path)
-        if (flag === true) {
+        if (isTrue(flag)) {
           return true
         }
       }

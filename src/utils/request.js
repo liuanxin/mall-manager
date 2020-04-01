@@ -6,13 +6,13 @@ import { Message, MessageBox } from 'element-ui'
 // import { getToken } from '@/utils/auth'
 
 // create an axios instance
-const service = axios.create({
+const serviceRequest = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 10000 // request timeout
 })
 
-service.interceptors.request.use(
+serviceRequest.interceptors.request.use(
   config => {
     // if (store.getters.token) {
     //   config.headers['x-token'] = getToken()
@@ -37,7 +37,7 @@ service.interceptors.request.use(
   }
 )
 
-service.interceptors.response.use(
+serviceRequest.interceptors.response.use(
   // 后端响应通常是两种, 后端一般会使用第 2 种方式(微信小程序只支持使用这样的方式)来返回
   // 1. HttpStatus 返回 400 500 这样的非 200 的错误码则: 不解析到 json result, 处理 response.message
   // 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
@@ -82,4 +82,4 @@ const handleError = (data) => {
   }
 }
 
-export default service
+export default serviceRequest
