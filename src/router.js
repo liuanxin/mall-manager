@@ -80,8 +80,30 @@ const routers = {
   'role-edit': { component: () => import('@/views/manager/role/role-edit'), meta: { noCache: true }, hidden: true }
 }
 
-/** 管理员权限格式, 用户登录后后端也返回下面的格式. 注意: front 的值跟上面 routers 的 key 要一一对应 */
-const adminRouters = [
+/**
+ * <pre>
+ * 所有的权限, 用户登录后、管理员操作角色时(https://element.eleme.cn/#/zh-CN/component/tree), 后端也返回下面的格式.
+ *
+ * 注意:
+ *   1. 登录后的返回必须要有 front, 它的值跟上面 routers 的 key 要一一对应, 不需要返回 id
+ *   2. 管理员操作角色时必须要有 id, 不需要返回 front, 如果是更新角色的操作, 还需要有角色的 id 用来做选中(default-checked-keys)
+ *   <el-tree
+ *     :data="data"
+ *     node-key="id"
+ *     show-checkbox
+ *     :default-checked-keys="checkedList"
+ *     :props="defaultProps">
+ *   </el-tree>
+ *   其中 data 的值(因为有 id, 所以必须后端返回)是 [
+ *     { "id": 10, "name": "公共管理", "children": [ { "id": 101, "name": "全局配置" }, { "id": 102, "name": "banner 图" } ] },
+ *     { "id": 20, "name": "系统管理", "children": [ { "id": 201, "name": "人员列表" }, { "id": 202, "name": "角色列表" } ] }
+ *     ...
+ *   ]
+ *   checkedList 的值是 [ 102, 201 ]
+ *   defaultProps 的值是 { children: 'children', label: 'name' }
+ * </pre>
+ */
+const allRouters = [
   {
     "name": "公共管理", "front": "common", "children": [
       { "name": "全局配置", "front": "config-index" },
@@ -129,10 +151,12 @@ const adminRouters = [
 ]
 
 /**
+ * <pre>
  * 超级管理员返回: { id: 1, name: '张三', hasAdmin: true } 如果 hasAdmin 为 true 则不需要返回 menus 数据(id name 视情况而定)
  * 普通用户返回: { id: 10, name: '李四', hasAdmin: false, menus: XXX } 不是管理员则需要返回菜单数据, XXX 的格式跟上面的 admin 一致
  *
  * 如果不传 data 或者 data 为 undefined 或 null 则返回未登录用户的权限
+ * </pre>
  */
 const getRouter = (data) => {
   const returnRouter = []
@@ -140,7 +164,7 @@ const getRouter = (data) => {
   if (isNotBlank(data)) {
     returnRouter.push(...globalAllUserRouterBegin)
     // 如果是管理员就无视 menus 属性
-    const routers = fillRouter(isTrue(data['hasAdmin']) ? adminRouters : data['menus'])
+    const routers = fillRouter(isTrue(data['hasAdmin']) ? allRouters : data['menus'])
     if (routers.length > 0) {
       returnRouter.push(...routers)
     }
