@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Layout from '@/layout'
-import { isNotBlank, isTrue } from '@/utils/util'
+import { isNotBlank, isNotTrue, isTrue } from '@/utils/util'
 import { getLocalData } from '@/utils/auth'
 
 Vue.use(VueRouter)
@@ -94,7 +94,7 @@ const routers = {
  *     :default-checked-keys="checkedList"
  *     :props="defaultProps">
  *   </el-tree>
- *   其中 data 的值(因为有 id, 所以必须后端返回)是 [
+ *   其中 data 的值是 [
  *     { "id": 10, "name": "公共管理", "children": [ { "id": 101, "name": "全局配置" }, { "id": 102, "name": "banner 图" } ] },
  *     { "id": 20, "name": "系统管理", "children": [ { "id": 201, "name": "人员列表" }, { "id": 202, "name": "角色列表" } ] }
  *     ...
@@ -149,6 +149,75 @@ const allRouters = [
     ]
   }
 ]
+
+let printMenuSql = true
+const getSql = () => {
+  if (printMenuSql) {
+    const arr = []
+    arr.push(
+      "DROP TABLE IF EXISTS `t_manager_menu`;\n" +
+      "CREATE TABLE IF NOT EXISTS `t_manager_menu` (\n" +
+      "  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,\n" +
+      "  `pid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT '父菜单, 0 则表示是根菜单',\n" +
+      "  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '菜单说明',\n" +
+      "  `front` varchar(32) NOT NULL DEFAULT '' COMMENT '前端对应的值(如 path 或 name)',\n" +
+      "  PRIMARY KEY (`id`),\n" +
+      "  UNIQUE KEY `name` (`name`)\n" +
+      ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单, 需要跟前端对应, 前端每增加一个菜单就需要添加一条记录, 与角色是 多对多 的关系';\n\n"
+    )
+    console.log('/* ------------------------------ 建表语句 ------------------------------ */\n\n' + arr.join(''))
+
+    arr.splice(0, arr.length)
+    getDepthSql(0, 0, allRouters, arr)
+    console.log('/* ------------------------------ 深度优先 ------------------------------ */\n\n' + arr.join(''))
+
+    arr.splice(0, arr.length)
+    getBreadthSql(0, 0, allRouters, arr)
+    console.log('/* ------------------------------ 广度优先 ------------------------------ */\n\n' + arr.join(''))
+  }
+  printMenuSql = false
+}
+/** 深度优先 */
+const getDepthSql = (lastId, pid, routers, arr) => {
+  for (let i in routers) {
+    const router = routers[i]
+    const id = lastId + 1
+    lastId++
+    arr.push('REPLACE INTO `t_manager_menu`(`id`, `pid`, `name`, `front`) VALUES (')
+    arr.push(id + ', ' + pid + ', \'' + router.name + '\', \'' + router.front + '\');\n')
+
+    const child = router.children
+    if (isNotBlank(child)) {
+      lastId = getDepthSql(lastId, id, child, arr)
+      if (pid === 0) {
+        arr.push('\n')
+      }
+    }
+  }
+  return lastId
+}
+/** 广度优先 */
+const getBreadthSql = (lastId, pid, routers, arr) => {
+  const tmp = {}
+  for (let i in routers) {
+    const router = routers[i]
+    const id = lastId + 1
+    lastId++
+    arr.push('REPLACE INTO `t_manager_menu`(`id`, `pid`, `name`, `front`) VALUES (')
+    arr.push(id + ', ' + pid + ', \'' + router.name + '\', \'' + router.front + '\');\n')
+    tmp[i] = id
+  }
+  arr.push('\n')
+  for (let i in routers) {
+    const router = routers[i]
+
+    const child = router.children
+    if (isNotBlank(child)) {
+      lastId = getBreadthSql(lastId, tmp[i], child, arr)
+    }
+  }
+  return lastId
+}
 
 /**
  * <pre>
@@ -244,6 +313,9 @@ const checkChildRouter = (routers, parentPath, path) => {
 }
 
 const createRouter = (data) => {
+  if (isNotTrue(process.env.VUE_APP_ONLINE)) {
+    getSql()
+  }
   return new VueRouter({
     mode: 'history', // https://router.vuejs.org/zh/guide/essentials/history-mode.html
     routes: getRouter(data)
