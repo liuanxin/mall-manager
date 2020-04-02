@@ -1,6 +1,6 @@
 import { getInfo, login, logout } from '@/api/user'
 import { getLocalData, getToken, removeLocalData, removeToken, setLocalData, setToken } from '@/utils/auth'
-import { isBlank } from '@/utils/util'
+import { isBlank, isNotTrue } from '@/utils/util'
 
 const state = {
   name: '',
@@ -87,11 +87,11 @@ const actions = {
   },
 
   // store.dispatch('logout')
-  logout(context, backend) {
+  logout(context, backend = true) {
     return new Promise((resolve, reject) => {
       doLogout(context)
 
-      if (backend === false) {
+      if (isNotTrue(backend)) {
         resolve()
       } else {
         logout()
