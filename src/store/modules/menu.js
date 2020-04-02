@@ -21,8 +21,10 @@ const actions = {
     }
     context.commit('SET_ROUTES', data.data)
   },
-  clearRoutes(context) {
-    resetRouter()
+  clearRoutes(context, data) {
+    if (data.reset) {
+      resetRouter()
+    }
     context.commit('CLEAR_ROUTES')
   }
 }

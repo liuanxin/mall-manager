@@ -1,6 +1,6 @@
 import { getInfo, login, logout } from '@/api/user'
 import { getLocalData, getToken, removeLocalData, removeToken, setLocalData, setToken } from '@/utils/auth'
-import { isBlank, isNotTrue } from '@/utils/util'
+import { isBlank } from '@/utils/util'
 
 const state = {
   name: '',
@@ -30,11 +30,11 @@ const doLogin = (context, fillRouter, data) => {
     }
   })
 }
-const doLogout = (context) => {
+const doLogout = (context, resetRouter) => {
   context.commit('SET_NAME', '')
   context.commit('SET_AVATAR', '')
   // 清空权限
-  context.dispatch('clearRoutes', null, { root: true }).then(() => {
+  context.dispatch('clearRoutes', { reset: resetRouter }, { root: true }).then(() => {
     // 删除 cookie 及 local
     removeToken()
     removeLocalData()
@@ -87,13 +87,11 @@ const actions = {
   },
 
   // store.dispatch('logout')
-  logout(context, backend = true) {
+  logout(context, resetRouter = true) {
     return new Promise((resolve, reject) => {
-      doLogout(context)
+      doLogout(context, resetRouter)
 
-      if (isNotTrue(backend)) {
-        resolve()
-      } else {
+      if (resetRouter) {
         logout()
           .then(() => {
             resolve()
@@ -101,6 +99,8 @@ const actions = {
           .catch((error) => {
             reject(error)
           })
+      } else {
+        resolve()
       }
     })
   }
