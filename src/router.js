@@ -150,7 +150,7 @@ const allRouters = [
   }
 ]
 
-const getSql = () => {
+const getMenuSql = () => {
   const arr = []
   arr.push(
     "DROP TABLE IF EXISTS `t_manager_menu`;\n" +
@@ -310,7 +310,7 @@ const checkChildRouter = (routers, parentPath, path) => {
 
 const createRouter = (data) => {
   if (isNotTrue(process.env.VUE_APP_ONLINE)) {
-    getSql()
+    getMenuSql()
   }
   return new VueRouter({
     mode: 'history', // https://router.vuejs.org/zh/guide/essentials/history-mode.html
