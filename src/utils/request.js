@@ -20,9 +20,9 @@ serviceRequest.interceptors.request.use(
     if (isTrue(process.env.VUE_APP_MOCK)) {
       const realMethod = config.method.toLowerCase()
       const realUrl = config.url
-      // mock 时, 将 POST /user/info 请求改成 GET /post-user-info
+      // mock 时, 将 POST /user/info 请求改成 GET /api/example/post-user-info.json
       config.method = 'GET'
-      config.url = realMethod + (realUrl.startsWith('/') ? '' : '-') + realUrl.replace(/\//g, '-')
+      config.url = '/api/example/' + realMethod + (realUrl.startsWith('/') ? '' : '-') + realUrl.replace(/\//g, '-') + '.json'
     }
     if (isNotTrue(process.env.VUE_APP_ONLINE)) {
       console.debug('request config: ' + JSON.stringify(config))
@@ -43,13 +43,14 @@ serviceRequest.interceptors.response.use(
   // 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
   (response) => {
     // 上面的第 2 种方式
-    const res = response.data
-    if (toInt(res.code) === 200) {
-      return res
-    } else {
-      handleError(res)
-      return Promise.reject(new Error(res.msg))
-    }
+    // const res = response.data
+    // if (toInt(res.code) === 200) {
+    //   return res
+    // } else {
+    //   handleError(res)
+    //   return Promise.reject(new Error(res.msg))
+    // }
+    return response.data
   },
   (error) => {
     // 上面的第 1 种方式

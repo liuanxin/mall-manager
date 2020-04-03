@@ -39,7 +39,7 @@ const globalAllUserRouterEnd = [
 const globalRouterEnd = [
   { path: '*', component: () => import('@/views/404'), meta: { title: '404' }, hidden: true }
 ]
-const routers = {
+const routersMapping = {
   'common': { path: '/common', component: Layout, meta: { icon: 'example' } },
   'user': { path: '/user', component: Layout, meta: { icon: 'user' } },
   'product': { path: '/product', component: Layout, meta: { icon: 'product' } },
@@ -91,6 +91,7 @@ const routers = {
  *     :data="data"
  *     node-key="id"
  *     show-checkbox
+ *     :default-expanded-keys="checkedList"
  *     :default-checked-keys="checkedList"
  *     :props="defaultProps">
  *   </el-tree>
@@ -103,14 +104,20 @@ const routers = {
  *   defaultProps 的值是 { children: 'children', label: 'name' }
  * </pre>
  */
-const allRouters = [
+const routersRelation = [
   {
     "name": "公共管理", "front": "common", "children": [
-      { "name": "全局配置", "front": "config-index" },
+      { "name": "全局配置", "front": "config",
+        // "children": [
+        //   { "name": "配置 1", "front": "config-1" },
+        //   { "name": "配置 2", "front": "config-2" },
+        //   { "name": "配置 3", "front": "config-3" }
+        // ]
+      },
       { "name": "添加全局配置", "front": "config-add" },
       { "name": "编辑全局配置", "front": "config-edit" },
 
-      { "name": "banner", "front": "banner-index" },
+      { "name": "banner", "front": "banner" },
       { "name": "添加 banner", "front": "banner-add" },
       { "name": "编辑 banner", "front": "banner-edit" }
     ]
@@ -118,7 +125,7 @@ const allRouters = [
   {
     "name": "用户管理", "front": "user", "children": [
       { "name": "用户列表", "front": "user-index" },
-      { "name": "用户详情", "front": "user-index" },
+      { "name": "用户详情", "front": "user-id" },
       { "name": "添加用户", "front": "user-add" },
       { "name": "编辑用户", "front": "user-edit" }
     ]
@@ -126,7 +133,7 @@ const allRouters = [
   {
     "name": "商品管理", "front": "product", "children": [
       { "name": "商品列表", "front": "product-index" },
-      { "name": "商品详情", "front": "product-index" },
+      { "name": "商品详情", "front": "product-id" },
       { "name": "添加商品", "front": "product-add" },
       { "name": "编辑商品", "front": "product-edit" }
     ]
@@ -139,16 +146,68 @@ const allRouters = [
   },
   {
     "name": "系统管理", "front": "manager", "children": [
-      { "name": "人员列表", "front": "account-index" },
+      { "name": "人员列表", "front": "account" },
       { "name": "添加人员", "front": "account-add" },
       { "name": "编辑人员", "front": "account-edit" },
 
-      { "name": "角色列表", "front": "role-index" },
+      { "name": "角色列表", "front": "role" },
       { "name": "添加角色", "front": "role-add" },
       { "name": "编辑角色", "front": "role-edit" }
     ]
   }
 ]
+
+/** 管理员操作角色, 后端未提供数据时用到 */
+const getMockMenus = () => {
+  let arr = getDepthMock(0, routersRelation).child
+  console.log('/* ------------------------------ 深度优先 ------------------------------ */\n\n' + JSON.stringify(arr))
+
+  arr = getBreadthMock(0, routersRelation).child
+  console.log('/* ------------------------------ 广度优先 ------------------------------ */\n\n' + JSON.stringify(arr))
+
+  return arr
+}
+const getDepthMock = (lastId, routers) => {
+  const arr = []
+  for (let i in routers) {
+    const router = routers[i]
+    lastId++
+
+    const obj = {}
+    obj.id = lastId
+    obj.name = router.name
+
+    const child = router.children
+    if (isNotBlank(child)) {
+      const depth = getDepthMock(lastId, child, arr)
+      lastId = depth.id
+      obj.children = depth.child
+    }
+    arr.push(obj)
+  }
+  return { id: lastId, child: arr }
+}
+const getBreadthMock = (lastId, routers) => {
+  const arr = []
+  for (let i in routers) {
+    const router = routers[i]
+    lastId++
+
+    const obj = {}
+    obj.id = lastId
+    obj.name = router.name
+    arr.push(obj)
+  }
+  for (let i in routers) {
+    const child = routers[i].children
+    if (isNotBlank(child)) {
+      const depth = getBreadthMock(lastId, child, arr)
+      lastId = depth.id
+      arr[i].children = depth.child
+    }
+  }
+  return { id: lastId, child: arr }
+}
 
 const getMenuSql = () => {
   const arr = []
@@ -166,11 +225,11 @@ const getMenuSql = () => {
   console.log('/* ------------------------------ 建表语句 ------------------------------ */\n\n' + arr.join(''))
 
   arr.splice(0, arr.length)
-  getDepthSql(0, 0, allRouters, arr)
+  getDepthSql(0, 0, routersRelation, arr)
   console.log('/* ------------------------------ 深度优先 ------------------------------ */\n\n' + arr.join(''))
 
   arr.splice(0, arr.length)
-  getBreadthSql(0, 0, allRouters, arr)
+  getBreadthSql(0, 0, routersRelation, arr)
   console.log('/* ------------------------------ 广度优先 ------------------------------ */\n\n' + arr.join(''))
 }
 /** 深度优先 */
@@ -229,7 +288,7 @@ const getRouter = (data) => {
   if (isNotBlank(data)) {
     returnRouter.push(...globalAllUserRouterBegin)
     // 如果是管理员就无视 menus 属性
-    const routers = fillRouter(isTrue(data['hasAdmin']) ? allRouters : data['menus'])
+    const routers = fillRouter(isTrue(data['hasAdmin']) ? routersRelation : data['menus'])
     if (routers.length > 0) {
       returnRouter.push(...routers)
     }
@@ -244,7 +303,7 @@ const fillRouter = (menus) => {
     menus.forEach((element) => {
       if (isNotBlank(element)) {
         const key = element['front']
-        const router = { ...routers[key] }
+        const router = { ...routersMapping[key] }
         if (isNotBlank(router)) {
           // ~!~ 规则里如果没有配置 path 就用 key 来填充(见上面的 !~! 部分)
           if (!router.hasOwnProperty('path')) {
@@ -311,6 +370,7 @@ const checkChildRouter = (routers, parentPath, path) => {
 const createRouter = (data) => {
   if (isNotTrue(process.env.VUE_APP_ONLINE)) {
     getMenuSql()
+    getMockMenus()
   }
   return new VueRouter({
     mode: 'history', // https://router.vuejs.org/zh/guide/essentials/history-mode.html
@@ -329,4 +389,4 @@ const resetRouter = (data) => {
 }
 
 export default router
-export { getRouter, checkRouter, resetRouter }
+export { getMockMenus, getRouter, checkRouter, resetRouter }

@@ -2,6 +2,7 @@
 ### 运行
 使用国内镜像并安装项目所需包
 ```sh
+yarn config set ignore-scripts true
 yarn config set registry https://registry.npm.taobao.org
 yarn
 ```
@@ -75,10 +76,10 @@ yarn upgrade     ===    npm update --save
 
 ### 权限控制
 
-添加页面时, 需要在 `router.js` 中添加定义, 主要是 `routers` 和 `allRouters` 两个地方.  
-前者申明页面信息, 后者定义各页面之间的层级关系, 本地运行时会在浏览器打印出菜单相关的数据库表及定义的层级关系数据.
+添加页面时, 需要在 `router.js` 中添加定义, 主要是 `routersMapping` 和 `routersRelation` 两个地方.  
+前者申明页面信息及映射, 后者定义页面之间的层级关系, 本地运行时会在浏览器打印出菜单相关的数据库表及定义的层级关系 sql.  
 
-用户登录成功后后端返回的数据以 `allRouters` 为标准
+用户登录成功后 以及 管理员操作角色时 后端返回的数据以 `routersMapping` 为准, 见其上面的注释
 
 如果权限需要加强到按钮级, 跟上面菜单的一样, 前端定义命名, 生成表结构及数据给后端.  
-操作角色时后端将菜单和按钮相关的 id 与角色关联在一起, 当用户登录后返回给前端, 前端控制显示与否 
+操作角色时后端将菜单和按钮相关的 id 与角色关联在一起, 当用户登录后返回给前端, 前端控制显示与否

@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 0 15px;" @click="toggleClick">
-    <svg-icon :class="{ 'is-active': isActive }" class="hamburger" icon-class="fold-arrow" />
+    <svg-icon :class="{ 'is-active': isActive }" class="hamburger" icon-class="fold" />
   </div>
 </template>
 
@@ -30,6 +30,7 @@ export default {
 }
 
 .hamburger.is-active {
-  transform: rotate(180deg);
+  /* transform: rotate(180deg); */ /* 如果用 fold-arrow 则旋转 180 度 */
+  transform: rotate(90deg); /* 如果用 fold 则只旋转 90 度 */
 }
 </style>
