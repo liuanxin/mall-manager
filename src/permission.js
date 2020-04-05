@@ -13,13 +13,13 @@ NProgress.configure({ showSpinner: false })
 const login = '/login'
 const index = '/'
 
-const ignoreParamPath = [login, index, '/index']
+const ignorePath = [login, index, '/index']
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
 
   const toPath = to.path
-  const params = isBlank(toPath) || ignoreParamPath.includes(toPath) ? '' : '?redirect=' + toPath
+  const params = isBlank(toPath) || ignorePath.includes(toPath) ? '' : '?redirect=' + toPath
   const title = isNotBlank(to.meta.title) ? to.meta.title + ' - ' + globalConfig.title : globalConfig.title
 
   // 从本地获取 token, 如果没有值表示未登录, 则先调用退出(删除 token 和 vuex 中的数据)再导去登录(下一页不是登录则拼在参数上, 这样登录成功后可以导回来)
