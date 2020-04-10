@@ -167,6 +167,7 @@ const getMockMenus = () => {
 
   return arr
 }
+/** 深度优先(mock) */
 const getDepthMock = (lastId, routers) => {
   const arr = []
   for (let i in routers) {
@@ -187,6 +188,7 @@ const getDepthMock = (lastId, routers) => {
   }
   return { id: lastId, child: arr }
 }
+/** 广度优先(mock) */
 const getBreadthMock = (lastId, routers) => {
   const arr = []
   for (let i in routers) {
