@@ -12,15 +12,13 @@ NProgress.configure({ showSpinner: false })
 
 const login = '/login'
 const index = '/'
-
-const ignoreParamPath = [login, index, '/index']
-const ignoreLoginPath = [login]
+const ignoreRedirectPath = [login, index, '/index'] // 去这些页时, 如果未登录要导去登录页, 不需要把这些地址拼在参数上(表示跳回来的地址)
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
 
   const toPath = to.path
-  const params = isBlank(toPath) || ignoreParamPath.includes(toPath) ? '' : '?redirect=' + toPath
+  const params = (isBlank(toPath) || ignoreRedirectPath.includes(toPath)) ? '' : '?redirect=' + toPath
   const title = isNotBlank(to.meta.title) ? to.meta.title + ' - ' + globalConfig.title : globalConfig.title
 
   // 从本地获取 token, 如果没有值表示未登录, 则先调用退出(删除 token 和 vuex 中的数据)再导去登录(下一页不是登录则拼在参数上, 这样登录成功后可以导回来)
@@ -37,7 +35,7 @@ router.beforeEach(async (to, from, next) => {
   if (isBlank(token)) {
     // 没登陆就调用退出动作(只删除本地数据, 不需要重置路由, 也不向后台发起退出请求), 避免之前还有值没清掉的
     await store.dispatch('logout', false)
-    if (ignoreLoginPath.includes(toPath)) {
+    if (toPath === login) {
       document.title = title
       next()
     } else {
@@ -61,8 +59,13 @@ router.beforeEach(async (to, from, next) => {
           console.error('handle user.js#getInfo() error: ' + (error || 'Has Error'))
         }
         await store.dispatch('logout')
-        next(login + params)
-        NProgress.done()
+        if (toPath === login) {
+          document.title = title
+          next()
+        } else {
+          next(login + params)
+          NProgress.done()
+        }
       }
     } else {
       if (toPath === login) {
