@@ -66,8 +66,8 @@ const handleError = (data) => {
 
   // toInt(date.code || data.response.status)
   const code = toInt(getData(data, 'code') || getData(data, 'response.status'))
-  // data.msg || data.response.data || data.message
-  const msg = getData(data, 'msg') || getData(data, 'response.data') || getData(data, 'message')
+  // data.msg || data.response.data.message || data.message
+  const msg = getData(data, 'msg') || getData(data, 'response.data.message') || getData(data, 'message')
   if (code === 401) {
     MessageBox.alert('您已被登出, 请重新登录').then(() => {
       store.dispatch('logout').then(() => {

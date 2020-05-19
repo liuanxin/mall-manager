@@ -32,7 +32,7 @@ export default {
       const tree = this.$refs.tree
 
       const keysNotParent = tree.getCheckedKeys()
-      console.log('不包含父: ' + keysNotParent)
+      console.debug('不包含父: ' + keysNotParent)
 
       // 使用 set 去重
       const set = new Set()
@@ -41,7 +41,7 @@ export default {
         set.add(key)
       })
       const keysIncludeParent = [...set] // 或者使用 Array.from(set)
-      console.log('包含父: ' + keysIncludeParent)
+      console.debug('包含父: ' + keysIncludeParent)
     },
     resetChecked() {
       this.$refs.tree.setCheckedKeys([]);
