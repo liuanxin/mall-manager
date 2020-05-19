@@ -76,7 +76,7 @@ const handleError = (data) => {
     })
   } else {
     Message({
-      message: msg || (code > 0 ? ('返回了 ' + code + ' 错误码') : '请求无响应'),
+      message: (code === 0 ? ('接口无法请求, 网络有误 或 有跨域问题: ' + msg) : (msg || ('错误码: ' + code))),
       type: 'error',
       duration: 5000
     })
