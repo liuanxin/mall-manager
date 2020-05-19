@@ -31,7 +31,8 @@ export default {
   methods: {
     getBreadcrumb() {
       this.levelList = this.$route.matched.filter((item) => {
-        item.meta && item.meta.title && item.meta.breadcrumb !== false
+        // 用标题做面包屑的层级
+        return item.meta && item.meta.title /* && item.meta.breadcrumb !== false */
       })
     },
     pathCompile(path) {

@@ -110,6 +110,7 @@ export default {
       })
     },
     handleLogin() {
+      // 跟标签上的 ref 相对
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
