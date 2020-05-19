@@ -1,5 +1,5 @@
 
-import { isTrue, isNotTrue, toInt, getData } from '@/utils/util'
+import { isTrue, isNotTrue, toInt, getData, defaultValue } from '@/utils/util'
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 // import store from '@/store'
@@ -76,7 +76,7 @@ const handleError = (data) => {
     })
   } else {
     Message({
-      message: (code === 0 ? ('接口无法请求, 网络有误 或 有跨域问题: ' + msg) : (msg || ('错误码: ' + code))),
+      message: defaultValue((code === 0 ? '接口无法请求, 网络有误 或 有跨域问题: ' : '') + msg, '错误码: ' + code),
       type: 'error',
       duration: 5000
     })
