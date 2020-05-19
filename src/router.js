@@ -290,7 +290,7 @@ const getRouter = (data) => {
   if (isNotBlank(data)) {
     returnRouter.push(...globalAllUserRouterBegin)
     // 如果是管理员就无视 menus 属性
-    const routers = fillRouter(isTrue(data['hasAdmin']) ? routersRelation : data['menus'])
+    const routers = fillRouter(isTrue(data.hasAdmin) ? routersRelation : data.menus)
     if (routers.length > 0) {
       returnRouter.push(...routers)
     }
@@ -304,7 +304,7 @@ const fillRouter = (menus) => {
   if (isNotBlank(menus) && Array.isArray(menus)) {
     menus.forEach((element) => {
       if (isNotBlank(element)) {
-        const key = element['front']
+        const key = element.front
         const router = { ...routersMapping[key] }
         if (isNotBlank(router)) {
           // ~!~ 规则里如果没有配置 path 就用 key 来填充(见上面的 !~! 部分)
@@ -314,7 +314,7 @@ const fillRouter = (menus) => {
           // front 做 router 的 name
           router.name = key
           // name 做 router 的 title
-          const title = element['name']
+          const title = element.name
           if (isNotBlank(title)) {
             if (router.hasOwnProperty('meta')) {
               router.meta.title = title
@@ -323,7 +323,7 @@ const fillRouter = (menus) => {
             }
           }
           // 填充子路由
-          const children = element['children']
+          const children = element.children
           if (isNotBlank(children)) {
             router.children = fillRouter(children)
           }
