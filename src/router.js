@@ -375,7 +375,8 @@ const createRouter = (data) => {
     getMockMenus()
   }
   return new VueRouter({
-    mode: 'history', // https://router.vuejs.org/zh/guide/essentials/history-mode.html
+    // 如果只有 ip 没有域名, 想用 二级目录 来路由, 不建议使用 history, 见 vue.config.js 中的 publicPath 配置
+    // mode: 'history', // https://router.vuejs.org/zh/guide/essentials/history-mode.html
     routes: getRouter(data)
   })
 }
