@@ -21,8 +21,7 @@
           placeholder="账户名"
           name="userName"
           type="text"
-          tabindex="1"
-          auto-complete="on"/>
+          tabindex="1"/>
       </el-form-item>
 
       <el-form-item prop="password">
@@ -34,10 +33,9 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="密码"
           name="password"
           tabindex="2"
-          auto-complete="on"
           @keyup.enter.native="handleLogin"/>
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
