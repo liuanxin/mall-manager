@@ -1,5 +1,6 @@
 
 ### 运行
+
 使用国内镜像并安装项目所需包
 ```sh
 yarn config set ignore-scripts true
@@ -7,9 +8,16 @@ yarn config set registry https://registry.npm.taobao.org
 yarn
 ```
 
+如果执行 `yarn` 时提示 `... trouble with your network connection.` 或者 `yarn dev` 时提示 `node-sass` 有错误, 运行下面命令
+```bash
+yarn config delete proxy
+yarn config delete https-proxy
+yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
+```
+
 本地运行: `yarn dev`  
-打包测试环境: `yarn test`  
-打包生产环境: `yarn build`
+打包测试: `yarn test`  
+打包生产: `yarn build`
 
 
 ### 目录
