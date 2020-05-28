@@ -389,6 +389,72 @@ const thousands = (num) => {
   }
   return first.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') + second
 }
+/** 将金额转换成中文大写 */
+const money2Chinese = (money) => {
+  if (isBlank(money)) {
+    return ''
+  }
+  if (isNaN(money)) {
+    return money
+  }
+  if (parseFloat(money) === 0) {
+    return '零圆整'
+  }
+
+  const integer = [ '圆', '拾', '佰', '仟', '万', '拾', '佰', '仟', '亿', '拾', '佰', '仟' ]
+  const decimal = [ /* '微', '忽', '丝', '毫', '厘', */ '分', '角' ]
+  const num = [ '零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖' ]
+
+  const str = String(money)
+  const pointIndex = str.indexOf('.')
+  const hasPoint = pointIndex > -1
+
+  let left = hasPoint ? str.substr(0, pointIndex) : str
+  const leftNumber = parseInt(left, 10)
+  const negative = leftNumber < 0
+  if (negative) {
+    left = left.substring(1)
+  }
+  const leftLen = left.length
+  if (leftLen > integer.length) {
+    return '最大只能转换到小数位前 ' + integer.length + ' 位'
+  }
+
+  const right = hasPoint ? str.substring(pointIndex + 1) : ''
+  const rightLen = right.length
+  if (rightLen > decimal.length) {
+    return '最小只能转换到小数位后 ' + decimal.length + ' 位'
+  }
+
+  const arr = []
+
+  if (leftNumber !== 0) {
+    if (negative) {
+      arr.push('负')
+    }
+    for (let i = 0; i < leftLen; i++) {
+      arr.push(num[parseInt(String(left.charAt(i)), 10)])
+      arr.push(integer[leftLen - i - 1])
+    }
+  }
+
+  const rightNumber = parseInt(right, 10)
+  if (rightNumber > 0) {
+    arr.push(' ')
+    for (let i = 0; i < rightLen; i++) {
+      arr.push(num[parseInt(String(right.charAt(i)), 10)])
+      arr.push(decimal[rightLen - i - 1])
+    }
+  } else if (rightNumber === 0) {
+    arr.push('整')
+  }
+  return arr.join('').replace(/零仟/g, '零').replace(/零佰/g, '零').replace(/零拾/g,'零')
+    .replace(/零零零/g, '零').replace(/零零/g, '零')
+    .replace(/零亿/g, '亿').replace(/零万/g, '万').replace(/亿万/g, '亿')
+    .replace(/壹拾/g, '拾').replace(/零圆/g, '圆')
+    .replace(/零角/g, '').replace(/零分/g, '')
+}
+
 /**
  * 按下了回车键则返回 true, 用在 keydown 事件上, 如
  * <pre>
