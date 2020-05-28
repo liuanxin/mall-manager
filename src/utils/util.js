@@ -340,6 +340,10 @@ const formatDateTimeMs = (date, format) => {
 const formatDate = (date) => {
   return formatDateTimeMs(date, 'yyyy-MM-dd')
 }
+/** 格式化 时间 或 时间戳 成 年-月-日 */
+const formatTime = (date) => {
+  return formatDateTimeMs(date, 'HH:mm:ss')
+}
 /** 格式化 时间 或 时间戳 成 年-月-日 时:分:秒 */
 const formatDateTime = (date) => {
   return formatDateTimeMs(date, 'yyyy-MM-dd HH:mm:ss')
@@ -366,16 +370,19 @@ const cent2Yuan = (cent) => {
 }
 /** 将数字转换成千分位, 如 12345678.123 返回 12,345,678.123 */
 const thousands = (num) => {
+  if (isBlank(num)) {
+    return ''
+  }
   if (isNaN(num)) {
     return num
   }
 
   const number = String(num)
   let first, second
-  if (number.includes('.')) {
-    const p = number.indexOf('.')
-    first = number.substring(0, p)
-    second = number.substring(p)
+  const pointIndex = number.indexOf('.')
+  if (pointIndex >= 0) {
+    first = number.substring(0, pointIndex)
+    second = number.substring(pointIndex)
   } else {
     first = number
     second = ''
@@ -420,5 +427,5 @@ export { foggy, checkPhone, checkEmail, checkImage, checkChinese }
 export { base64Encode, base64Decode, encode, decode }
 export { appendUrl, addPrefix, addSuffix, getSuffix, uuid }
 export { escapeHtml, unescapeHtml, formatJson }
-export { completionString, msToHuman, formatDateTimeMs, formatDate, formatDateTime }
+export { completionString, msToHuman, formatDateTimeMs, formatDate, formatTime, formatDateTime }
 export { cent2Yuan, thousands, hasEnter }

@@ -14,6 +14,7 @@ import router from '@/router'
 
 import '@/icons'
 import '@/permission'
+import '@/global'
 
 Vue.use(ElementUI, { locale })
 
