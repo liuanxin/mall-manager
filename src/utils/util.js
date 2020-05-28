@@ -391,16 +391,18 @@ const thousands = (num) => {
 }
 /**
  * 按下了回车键则返回 true, 用在 keydown 事件上, 如
- *
- * $('...').keydown(function(e) {
- *     const enter = hasEnter(e)
- *     if (enter) {
- *         // do something
- *     }
+ * <pre>
+ * $('...').keydown((event) => {
+ *   // 按下回车时
+ *   if (hasEnter(event)) {
+ *     // do something
+ *   }
  * }
+ * </pre>
  */
 const hasEnter = (event) => {
   if (event.defaultPrevented) {
+    // 事件的默认动作已被取消
     return
   }
 
