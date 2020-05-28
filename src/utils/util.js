@@ -336,15 +336,15 @@ const formatDateTimeMs = (date, format) => {
 
     .replace('SSS', String(ms)).replace('aaa', aaa).replace('a', aaa)
 }
-/** 格式化 时间 或 时间戳 成 年-月-日 */
+/** 格式化 时间 或 时间戳 成: 年-月-日 */
 const formatDate = (date) => {
   return formatDateTimeMs(date, 'yyyy-MM-dd')
 }
-/** 格式化 时间 或 时间戳 成 年-月-日 */
+/** 格式化 时间 或 时间戳 成: 时:分:秒 */
 const formatTime = (date) => {
   return formatDateTimeMs(date, 'HH:mm:ss')
 }
-/** 格式化 时间 或 时间戳 成 年-月-日 时:分:秒 */
+/** 格式化 时间 或 时间戳 成: 年-月-日 时:分:秒 */
 const formatDateTime = (date) => {
   return formatDateTimeMs(date, 'yyyy-MM-dd HH:mm:ss')
 }
