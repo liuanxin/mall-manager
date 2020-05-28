@@ -1,20 +1,6 @@
 import Vue from 'vue'
 
-import { isBlank, isNotBlank, isTrue, isNotTrue, formatDate, formatTime, formatDateTime, cent2Yuan, thousands } from '@/utils/util'
-
-Vue.filter('isBlank', (value) => {
-  return isBlank(value)
-})
-Vue.filter('isNotBlank', (value) => {
-  return isNotBlank(value)
-})
-
-Vue.filter('isTrue', (value) => {
-  return isTrue(value)
-})
-Vue.filter('isNotTrue', (value) => {
-  return isNotTrue(value)
-})
+import { isBlank, formatDate, formatTime, formatDateTime, cent2Yuan, thousands } from '@/utils/util'
 
 Vue.filter('formatDate', (value) => {
   return isBlank(value) ? '' : formatDate(value)
@@ -27,11 +13,11 @@ Vue.filter('formatDateTime', (value) => {
 })
 
 Vue.filter('cent2Yuan', (value) => {
-  return cent2Yuan(value)
+  return isBlank(value) ? '' : cent2Yuan(value)
 })
 Vue.filter('thousands', (value) => {
-  return thousands(value)
+  return isBlank(value) ? '' : thousands(value)
 })
 Vue.filter('cent2YuanAndFormatThousand', (value) => {
-  return thousands(cent2Yuan(value))
+  return isBlank(value) ? '' : thousands(cent2Yuan(value))
 })
