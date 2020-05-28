@@ -496,4 +496,4 @@ export { base64Encode, base64Decode, encode, decode }
 export { appendUrl, addPrefix, addSuffix, getSuffix, uuid }
 export { escapeHtml, unescapeHtml, formatJson }
 export { completionString, msToHuman, formatDateTimeMs, formatDate, formatTime, formatDateTime }
-export { cent2Yuan, thousands, hasEnter }
+export { cent2Yuan, thousands, money2Chinese, hasEnter }
