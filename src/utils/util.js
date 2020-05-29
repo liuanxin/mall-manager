@@ -302,25 +302,25 @@ const formatDateTimeMs = (date, format) => {
   if (isBlank(format)) {
     format = 'yyyy-MM-dd HH:mm:ss SSS'
   }
-  const year = datetime.getFullYear(),
-    month = datetime.getMonth(),
-    day = datetime.getDate(),
-    hour = datetime.getHours(),
-    minute = datetime.getMinutes(),
-    second = datetime.getSeconds(),
-    milliSecond = datetime.getMilliseconds(),
+  const year = datetime.getFullYear()
+  const month = datetime.getMonth()
+  const day = datetime.getDate()
+  const hour = datetime.getHours()
+  const minute = datetime.getMinutes()
+  const second = datetime.getSeconds()
+  const milliSecond = datetime.getMilliseconds()
 
-    yyyy = String(year),
-    yy = yyyy.substr(2, 2),
-    M = String(month + 1),
-    MM = completionString(month + 1),
-    dd = completionString(day),
-    h = String(hour % 12),
-    hh = completionString(h),
-    HH = completionString(hour),
-    mm = completionString(minute),
-    ss = completionString(second),
-    aaa = hour < 12 ? 'AM' : 'PM'
+  const yyyy = String(year)
+  const yy = yyyy.substring(2, 2)
+  const M = String(month + 1)
+  const MM = completionString(month + 1)
+  const dd = completionString(day)
+  const h = String(hour % 12)
+  const hh = completionString(h)
+  const HH = completionString(hour)
+  const mm = completionString(minute)
+  const ss = completionString(second)
+  const aaa = hour < 12 ? 'AM' : 'PM'
 
   // 补全毫秒, 不足 3 位的在前面补 0
   const ms = completionString(milliSecond, 3)
@@ -409,7 +409,7 @@ const money2Chinese = (money) => {
   const pointIndex = str.indexOf('.')
   const hasPoint = pointIndex > -1
 
-  let left = hasPoint ? str.substr(0, pointIndex) : str
+  let left = hasPoint ? str.substring(0, pointIndex) : str
   const leftNumber = parseInt(left, 10)
   const negative = leftNumber < 0
   if (negative) {
