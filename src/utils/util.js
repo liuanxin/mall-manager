@@ -37,6 +37,43 @@ const less0 = (str) => {
   return toFloat(str) <= 0
 }
 
+/** 将 array-buffer 转换成 string, 有 8 16 32 三种, 默认使用 16 */
+const arrayBufferToString = (arrayBuffer, uint) => {
+  let array
+  if (uint === 8) {
+    array = new Uint8Array(arrayBuffer)
+    // 使用 uint8 时处理中文或 emoji 可能会不完整, 所以最后 decode 了再返回
+    return decodeURIComponent(String.fromCharCode.apply(null, array))
+  } else if (uint === 32) {
+    array = new Uint32Array(arrayBuffer)
+  } else {
+    array = new Uint16Array(arrayBuffer)
+  }
+  return String.fromCharCode.apply(null, array)
+}
+/** 将 string 转换成 array-buffer, 有 8 16 32 三种, 默认使用 16 */
+const stringToArrayBuffer= (str, uint) => {
+  let arrayBuffer
+  let array
+  if (uint === 8) {
+    // 使用 uint8 时中文或 emoji 后面在转换回来时可能会不完整, 所以先 encode 再处理
+    str = encodeURIComponent(str)
+    arrayBuffer = new ArrayBuffer(str.length)
+    array = new Uint8Array(arrayBuffer)
+  } else if (uint === 32) {
+    arrayBuffer = new ArrayBuffer(str.length * 4)
+    array = new Uint32Array(arrayBuffer)
+  } else {
+    arrayBuffer = new ArrayBuffer(str.length * 2)
+    array = new Uint16Array(arrayBuffer)
+  }
+
+  for (let i = 0; i < str.length; i++) {
+    array[i] = str.charCodeAt(i)
+  }
+  return arrayBuffer
+}
+
 /** 参数转换为对象. 如 http://abc.xyz.com?id=123&name=tom 返回 { id: '123', name: 'tom' } */
 const param2Obj = (url) => {
   const search = String(url).split('?')[1]
@@ -92,7 +129,7 @@ const getData = (data, properties) => {
 
   let tmp = data
   const arr = properties.split('.')
-  for (let i in arr) {
+  for (let i = 0; i < arr.length; i++) {
     const property = arr[i]
     if (isNotBlank(tmp) && tmp.hasOwnProperty(property)) {
       tmp = tmp[property]
@@ -155,13 +192,13 @@ const base64Encode = (str) => {
 const base64Decode = (str) => {
   return decodeURIComponent(escape(window.atob(str)))
 }
-/** 将 url 进行编码 */
+/** 将 url 进行编码(两次) */
 const encode = (url) => {
-  return isBlank(url) ? '' : encodeURIComponent(url)
+  return isBlank(url) ? '' : encodeURIComponent(encodeURIComponent(url))
 }
-/** 将 url 进行解码 */
+/** 将 url 进行解码(两次) */
 const decode = (url) => {
-  return isBlank(url) ? '' : decodeURIComponent(url)
+  return isBlank(url) ? '' : decodeURIComponent(decodeURIComponent(url))
 }
 
 /** 在 url 后面拼接 ? 或 & */
@@ -489,7 +526,7 @@ const hasEnter = (event) => {
 }
 
 export { isBlank, isNotBlank, isTrue, isNotTrue }
-export { toInt, toFloat, greater0, less0 }
+export { toInt, toFloat, greater0, less0, arrayBufferToString, stringToArrayBuffer }
 export { param2Obj, obj2Param, getData, removeNull, defaultValue }
 export { foggy, checkPhone, checkEmail, checkImage, checkChinese }
 export { base64Encode, base64Decode, encode, decode }
