@@ -42,7 +42,7 @@ const arrayBufferToString = (arrayBuffer, uint) => {
   let array
   if (uint === 8) {
     array = new Uint8Array(arrayBuffer)
-    // 使用 uint8 时处理中文或 emoji 可能会不完整, 所以最后 decode 了再返回
+    // stringToArrayBuffer 时用了 encode, 所以这里 decode 了再返回
     return decodeURIComponent(String.fromCharCode.apply(null, array))
   } else if (uint === 32) {
     array = new Uint32Array(arrayBuffer)
@@ -52,7 +52,7 @@ const arrayBufferToString = (arrayBuffer, uint) => {
   return String.fromCharCode.apply(null, array)
 }
 /** 将 string 转换成 array-buffer, 有 8 16 32 三种, 默认使用 16 */
-const stringToArrayBuffer= (str, uint) => {
+const stringToArrayBuffer = (str, uint) => {
   let arrayBuffer
   let array
   if (uint === 8) {
