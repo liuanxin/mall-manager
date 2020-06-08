@@ -11,13 +11,13 @@ const isNotBlank = (str) => {
   return !isBlank(str)
 }
 
-/** 参数是 true, 或者是不区分大小写的 true 字符串就返回 true */
-const isTrue = (str) => {
-  return isNotBlank(str) && (str === true || String(str).trim().toLowerCase() === 'true')
+/** 是 true, 'true', 1, '1', 'yes', 'on 字符串则返回 true */
+const isTrue = (obj) => {
+  return isNotBlank(obj) && (obj === true || ['true', '1', 'yes', 'on'].includes(String(obj).toLowerCase()))
 }
-/** 参数不是 true 且不是区分大小写的 true 字符串就返回 true */
-const isNotTrue = (str) => {
-  return !isTrue(str)
+/** 不是 true, 'true', 1, '1', 'yes', 'on' 字符串则返回 true */
+const isNotTrue = (obj) => {
+  return !isTrue(obj)
 }
 
 /** 转换成整数, 失败则转换成 0 */
