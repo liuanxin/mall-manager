@@ -13,7 +13,7 @@ const isNotBlank = (str) => {
 
 /** 是 true, 'true', 1, '1', 'yes', 'on 字符串则返回 true */
 const isTrue = (obj) => {
-  return isNotBlank(obj) && (obj === true || ['true', '1', 'yes', 'on'].includes(String(obj).toLowerCase()))
+  return isNotBlank(obj) && (obj === true || ['true', '1', 'yes', 'on'].includes(String(obj).trim().toLowerCase()))
 }
 /** 不是 true, 'true', 1, '1', 'yes', 'on' 字符串则返回 true */
 const isNotTrue = (obj) => {
