@@ -1,14 +1,14 @@
 /** 为空则返回 true */
-const isBlank = (str) => {
-  if (str === undefined || str === null) {
+const isBlank = (obj) => {
+  if (obj === undefined || obj === null) {
     return true
   }
-  const tmp = String(str).trim().toLowerCase()
+  const tmp = String(obj).trim().toLowerCase()
   return tmp === '' || tmp === 'undefined' || tmp === 'null'
 }
 /** 不为空则返回 true */
-const isNotBlank = (str) => {
-  return !isBlank(str)
+const isNotBlank = (obj) => {
+  return !isBlank(obj)
 }
 
 /** 是 true, 'true', 1, '1', 'yes', 'on 字符串则返回 true */
@@ -21,20 +21,20 @@ const isNotTrue = (obj) => {
 }
 
 /** 转换成整数, 失败则转换成 0 */
-const toInt = (str) => {
-  return isBlank(str) || isNaN(str) ? 0 : parseInt(str, 10)
+const toInt = (obj) => {
+  return isBlank(obj) || isNaN(obj) ? 0 : parseInt(obj, 10)
 }
 /** 转换成浮点数, 失败则转换成 0 */
-const toFloat = (str) => {
-  return isBlank(str) || isNaN(str) ? 0 : parseFloat(str)
+const toFloat = (obj) => {
+  return isBlank(obj) || isNaN(obj) ? 0 : parseFloat(obj)
 }
-/** 传入的值大于 0 就返回 true */
-const greater0 = (str) => {
-  return toFloat(str) > 0
+/** 不为 null 且是数字 且大于 0 就返回 true */
+const greater0 = (obj) => {
+  return isNotBlank(obj) && !isNaN(obj) && parseFloat(String(obj)) > 0
 }
-/** 传入的值小于等于 0 就返回 true */
-const less0 = (str) => {
-  return toFloat(str) <= 0
+/** 为 null 或 不是数字 或 是数字但是小于等于 0 就返回 true */
+const less0 = (obj) => {
+  return !greater0(obj)
 }
 
 /** 将 array-buffer 转换成 string, 有 8 16 32 三种, 默认使用 16 */
