@@ -330,7 +330,7 @@ const formatDateTimeMs = (date, format) => {
   let datetime
   if (date instanceof Date) {
     datetime = date
-  } else if (typeof datetime === 'number') {
+  } else if (typeof date === 'number') {
     datetime = new Date(date)
   } else {
     datetime = new Date()
