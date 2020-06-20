@@ -231,7 +231,7 @@ const getSuffix = (fileName) => {
 }
 /** 生成 uuid */
 const uuid = () => {
-  let now = new Date().getTime()
+  let now = Date.now()
   return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (now + Math.random() * 16) % 16 | 0
     now = Math.floor(now / 16)
