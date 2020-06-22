@@ -155,6 +155,15 @@ const defaultValue = (obj, value) => {
   return isBlank(obj) ? value : obj
 }
 
+/** 将字符串转换成对象, 如果字符串为空或转换失败则返回 Null */
+const parse = (str) => {
+  try {
+    return isBlank(str) ? null : JSON.parse(str)
+  } catch (e) {
+    return null
+  }
+}
+
 /** 将字符串中指定位数的值模糊成 * 并返回. 索引位从 0 开始. 如: foggy('13012345678', 3, 7) 返回 130****5678 */
 const foggy = (str, start, end) => {
   if (isBlank(str)) {
@@ -527,7 +536,7 @@ const hasEnter = (event) => {
 
 export { isBlank, isNotBlank, isTrue, isNotTrue }
 export { toInt, toFloat, greater0, less0, arrayBufferToString, stringToArrayBuffer }
-export { param2Obj, obj2Param, getData, removeNull, defaultValue }
+export { param2Obj, obj2Param, getData, removeNull, defaultValue, parse }
 export { foggy, checkPhone, checkEmail, checkImage, checkChinese }
 export { base64Encode, base64Decode, encode, decode }
 export { appendUrl, addPrefix, addSuffix, getSuffix, uuid }
