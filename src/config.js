@@ -1,5 +1,5 @@
 module.exports = {
-  title: '什么卖得好',
+  title: 'xxxxx',
   fixedHeader: false,
   sidebarLogo: false
 }

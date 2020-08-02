@@ -8,7 +8,7 @@ yarn config set registry https://registry.npm.taobao.org
 yarn
 ```
 
-如果执行 `yarn` 时提示 `... trouble with your network connection.` 或者 `yarn dev` 时提示 `node-sass` 有错误, 运行下面命令
+如果执行 `yarn` 时提示 `... trouble with your network connection` 错误, 运行下面命令
 ```bash
 yarn config delete proxy
 yarn config delete https-proxy
@@ -19,6 +19,10 @@ yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 打包测试: `yarn test`  
 打包生产: `yarn build`
 
+如果执行 `yarn dev` 时提示 `Error: ENOENT: no such file or directory, scandir '.../node_modules/node-sass/vendor'` 错误, 运行下面命令
+```bash
+npm rebuild node-sass  # yarn 没有这个命令, 只能 yarn remove node-sass && yarn add node-sass 这样会使用 ^ 版本
+```
 
 ### 目录
 
@@ -87,7 +91,7 @@ yarn upgrade     ===    npm update --save
 添加页面时, 需要在 `router.js` 中添加定义, 主要是 `routersMapping` 和 `routersRelation` 两个地方.  
 前者申明页面信息及映射, 后者定义页面之间的层级关系, 本地运行时会在浏览器打印出菜单相关的数据库表及定义的层级关系 sql.  
 
-用户登录成功后 以及 管理员操作角色时 后端返回的数据以 `routersMapping` 为准, 见其上面的注释
+用户登录成功后 以及 管理员操作角色时 后端返回的数据以 `routersRelation` 为准, 见其上面的注释
 
 如果权限需要加强到按钮级, 跟上面菜单的一样, 前端定义命名, 生成表结构及数据给后端.  
 操作角色时后端将菜单和按钮相关的 id 与角色关联在一起, 当用户登录后返回给前端, 前端控制显示与否
