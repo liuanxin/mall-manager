@@ -1,25 +1,25 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = document.location.host
+const token_key = document.location.host
 
 const getToken = () => {
-  return Cookies.get(TokenKey)
+  return Cookies.get(token_key)
 }
 const setToken = (token) => {
-  return Cookies.set(TokenKey, token)
+  return Cookies.set(token_key, token)
 }
 const removeToken = () => {
-  return Cookies.remove(TokenKey)
+  return Cookies.remove(token_key)
 }
 
 const getLocalData = () => {
-  return JSON.parse(localStorage.getItem(TokenKey))
+  return JSON.parse(localStorage.getItem(token_key))
 }
 const setLocalData = (data) => {
-  return localStorage.setItem(TokenKey, JSON.stringify(data))
+  return localStorage.setItem(token_key, JSON.stringify(data))
 }
 const removeLocalData = () => {
-  return localStorage.removeItem(TokenKey)
+  return localStorage.removeItem(token_key)
 }
 
 export { getToken, setToken, removeToken, getLocalData, setLocalData, removeLocalData }
