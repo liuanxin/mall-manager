@@ -215,13 +215,13 @@ const getMenuSql = () => {
   const arr = []
   arr.push("DROP TABLE IF EXISTS `t_manager_menu`;\n")
   arr.push("CREATE TABLE IF NOT EXISTS `t_manager_menu` (\n")
-  arr.push("  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,\n")
-  arr.push("  `pid` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT '父菜单, 0 则表示是根菜单',\n")
-  arr.push("  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '菜单说明',\n")
-  arr.push("  `front` varchar(32) NOT NULL DEFAULT '' COMMENT '前端对应的值(如 path 或 name)',\n")
+  arr.push("  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,\n")
+  arr.push("  `pid` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父菜单, 0 则表示是根菜单',\n")
+  arr.push("  `name` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '菜单说明',\n")
+  arr.push("  `front` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '前端对应的值(如 path 或 name)',\n")
   arr.push("  PRIMARY KEY (`id`),\n")
   arr.push("  UNIQUE KEY `name` (`name`)\n")
-  arr.push(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单, 需要跟前端对应, 前端每增加一个菜单就需要添加一条记录, 与角色是 多对多 的关系';\n\n")
+  arr.push(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='菜单, 需要跟前端对应, 前端每增加一个菜单就需要添加一条记录, 与角色是 多对多 的关系';\n\n")
   console.debug('/* ------------------------------ 建表语句 ------------------------------ */\n\n' + arr.join(''))
 
   arr.splice(0, arr.length)
