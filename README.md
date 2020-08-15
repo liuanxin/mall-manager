@@ -21,7 +21,7 @@ yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 
 如果执行 `yarn dev` 时提示 `Error: ENOENT: no such file or directory, scandir '.../node_modules/node-sass/vendor'` 错误, 运行下面命令
 ```bash
-npm rebuild node-sass  # yarn 没有这个命令, 只能 yarn remove node-sass && yarn add node-sass 这样会使用 ^ 版本
+npm rebuild node-sass  # yarn 没有这个命令, 只能 yarn remove node-sass && yarn add node-sass@version 不加 @version 将会使用 ^ 版本
 ```
 
 ### 目录
@@ -34,23 +34,23 @@ npm rebuild node-sass  # yarn 没有这个命令, 只能 yarn remove node-sass &
 │
 ├── public            见: https://cli.vuejs.org/zh/guide/html-and-static-assets.html#public-%E6%96%87%E4%BB%B6%E5%A4%B9
 ├── src               源码目录
-│   ├── api             请求后台接口的目录
-│   ├── assets          项目用到的静态图片目录
-│   ├── components      组件目录
-│   ├── icons           图标目录
-│   ├── layout          页面布局目录
-│   ├── store           状态管理(vuex)
-│   ├── styles          样式文件目录
-│   ├── utils           工具目录
-│   ├── views           页面目录
-│   │
-│   │    !!!上面的是目录, 下面是文件!!!
-│   │
-│   ├── App.vue         也不是很懂 public/index.html 和 main.js 和 App.vue 三者为什么要搞这么复杂
-│   ├── config.js       项目全局配置
-│   ├── main.js         程序入口, 初始化 vue 实例、样式、插件、公共组件
-│   ├── permission.js   权限控制(调度路由), 建一个同名目录, 里面放一个 util.js 是一样的
-│   └── router.js       路由管理, 建一个同名目录, 里面放一个 util.js 是一样的
+│   ├── api             请求后台接口的目录
+│   ├── assets          项目用到的静态图片目录
+│   ├── components      组件目录
+│   ├── icons           图标目录
+│   ├── layout          页面布局目录
+│   ├── store           状态管理(vuex)
+│   ├── styles          样式文件目录
+│   ├── utils           工具目录
+│   ├── views           页面目录
+│   │
+│   │    !!!上面的是目录, 下面是文件!!!
+│   │
+│   ├── App.vue         也不是很懂 public/index.html 和 main.js 和 App.vue 三者为什么要搞这么复杂
+│   ├── config.js       项目全局配置
+│   ├── main.js         程序入口, 初始化 vue 实例、样式、插件、公共组件
+│   ├── permission.js   权限控制(调度路由), 建一个同名目录, 里面放一个 util.js 是一样的
+│   └── router.js       路由管理, 建一个同名目录, 里面放一个 util.js 是一样的
 │
 ├── .babelrc          打包时将一些语法(比如 import('/a/b/c') 这种)转换成 es 标准的工具配置
 ├── .editorconfig     编辑器配置, 给 ide 用的(各种文件格式的缩进等)
