@@ -52,7 +52,7 @@ npm rebuild node-sass  # yarn 没有这个命令, 只能 yarn remove node-sass &
 │   ├── permission.js   权限控制(调度路由), 建一个同名目录, 里面放一个 util.js 是一样的
 │   └── router.js       路由管理, 建一个同名目录, 里面放一个 util.js 是一样的
 │
-├── .babelrc          打包时将一些语法(比如 import('/a/b/c') 这种)转换成 es 标准的工具配置
+├── .babelrc          打包时将一些语法(比如 import('/a/b/c') 这种)转换成 es 标准的工具配置(使用 babel.config.js 文件也是一样的)
 ├── .editorconfig     编辑器配置, 给 ide 用的(各种文件格式的缩进等)
 ├── .env.development  本地开发的配置文件
 ├── .env.production   生产环境的配置文件
