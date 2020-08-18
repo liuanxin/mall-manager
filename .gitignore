@@ -4,7 +4,6 @@ dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
 tests/**
 
 # Editor directories and files
@@ -14,3 +13,8 @@ tests/**
 *.ntvs*
 *.njsproj
 *.sln
+*.local
+
+# lock 文件到底放不放 vc 是有争议的
+# package-lock.json
+# yarn.lock
