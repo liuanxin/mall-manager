@@ -114,10 +114,12 @@ export default {
         margin-top: 5px;
         position: relative;
 
-        .user-name,
-        .user-avatar {
+        .user-name, .user-avatar {
           cursor: pointer;
           border-radius: 10px;
+        }
+        .user-name {
+          margin-left: 4px;
         }
         .user-avatar {
           width: 40px;
