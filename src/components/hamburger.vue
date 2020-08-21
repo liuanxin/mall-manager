@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 0 15px;" @click="toggleClick">
-    <svg-icon :class="{ 'is-active': isActive }" class="hamburger" icon-class="fold" />
+    <svg-icon :class="{ 'is-active': isActive }" class="hamburger" icon-class="fold"/>
   </div>
 </template>
 

@@ -1,15 +1,15 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar"/>
 
-    <breadcrumb class="breadcrumb-container" />
+    <breadcrumb class="breadcrumb-container"/>
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img v-if="avatar" :src="avatar" class="user-avatar" />
+          <img v-if="avatar" :src="avatar" class="user-avatar"/>
           <template v-else>
-            <svg-icon icon-class="profile" />
+            <svg-icon icon-class="profile"/>
             <span class="user-name">{{ name }}</span>
           </template>
         </div>
