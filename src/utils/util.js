@@ -20,6 +20,44 @@ const isNotTrue = (obj) => {
   return !isTrue(obj)
 }
 
+/** 如果参数是一个空数组, 就返回 true */
+const isEmptyArray = (arr, removeNil = false) => {
+  return !isNotEmptyArray(arr, removeNil)
+}
+/** 如果参数不是一个空数组, 就返回 true */
+const isNotEmptyArray = (arr, removeNil = false) => {
+  if (Array.isArray(arr)) {
+    if (removeNil) {
+      return removeNull(arr).length > 0
+    } else {
+      return arr.length > 0
+    }
+  }
+  return false
+}
+
+/** 数组去重(只针对基础数据类型). removeDuplicate([123, 321, 123, 456]) ==> [123, 321, 456] */
+const removeDuplicate = (arr) => {
+  return Array.isArray(arr) && arr.length > 0 ? [...new Set(arr)] : arr
+}
+
+/** 数组去重(根据每一项中指定的属性值) */
+const removeDuplicateObj = (arr, property) => {
+  if (Array.isArray(arr) && arr.length > 0 && isNotBlank(property)) {
+    const map = new Map()
+    arr.forEach((item) => {
+      if (item.hasOwnProperty(property)) {
+        map.set(item[property], item)
+      } else {
+        map.set(item, item)
+      }
+    })
+    return [...map.values()]
+  } else {
+    return arr
+  }
+}
+
 /** 转换成整数, 失败则转换成 0 */
 const toInt = (obj) => {
   return isBlank(obj) || isNaN(obj) ? 0 : parseInt(obj, 10)
@@ -394,6 +432,20 @@ const formatTime = (date) => {
 const formatDateTime = (date) => {
   return formatDateTimeMs(date, 'yyyy-MM-dd HH:mm:ss')
 }
+/** 日期如果是同一天就返回 true */
+const sameDay = (d1, d2) => {
+  return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate()
+}
+
+/** 输出 "[传入的时间]", 不传则默认是当前时间 */
+const logTime = (datetime) => {
+  return '[' + formatDateTimeMs(datetime) + '] '
+}
+/** 输出 "[传入的时间 --> 当前时间, 间隔: xxx 毫秒]" */
+const logBetweenTime = (start) => {
+  const now = Date.now()
+  return '[' + formatDateTimeMs(start) + ' --> ' + formatDateTimeMs(now) + ', time: ' + (now - start) + 'ms] '
+}
 
 
 /** 分显示成元 */
@@ -534,12 +586,14 @@ const hasEnter = (event) => {
   return handled
 }
 
-export { isBlank, isNotBlank, isTrue, isNotTrue }
-export { toInt, toFloat, greater0, less0, arrayBufferToString, stringToArrayBuffer }
-export { param2Obj, obj2Param, getData, removeNull, defaultValue, parse }
-export { foggy, checkPhone, checkEmail, checkImage, checkChinese }
-export { base64Encode, base64Decode, encode, decode }
-export { appendUrl, addPrefix, addSuffix, getSuffix, uuid }
-export { escapeHtml, unescapeHtml, formatJson }
-export { completionString, msToHuman, formatDateTimeMs, formatDate, formatTime, formatDateTime }
-export { cent2Yuan, thousands, money2Chinese, hasEnter }
+
+export {
+  isBlank, isNotBlank, isTrue, isNotTrue, toInt, toFloat, greater0, less0,
+  isEmptyArray, isNotEmptyArray, removeDuplicate, removeDuplicateObj,
+  arrayBufferToString, stringToArrayBuffer, param2Obj, obj2Param, getData,
+  removeNull, defaultValue, parse, foggy, checkPhone, checkEmail, checkImage, checkChinese,
+  base64Encode, base64Decode, encode, decode, appendUrl, addPrefix, addSuffix, getSuffix, uuid,
+  escapeHtml, unescapeHtml, formatJson, completionString, msToHuman,
+  formatDate, formatTime, formatDateTime, formatDateTimeMs,
+  logTime, logBetweenTime, sameDay, cent2Yuan, thousands, money2Chinese, hasEnter
+}
