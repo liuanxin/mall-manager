@@ -68,10 +68,14 @@ const handleError = (data) => {
   // data.msg || data.response.data.message || data.message
   const msg = getData(data, 'msg') || getData(data, 'response.data.message') || getData(data, 'message')
   if (code === 401) {
-    MessageBox.alert('您已被登出, 请重新登录').then(() => {
-      store.dispatch('logout').then(() => {
-        location.reload()
-      })
+    MessageBox.alert(msg, {
+      showClose: false,
+      confirmButtonText: '确定',
+      callback(action) {
+        store.dispatch('logout').then(() => {
+          location.reload()
+        })
+      }
     })
   } else {
     Message({
