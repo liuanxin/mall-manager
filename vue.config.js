@@ -45,6 +45,9 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
+    },
+    performance: { // https://webpack.docschina.org/configuration/performance/
+      hints: false
     }
   },
   chainWebpack(config) {
