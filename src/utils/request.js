@@ -68,9 +68,7 @@ const handleError = (data) => {
   // data.msg || data.response.data.message || data.message
   const msg = getData(data, 'msg') || getData(data, 'response.data.message') || getData(data, 'message')
   if (code === 401) {
-    MessageBox.alert(msg, {
-      showClose: false
-    }).finally(() => {
+    MessageBox.alert(msg).finally(() => {
       store.dispatch('logout').then(() => {
         location.reload()
       })
