@@ -69,13 +69,11 @@ const handleError = (data) => {
   const msg = getData(data, 'msg') || getData(data, 'response.data.message') || getData(data, 'message')
   if (code === 401) {
     MessageBox.alert(msg, {
-      showClose: false,
-      confirmButtonText: '确定',
-      callback(action) {
-        store.dispatch('logout').then(() => {
-          location.reload()
-        })
-      }
+      showClose: false
+    }).finally(() => {
+      store.dispatch('logout').then(() => {
+        location.reload()
+      })
     })
   } else {
     Message({
