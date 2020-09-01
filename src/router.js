@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Layout from '@/layout'
-import { isNotBlank, isNotTrue, isTrue } from '@/utils/util'
+import { isNotBlank, isNotEmptyArray, isNotTrue, isTrue } from '@/utils/util'
 import { getLocalData } from '@/utils/auth'
 
 Vue.use(VueRouter)
