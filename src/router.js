@@ -211,6 +211,30 @@ const getBreadthMock = (lastId, routers) => {
   return { id: lastId, child: arr }
 }
 
+/** 用户的路由地址 */
+const getUserPaths = (data) => {
+  const paths = []
+  if (isNotBlank(data)) {
+    const routers = fillRouter(isTrue(data.hasManager) ? routersRelation : data.menus)
+    for (let i in routers) {
+      getPath(paths, routers[i])
+    }
+  }
+  return paths
+}
+const getPath = (arr, router) => {
+  const path = router.path
+
+  const children = router.children
+  if (isNotEmptyArray(children)) {
+    for (let i in children) {
+      const r = children[i]
+      arr.push(path + '/' + r.path)
+      getPath(arr, r)
+    }
+  }
+}
+
 const getMenuSql = () => {
   const arr = []
   arr.push("DROP TABLE IF EXISTS `t_manager_menu`;\n")
@@ -390,4 +414,4 @@ const resetRouter = (data) => {
 }
 
 export default router
-export { getMockMenus, getRouter, checkRouter, resetRouter }
+export { getMockMenus, getUserPaths, getRouter, checkRouter, resetRouter }
