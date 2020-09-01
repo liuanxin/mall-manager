@@ -1,15 +1,18 @@
-import { getRouter, resetRouter } from '@/router'
+import { getRouter, getUserPaths, resetRouter } from '@/router'
 
 const state = {
-  routes: []
+  routes: [],
+  paths: []
 }
 
 const mutations = {
   SET_ROUTES: (state, data) => {
     state.routes = getRouter(data)
+    state.paths = getUserPaths(data)
   },
   CLEAR_ROUTES: (state) => {
     state.routes = []
+    state.paths = []
   }
 }
 
