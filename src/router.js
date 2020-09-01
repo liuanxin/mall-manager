@@ -56,7 +56,7 @@ const routersMapping = {
   'banner-add': { component: () => import('@/views/common/banner/banner-add'), meta: { noCache: true }, hidden: true },
   'banner-edit': { component: () => import('@/views/common/banner/banner-edit'), meta: { noCache: true }, hidden: true },
 
-  // path 如果是以 / 开头会被当作根路径，子不要以 / 开关, 会把 parent 也拼进去, 所以下面的 path 都是 index、add 和 edit
+  // path 如果是以 / 开头会被当作根路径，子不要以 / 开头
 
   'user-index': { path: 'index', component: () => import('@/views/user/user'), meta: { icon: 'table' } },
   'user-id': { path: 'id', component: () => import('@/views/user/user-id'), meta: { noCache: true }, hidden: true },
