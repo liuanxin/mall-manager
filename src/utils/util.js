@@ -230,6 +230,21 @@ const checkImage = (str) => {
 const checkChinese = (str) => {
   return isNotBlank(str) && /[\u4e00-\u9fa5]/.test(str)
 }
+/** 是身份证号就返回 true */
+const checkIdCard = (str) => {
+  return isNotBlank(str) && /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/.test(str)
+}
+/** 通过身份证号码返回性别 */
+const cardToGender = (str) => {
+  if (checkIdCard(str)) {
+    if (str.length === 15) {
+      return toInt(str.substring(14, 15)) % 2 === 0 ? '女' : '男'
+    } else if (str.length === 18) {
+      return toInt(str.substring(16, 17)) % 2 === 0 ? '女' : '男'
+    }
+  }
+  return isNotBlank(str)
+}
 
 /** 使用 base64 编码 */
 const base64Encode = (str) => {
@@ -591,7 +606,7 @@ export {
   isBlank, isNotBlank, isTrue, isNotTrue, toInt, toFloat, greater0, less0,
   isEmptyArray, isNotEmptyArray, removeDuplicate, removeDuplicateObj,
   arrayBufferToString, stringToArrayBuffer, param2Obj, obj2Param, getData,
-  removeNull, defaultValue, parse, foggy, checkPhone, checkEmail, checkImage, checkChinese,
+  removeNull, defaultValue, parse, foggy, checkPhone, checkEmail, checkImage, checkChinese, checkIdCard, cardToGender,
   base64Encode, base64Decode, encode, decode, appendUrl, addPrefix, addSuffix, getSuffix, uuid,
   escapeHtml, unescapeHtml, formatJson, completionString, msToHuman,
   formatDate, formatTime, formatDateTime, formatDateTimeMs,
