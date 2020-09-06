@@ -216,7 +216,7 @@ const foggy = (str, start, end) => {
 }
 /** 是手机号就返回 true */
 const checkPhone = (str) => {
-  return isNotBlank(str) && /^1[0-9]{10}$/.test(str)
+  return isNotBlank(str) && /^1[3-9]\d{9}$/.test(str)
 }
 /** 是邮件就返回 true */
 const checkEmail = (str) => {
