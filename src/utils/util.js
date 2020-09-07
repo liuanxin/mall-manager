@@ -241,7 +241,7 @@ const cardToGender = (str) => {
     if (str.length === 15) {
       g = str.substring(14, 15)
     } else if (str.length === 18) {
-      g = str.substring(16, 17);
+      g = str.substring(16, 17)
     } else {
       g = ''
     }
