@@ -237,13 +237,17 @@ const checkIdCard = (str) => {
 /** 通过身份证号码返回性别 */
 const cardToGender = (str) => {
   if (checkIdCard(str)) {
+    let g
     if (str.length === 15) {
-      return toInt(str.substring(14, 15)) % 2 === 0 ? '女' : '男'
+      g = str.substring(14, 15)
     } else if (str.length === 18) {
-      return toInt(str.substring(16, 17)) % 2 === 0 ? '女' : '男'
+      g = str.substring(16, 17);
+    } else {
+      g = ''
     }
+    return isNaN(g) ? '未知' : (toInt(g) % 2 === 0 ? '女' : '男')
   }
-  return isNotBlank(str)
+  return '未知'
 }
 
 /** 使用 base64 编码 */
