@@ -228,9 +228,10 @@ const getPath = (arr, router) => {
   const children = router.children
   if (isNotEmptyArray(children)) {
     for (let i in children) {
-      const r = children[i]
-      arr.push(path + '/' + r.path)
-      getPath(arr, r)
+      const child = children[i]
+      const childPath = child.path
+      arr.push(childPath.startsWith('/') ? childPath : (path + '/' + childPath))
+      getPath(arr, child)
     }
   }
 }
@@ -357,40 +358,6 @@ const fillRouter = (menus) => {
   return returnRoutes
 }
 
-const checkRouter = (routers, path) => {
-  for (let i in routers) {
-    const r = routers[i]
-    if (r.path === path) {
-      return true
-    } else {
-      if (isNotBlank(r.children)) {
-        const flag = checkChildRouter(r.children, r.path, path)
-        if (isTrue(flag)) {
-          return true
-        }
-      }
-    }
-  }
-  return false
-}
-const checkChildRouter = (routers, parentPath, path) => {
-  for (let i in routers) {
-    const r = routers[i]
-    const newParentPath = (r.path.startsWith('/') ? r.path : (parentPath + '/' + r.path))
-    if (newParentPath === path) {
-      return true
-    } else {
-      if (isNotBlank(r.children)) {
-        const flag = checkChildRouter(r.children, newParentPath, path)
-        if (isTrue(flag)) {
-          return true
-        }
-      }
-    }
-  }
-  return false
-}
-
 const createRouter = (data) => {
   if (isNotTrue(process.env.VUE_APP_ONLINE)) {
     getMenuSql()
@@ -414,4 +381,4 @@ const resetRouter = (data) => {
 }
 
 export default router
-export { getMockMenus, getUserPaths, getRouter, checkRouter, resetRouter }
+export { getMockMenus, getUserPaths, getRouter, resetRouter }

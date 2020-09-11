@@ -1,9 +1,9 @@
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-import router, { checkRouter } from '@/router'
+import router from '@/router'
 import store from '@/store'
-import { isBlank, isNotBlank, isNotTrue } from '@/utils/util'
+import { isBlank, isNotBlank, isNotTrue, isNotEmptyArray } from '@/utils/util'
 import { getToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 import globalConfig from '@/config'
@@ -72,7 +72,7 @@ router.beforeEach(async (to, from, next) => {
         // 如果已经登陆却访问登陆页则跳去主页
         next(index)
         NProgress.done()
-      } else if (!checkRouter(routers, toPath)) {
+      } else if (!(isNotEmptyArray(store.getters.menu_paths) && store.getters.menu_paths.includes(toPath))) {
         // 如果用户访问的是没有权限的地址则往主页导, 主页也有可能没权限, 这是一个问题!!!
         Message({
           message: '不能访问(' + toPath + ')地址',

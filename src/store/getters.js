@@ -4,6 +4,6 @@ const getters = {
   name: (state) => state.user.name,
   avatar: (state) => state.user.avatar,
   menu_routes: (state) => state.menu.routes,
-  user_paths: (state) => state.menu.paths
+  menu_paths: (state) => state.menu.paths
 }
 export default getters
