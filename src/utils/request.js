@@ -3,6 +3,7 @@ import { isTrue, isNotTrue, toInt, getData, defaultValue } from '@/utils/util'
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
+import router from '@/router'
 // import { getToken } from '@/utils/auth'
 
 // create an axios instance
@@ -13,7 +14,7 @@ const serviceRequest = axios.create({
 })
 
 serviceRequest.interceptors.request.use(
-  config => {
+  (config) => {
     // if (store.getters.token) {
     //   config.headers['x-token'] = getToken()
     // }
@@ -31,30 +32,28 @@ serviceRequest.interceptors.request.use(
   },
   (error) => {
     if (isNotTrue(process.env.VUE_APP_ONLINE)) {
-      console.error('request error: ' + JSON.stringify(error))
+      console.error('request timeout: ' + JSON.stringify(error))
     }
     return Promise.reject(new Error(error))
   }
 )
 
+// 后端响应通常是两种, 比较好的是第一种, 只是通常会使用第 2 种方式(微信小程序只支持使用这样的方式)来返回
+// 1. HttpStatus 返回 400 500 这样的非 200 的错误码, 此种直接处理 response.message
+// 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
 serviceRequest.interceptors.response.use(
-  // 后端响应通常是两种, 比较好的是第一种, 只是通常会使用第 2 种方式(微信小程序只支持使用这样的方式)来返回
-  // 1. HttpStatus 返回 400 500 这样的非 200 的错误码, 此种直接处理 response.message
-  // 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
   (response) => {
     // 上面的第 2 种方式
     const res = response.data
     if (toInt(res.code) === 200) {
       return res
     } else {
-      handleError(res)
-      return Promise.reject(new Error(res.msg))
+      return handleError(res)
     }
   },
   (error) => {
     // 上面的第 1 种方式
-    handleError(error)
-    return Promise.reject(new Error(error.message))
+    return handleError(error)
   }
 )
 
@@ -64,21 +63,34 @@ const handleError = (data) => {
   }
 
   // toInt(date.code || data.response.status)
-  const code = toInt(getData(data, 'code') || getData(data, 'response.status'))
+  const code = toInt(getData(error, 'code') || getData(error, 'response.status'))
   // data.msg || data.response.data.message || data.message
-  const msg = getData(data, 'msg') || getData(data, 'response.data.message') || getData(data, 'message')
+  const msg = getData(error, 'msg') || getData(error, 'response.data.message') || getData(error, 'message')
+  const showMessage = defaultValue((code === 0 ? '接口无法请求, 网络有误或有跨域问题: ' : '') + msg, '错误码: ' + code)
   if (code === 401) {
-    MessageBox.alert(msg).finally(() => {
+    // 未登录(401): 显示信息后退出并重新加载当前页
+    MessageBox.alert(showMessage).finally(() => {
       store.dispatch('logout').then(() => {
         location.reload()
       })
     })
+  } else if (code === 403) {
+    // 无权限(403): 显示信息后跳到主页
+    MessageBox.alert(showMessage).finally(() => {
+      router.replace({path: '/'}).catch((e) => {
+        if (isNotTrue(process.env.VUE_APP_ONLINE)) {
+          console.debug('no permission replace error: ' + e)
+        }
+      })
+    })
   } else {
+    // 其他: 显示信息并返回数据结果, 由调用方的 catch 处理
     Message({
-      message: defaultValue((code === 0 ? '接口无法请求, 网络有误 或 有跨域问题: ' : '') + msg, '错误码: ' + code),
+      message: showMessage,
       type: 'error',
       duration: 5000
     })
+    return Promise.reject(error)
   }
 }
 
