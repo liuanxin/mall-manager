@@ -43,11 +43,11 @@ serviceRequest.interceptors.request.use(
 // 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
 serviceRequest.interceptors.response.use(
   (response) => {
-    // 上面的第 2 种方式
     const res = response.data
     if (toInt(res.code) === 200) {
       return res
     } else {
+      // 上面的第 2 种方式
       return handleError(res)
     }
   },
