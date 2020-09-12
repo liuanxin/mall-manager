@@ -12,7 +12,7 @@ NProgress.configure({ showSpinner: false })
 
 const login = '/login'
 const index = '/'
-const ignoreRedirectPath = [login, index, '/index'] // 去这些页时, 如果未登录要导去登录页, 不需要把这些地址拼在参数上(表示跳回来的地址)
+const ignoreRedirectPath = [login, index, '/index'] // 不需要重置的页面地址
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
@@ -42,49 +42,57 @@ router.beforeEach(async (to, from, next) => {
       next(login + params)
       NProgress.done()
     }
-  } else {
-    const routers = store.getters.menu_routes
-    if (isBlank(routers)) {
-      try {
-        await store.dispatch('getInfo')
-        if (toPath === login) {
-          next(index)
-          NProgress.done()
-        } else {
-          document.title = title
-          next()
-        }
-      } catch (error) {
-        if (isNotTrue(process.env.VUE_APP_ONLINE)) {
-          console.error('handle user.js#getInfo() error: ' + (error || 'Has Error'))
-        }
-        await store.dispatch('logout')
-        if (toPath === login) {
-          document.title = title
-          next()
-        } else {
-          next(login + params)
-          NProgress.done()
-        }
-      }
-    } else {
+    return
+  }
+
+  const routers = store.getters.menu_routes
+  if (isBlank(routers)) {
+    try {
+      await store.dispatch('getInfo')
       if (toPath === login) {
-        // 如果已经登陆却访问登陆页则跳去主页
-        next(index)
-        NProgress.done()
-      } else if (!(isNotEmptyArray(store.getters.menu_paths) && store.getters.menu_paths.includes(toPath))) {
-        // 如果用户访问的是没有权限的地址则往主页导, 主页也有可能没权限, 这是一个问题!!!
-        Message({
-          message: '不能访问(' + toPath + ')地址',
-          type: 'error',
-          duration: 1500
-        })
         next(index)
         NProgress.done()
       } else {
         document.title = title
         next()
       }
+    } catch (error) {
+      if (isNotTrue(process.env.VUE_APP_ONLINE)) {
+        console.error('handle user.js#getInfo() error: ' + (error || 'Has Error'))
+      }
+      await store.dispatch('logout')
+      if (toPath === login) {
+        document.title = title
+        next()
+      } else {
+        next(login + params)
+        NProgress.done()
+      }
+    }
+    return
+  }
+
+  if (toPath === login) {
+    // 如果已经登陆却访问登陆页则跳去主页
+    next(index)
+    NProgress.done()
+  } else if (ignoreRedirectPath.includes(toPath)) {
+    document.title = title
+    next()
+  } else {
+    const menuPaths = store.getters.menu_paths
+    if (isNotEmptyArray(menuPaths) && !menuPaths.includes(toPath)) {
+      // 无权限时, 提示一下, 再导去主页
+      Message({
+        message: '无权访问(' + toPath + ')地址, 请联系管理员',
+        type: 'error',
+        duration: 1500
+      })
+      next(index)
+      NProgress.done()
+    } else {
+      document.title = title
+      next()
     }
   }
 })
