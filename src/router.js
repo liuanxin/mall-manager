@@ -214,11 +214,20 @@ const getBreadthMock = (lastId, routers) => {
 /** 用户的路由地址 */
 const getUserPaths = (data) => {
   const paths = []
+
+  const allRouters = []
+  allRouters.push(...globalRouterBegin)
+  allRouters.push(...globalAllUserRouterBegin)
   if (isNotBlank(data)) {
-    const routers = fillRouter(isTrue(data.hasManager) ? routersRelation : data.menus)
-    for (let i in routers) {
-      getPath(paths, routers[i])
+    const routers = fillRouter(isTrue(data.hasAdmin) ? routersRelation : data.menus)
+    if (routers.length > 0) {
+      allRouters.push(...routers)
     }
+  }
+  allRouters.push(...globalAllUserRouterEnd)
+
+  for (let i in allRouters) {
+    getPath(paths, allRouters[i])
   }
   return paths
 }
