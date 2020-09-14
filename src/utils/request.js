@@ -48,18 +48,18 @@ serviceRequest.interceptors.response.use(
       return res
     } else {
       // 上面的第 2 种方式
-      return handleError(res)
+      return handleError(res, isTrue(getData(response, 'config.errorReturn')))
     }
   },
   (error) => {
     // 上面的第 1 种方式
-    return handleError(error)
+    return handleError(error, isTrue(getData(error, 'config.errorReturn')))
   }
 )
 
-const handleError = (data) => {
+const handleError = (error, errorReturn = false) => {
   if (isNotTrue(process.env.VUE_APP_ONLINE)) {
-    console.error('response error: ' + JSON.stringify(data))
+    console.error('response error: ' + JSON.stringify(error) + ', return error: ' + errorReturn)
   }
 
   // toInt(date.code || data.response.status)
@@ -90,7 +90,9 @@ const handleError = (data) => {
       type: 'error',
       duration: 5000
     })
-    return Promise.reject(error)
+    if (isTrue(errorReturn)) {
+      return Promise.reject(error)
+    }
   }
 }
 
