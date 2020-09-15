@@ -3,7 +3,7 @@ import 'nprogress/nprogress.css'
 
 import router from '@/router'
 import store from '@/store'
-import { isBlank, isNotBlank, isNotTrue, isNotEmptyArray } from '@/utils/util'
+import { isBlank, isNotBlank, isNotTrue, isNotEmptyArray, isEmptyArray } from '@/utils/util'
 import { getToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 import globalConfig from '@/config'
@@ -21,14 +21,15 @@ router.beforeEach(async (to, from, next) => {
   const params = (isBlank(toPath) || ignoreRedirectPath.includes(toPath)) ? '' : ('?redirect=' + toPath)
   const title = (isNotBlank(to.meta.title) ? (to.meta.title + ' - ') : '') + globalConfig.title
 
-  // 从本地获取 token, 如果没有值表示未登录, 则先调用退出(删除 token 和 vuex 中的数据)再导去登录(下一页不是登录则拼在参数上, 这样登录成功后可以导回来)
-  // 有 token 值就从 vuex 中获取权限
-  //   如果 vuex 中没有权限规则(按 F5 刷新一下就没了)则从本地(没有就去请求后台)获取用户信息并写入 vuex
-  //     写入成功后导向下一个页面(如果下一页是登录页则导去主页)
-  //     如果获取后台接口时异常则先调用退出(删除 token 和 vuex 中的数据及请求后端接口退出)再导去登录(下一页不是登录则拼在参数上, 这样登录成功后可以导回来)
-  //   如果 vuex 中有权限规则依次进行下面的处理
+  // 从本地获取 localData, 如果没有值表示未登录, 则先调用退出(删除 localData 和 vuex 中的数据)再导去登录(尾)
+  // 有 localData 值就从 vuex 中获取权限
+  //
+  //   如果 vuex 中没有权限则从本地(没有就去请求后台)获取用户信息并写入 vuex
+  //   在此期间, 操作如果异常则先调用退出(删除 localData 和 vuex 中的数据及请求后端接口退出)再导去登录(尾)
+  //
+  //   如果 vuex 中有权限则依次进行下面的处理
   //     如果下一页是登录页则导去主页
-  //     如果下一页没有权限, 则弹一个提示给用户表示其无权访问后再导去主页
+  //     如果下一页没有权限, 提示一下再导去主页
   //     都没有问题, 就导向下一页
 
   const token = getToken()
@@ -46,16 +47,9 @@ router.beforeEach(async (to, from, next) => {
   }
 
   const routers = store.getters.menu_routes
-  if (isBlank(routers)) {
+  if (isEmptyArray(routers)) {
     try {
       await store.dispatch('getInfo')
-      if (toPath === login) {
-        next(index)
-        NProgress.done()
-      } else {
-        document.title = title
-        next()
-      }
     } catch (error) {
       if (isNotTrue(process.env.VUE_APP_ONLINE)) {
         console.error('handle user.js#getInfo() error: ' + (error || 'Has Error'))
@@ -68,12 +62,11 @@ router.beforeEach(async (to, from, next) => {
         next(login + params)
         NProgress.done()
       }
+      return
     }
-    return
   }
 
   if (toPath === login) {
-    // 如果已经登陆却访问登陆页则跳去主页
     next(index)
     NProgress.done()
   } else if (ignoreRedirectPath.includes(toPath)) {
@@ -82,7 +75,6 @@ router.beforeEach(async (to, from, next) => {
   } else {
     const menuPaths = store.getters.menu_paths
     if (isNotEmptyArray(menuPaths) && !menuPaths.includes(toPath)) {
-      // 无权限时, 提示一下, 再导去主页
       Message({
         message: '无权访问(' + toPath + ')地址, 请联系管理员',
         type: 'error',
