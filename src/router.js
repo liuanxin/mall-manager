@@ -27,6 +27,7 @@ const globalAllUserRouterBegin = [
 const globalAllUserRouterEnd = [
   {
     path: '/profile',
+    redirect: 'noRedirect',
     component: Layout,
     meta: { title: '用户中心' },
     hidden: true,
@@ -40,11 +41,11 @@ const globalRouterEnd = [
   { path: '*', component: () => import('@/views/404'), meta: { title: '404' }, hidden: true }
 ]
 const routersMapping = {
-  'common': { path: '/common', component: Layout, meta: { icon: 'example' } },
-  'user': { path: '/user', component: Layout, meta: { icon: 'user' } },
-  'product': { path: '/product', component: Layout, meta: { icon: 'product' } },
-  'order': { path: '/order', component: Layout, meta: { icon: 'order' } },
-  'manager': { path: '/manager', component: Layout, meta: { icon: 'password' } },
+  'common': { path: '/common', redirect: 'noRedirect', component: Layout, meta: { icon: 'example' } },
+  'user': { path: '/user', redirect: 'noRedirect', component: Layout, meta: { icon: 'user' } },
+  'product': { path: '/product', redirect: 'noRedirect', component: Layout, meta: { icon: 'product' } },
+  'order': { path: '/order', redirect: 'noRedirect', component: Layout, meta: { icon: 'order' } },
+  'manager': { path: '/manager', redirect: 'noRedirect', component: Layout, meta: { icon: 'password' } },
 
   // !~! 如果没有 path 就用 key(见下面的 ~!~ 部分), 上面是一级菜单, 下面是相关的子菜单, hidden: true 的菜单将不显示
 
