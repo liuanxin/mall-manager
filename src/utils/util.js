@@ -1,6 +1,6 @@
 /** 为空则返回 true */
 const isBlank = (obj) => {
-  if (obj === undefined || obj === null) {
+  if (obj === undefined || obj === null || typeof obj === 'undefined') {
     return true
   }
   const tmp = String(obj).trim().toLowerCase()
