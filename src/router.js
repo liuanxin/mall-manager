@@ -227,15 +227,18 @@ const getUserPaths = (data) => {
   allRouters.push(...globalAllUserRouterEnd)
 
   for (let i in allRouters) {
+    const path = allRouters[i].path
+    if (isNotBlank(path)) {
+      paths.push(path)
+    }
     getPath(paths, allRouters[i])
   }
   return paths
 }
 const getPath = (arr, router) => {
-  const path = router.path
-
   const children = router.children
   if (isNotEmptyArray(children)) {
+    const path = router.path
     for (let i in children) {
       const child = children[i]
       const childPath = child.path
