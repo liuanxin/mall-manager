@@ -76,9 +76,9 @@ router.beforeEach(async (to, from, next) => {
     const menuPaths = store.getters.menu_paths
     if (isNotEmptyArray(menuPaths) && !menuPaths.includes(toPath)) {
       Message({
-        message: '无权访问(' + toPath + ')地址, 请联系管理员',
+        message: '不能访问(' + toPath + '), 无此地址或无权限',
         type: 'error',
-        duration: 1500
+        duration: 2000
       })
       next(index)
       NProgress.done()
