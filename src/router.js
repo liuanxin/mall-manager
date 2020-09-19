@@ -227,17 +227,16 @@ const getUserPaths = (data) => {
   allRouters.push(...globalAllUserRouterEnd)
 
   for (let i in allRouters) {
-    const route = allRouters[i]
-    const path = route.path
-    if (isNotBlank(path) && isNotTrue(getData(route, 'meta.noRedirect'))) {
-      paths.push(path)
-    }
-    getPath(paths, route)
+    getPath(paths, allRouters[i])
   }
   return paths
 }
 const getPath = (arr, router) => {
   const children = router.children
+  const path = router.path || ''
+  if (isNotBlank(path) && isNotTrue(getData(router, 'meta.noRedirect'))) {
+    arr.push(path)
+  }
   if (isNotEmptyArray(children)) {
     const path = router.path
     for (let i in children) {
