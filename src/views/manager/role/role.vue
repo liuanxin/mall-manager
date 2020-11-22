@@ -11,6 +11,7 @@
       show-checkbox
       :default-expanded-keys="checkedList"
       :default-checked-keys="checkedList"
+      :check-strictly="true"
       :props="defaultProps"></el-tree>
   </div>
 </template>

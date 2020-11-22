@@ -93,6 +93,7 @@ const routersMapping = {
  *     show-checkbox
  *     :default-expanded-keys="checkedList"
  *     :default-checked-keys="checkedList"
+ *     :check-strictly="true"
  *     :props="defaultProps">
  *   </el-tree>
  *   其中 data 的值是 [
