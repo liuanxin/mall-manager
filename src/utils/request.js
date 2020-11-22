@@ -41,10 +41,10 @@ serviceRequest.interceptors.request.use(
   }
 )
 
+// 后端响应通常是两种, 比较好的是第一种, 只是通常会使用第 2 种方式(微信小程序只支持使用这样的方式)来返回
+// 1. HttpStatus 返回 400 500 这样的非 200 的错误码, 此种直接处理 response.message
+// 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
 serviceRequest.interceptors.response.use(
-  // 后端响应通常是两种, 比较好的是第一种, 只是通常会使用第 2 种方式(微信小程序只支持使用这样的方式)来返回
-  // 1. HttpStatus 返回 400 500 这样的非 200 的错误码, 此种直接处理 response.message
-  // 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
   (response) => {
     const res = response.data
     if (toInt(res.code) === 200) {
