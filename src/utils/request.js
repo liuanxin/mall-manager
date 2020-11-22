@@ -1,5 +1,5 @@
 
-import { isTrue, isNotTrue, toInt, getData, defaultValue } from '@/utils/util'
+import { isTrue, isNotTrue, toInt, getData, defaultValue, formatDateTimeMs } from '@/utils/util'
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
@@ -10,7 +10,7 @@ import router from '@/router'
 const serviceRequest = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
-  timeout: 10000 // request timeout
+  timeout: 60000 // request timeout
 })
 
 serviceRequest.interceptors.request.use(
@@ -25,8 +25,11 @@ serviceRequest.interceptors.request.use(
       config.method = 'GET'
       config.url = '/api/example/' + realMethod + (realUrl.startsWith('/') ? '' : '-') + realUrl.replace(/\//g, '-') + '.json'
     }
+
+    const start = formatDateTimeMs()
+    config.startRequest = start
     if (isNotTrue(process.env.VUE_APP_ONLINE)) {
-      console.debug('request config: ' + JSON.stringify(config))
+      console.debug(start + ' request config: ' + JSON.stringify(config))
     }
     return config
   },
@@ -34,32 +37,32 @@ serviceRequest.interceptors.request.use(
     if (isNotTrue(process.env.VUE_APP_ONLINE)) {
       console.error('request timeout: ' + JSON.stringify(error))
     }
-    return Promise.reject(new Error(error))
+    return Promise.reject(error)
   }
 )
 
-// 后端响应通常是两种, 比较好的是第一种, 只是通常会使用第 2 种方式(微信小程序只支持使用这样的方式)来返回
-// 1. HttpStatus 返回 400 500 这样的非 200 的错误码, 此种直接处理 response.message
-// 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
 serviceRequest.interceptors.response.use(
+  // 后端响应通常是两种, 比较好的是第一种, 只是通常会使用第 2 种方式(微信小程序只支持使用这样的方式)来返回
+  // 1. HttpStatus 返回 400 500 这样的非 200 的错误码, 此种直接处理 response.message
+  // 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
   (response) => {
     const res = response.data
     if (toInt(res.code) === 200) {
       return res
     } else {
       // 上面的第 2 种方式
-      return handleError(res, isTrue(getData(response, 'config.errorReturn')))
+      return handleError(res, getData(response, 'config.startRequest'), isTrue(getData(response, 'config.errorReturn')))
     }
   },
   (error) => {
     // 上面的第 1 种方式
-    return handleError(error, isTrue(getData(error, 'config.errorReturn')))
+    return handleError(error, getData(error, 'config.startRequest'), isTrue(getData(error, 'config.errorReturn')))
   }
 )
 
-const handleError = (error, errorReturn = false) => {
+const handleError = (error, startRequest, errorReturn = false) => {
   if (isNotTrue(process.env.VUE_APP_ONLINE)) {
-    console.error('response error: ' + JSON.stringify(error) + ', return error: ' + errorReturn)
+    console.error('[' + startRequest + ' --> ' + formatDateTimeMs() + '] response error: ' + JSON.stringify(error) + ', return error: ' + errorReturn)
   }
 
   // toInt(date.code || data.response.status)
@@ -79,19 +82,20 @@ const handleError = (error, errorReturn = false) => {
     MessageBox.alert(showMessage).finally(() => {
       router.replace({path: '/'}).catch((e) => {
         if (isNotTrue(process.env.VUE_APP_ONLINE)) {
-          console.debug('no permission replace error: ' + e)
+          console.debug(formatDateTimeMs() + 'no permission replace error: ' + e)
         }
       })
     })
   } else {
-    // 其他: 显示信息并返回数据结果, 由调用方的 catch 处理
-    Message({
-      message: showMessage,
-      type: 'error',
-      duration: 5000
-    })
+    // 其他: 返回则由调用方的 catch 处理, 不返回则显示错误信息
     if (isTrue(errorReturn)) {
       return Promise.reject(error)
+    } else {
+      Message({
+        message: showMessage,
+        type: 'error',
+        duration: 5000
+      })
     }
   }
 }
