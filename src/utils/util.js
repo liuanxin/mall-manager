@@ -11,6 +11,10 @@ const isNotBlank = (obj) => {
   return !isBlank(obj)
 }
 
+const toStr = (obj) => {
+  return isBlank(obj) ? '' : String(obj)
+}
+
 /** 是 true, 'true', 1, '1', 'yes', 'on 字符串则返回 true */
 const isTrue = (obj) => {
   return isNotBlank(obj) && (obj === true || ['true', '1', 'yes', 'on'].includes(String(obj).trim().toLowerCase()))
@@ -197,6 +201,20 @@ const defaultValue = (obj, value) => {
 const parse = (str) => {
   try {
     return isBlank(str) ? null : JSON.parse(str)
+  } catch (e) {
+    return null
+  }
+}
+
+const parseBigIntNumber = (str) => {
+  if (isBlank(str)) {
+    return null
+  }
+
+  try {
+    return JSON.parse(str.replace(/:\s*([-+Ee0-9.]+)/g, ': "BigInt$1"'), (key, value) => {
+      return value.startsWith('BigInt') ? new BigInt(value.substring('BigInt'.length)) : value
+    });
   } catch (e) {
     return null
   }
@@ -607,7 +625,7 @@ const hasEnter = (event) => {
 
 
 export {
-  isBlank, isNotBlank, isTrue, isNotTrue, toInt, toFloat, greater0, less0,
+  isBlank, isNotBlank, toStr, isTrue, isNotTrue, toInt, toFloat, greater0, less0,
   isEmptyArray, isNotEmptyArray, removeDuplicate, removeDuplicateObj,
   arrayBufferToString, stringToArrayBuffer, param2Obj, obj2Param, getData,
   removeNull, defaultValue, parse, foggy, checkPhone, checkEmail, checkImage, checkChinese, checkIdCard, cardToGender,
