@@ -1,10 +1,12 @@
 import request from '@/utils/request'
 
+// params 是 { name: 'xxx', sex: 1 } 格式的对象
 const getList = (params) => {
   return request({
     url: '/table/list',
     method: 'get',
-    params
+    // data: params
+    params: params
   })
 }
 
