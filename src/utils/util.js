@@ -75,8 +75,16 @@ const greater0 = (obj) => {
   return isNotBlank(obj) && !isNaN(obj) && parseFloat(String(obj)) > 0
 }
 /** 为 null 或 不是数字 或 是数字但是小于等于 0 就返回 true */
-const less0 = (obj) => {
+const lessAndEquals0 = (obj) => {
   return !greater0(obj)
+}
+/** 不为 null 且是数字 且大于等于 0 就返回 true */
+const greaterAndEquals0 = (obj) => {
+  return isNotBlank(obj) && !isNaN(obj) && parseFloat(String(obj)) >= 0
+}
+/** 为 null 或 不是数字 或 是数字但是小于 0 就返回 true */
+const less0 = (obj) => {
+  return !greaterAndEquals0(obj)
 }
 
 /** 将 array-buffer 转换成 string, 有 8 16 32 三种, 默认使用 16 */
@@ -625,7 +633,7 @@ const hasEnter = (event) => {
 
 
 export {
-  isBlank, isNotBlank, toStr, isTrue, isNotTrue, toInt, toFloat, greater0, less0,
+  isBlank, isNotBlank, toStr, isTrue, isNotTrue, toInt, toFloat, greater0, lessAndEquals0, greaterAndEquals0, less0,
   isEmptyArray, isNotEmptyArray, removeDuplicate, removeDuplicateObj,
   arrayBufferToString, stringToArrayBuffer, param2Obj, obj2Param, getData,
   removeNull, defaultValue, parse, foggy, checkPhone, checkEmail, checkImage, checkChinese, checkIdCard, cardToGender,
