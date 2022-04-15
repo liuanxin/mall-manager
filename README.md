@@ -21,10 +21,12 @@ yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 
 如果执行 `yarn dev` 时提示 `Error: ENOENT: no such file or directory, scandir '.../node_modules/node-sass/vendor'` 错误, 运行下面命令
 ```bash
-# yarn 没有这个命令, 只能 yarn remove node-sass && yarn add -D node-sass@version 不加 @version 将会使用 ^ 版本
+# yarn 没有这个命令, 使用 yarn remove node-sass && yarn add -D node-sass@version (不加 @version 将会使用 ^ 版本) 并不起作用
 npm rebuild node-sass
 ```
-**!!!要注意 npm、node-sass 和 sass-loader 之间的版本, 一旦对应不上就会运行不起来!!!**
+
+**!!!要注意 npm、node-sass、sass-loader 之间的版本, 一旦对应不上就会运行不起来!!!**
+
 
 ### 目录
 
