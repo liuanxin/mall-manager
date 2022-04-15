@@ -24,7 +24,7 @@ yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 # yarn 没有这个命令, 只能 yarn remove node-sass && yarn add -D node-sass@version 不加 @version 将会使用 ^ 版本
 npm rebuild node-sass
 ```
-**!!!注意 node-sass 和 sass-loader 的版本, 这两者的版本一旦对应不上就会运行不起来!!!**
+**!!!要注意 npm、node-sass 和 sass-loader 之间的版本, 一旦对应不上就会运行不起来!!!**
 
 ### 目录
 
