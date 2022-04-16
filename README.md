@@ -2,7 +2,7 @@
 ### 运行
 
 使用国内镜像并安装项目所需包
-```sh
+```bash
 yarn config set ignore-scripts true
 yarn config set registry https://registry.npm.taobao.org
 yarn
@@ -15,9 +15,12 @@ yarn config delete https-proxy
 yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 ```
 
+-----
+安装包:   `yarn` 或 `yarn install`  
 本地运行: `yarn dev`  
 打包测试: `yarn test`  
 打包生产: `yarn build`
+-----
 
 如果执行 `yarn dev` 时提示 `Error: ENOENT: no such file or directory, scandir '.../node_modules/node-sass/vendor'` 错误, 运行下面命令
 ```bash
@@ -25,8 +28,9 @@ yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 npm rebuild node-sass
 ```
 
-**!!!要注意 npm、node-sass、sass-loader 之间的版本, 一旦对应不上就会运行不起来!!!**
+**!!!要注意 npm、node-sass、sass-loader 之间的版本, 对应不上将无法运行!!!**
 
+-----
 
 ### 目录
 
@@ -80,6 +84,8 @@ node 系的版本号是一个灾难, 比如有这么三个版本号
 
 **宽松不严谨的选项带来数之不尽的麻烦!**
 
+-----
+
 PS: 使用 `yarn cache dir` 命令可以查看 yarn 的本地缓存目录, 跟 npm 命令相比下面的命令是等同的
 ```conf
 yarn             ===    npm install
@@ -89,6 +95,7 @@ yarn add x --dev ===    npm install x --save-dev
 yarn upgrade     ===    npm update --save
 ```
 
+-----
 
 ### 权限控制
 
@@ -99,3 +106,5 @@ yarn upgrade     ===    npm update --save
 
 如果权限需要加强到按钮级, 跟上面菜单的一样, 前端定义命名, 生成表结构及数据给后端.  
 操作角色时后端将菜单和按钮相关的 id 与角色关联在一起, 当用户登录后返回给前端, 前端控制显示与否
+
+-----
