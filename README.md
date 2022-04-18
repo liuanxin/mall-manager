@@ -30,7 +30,7 @@ yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 npm rebuild node-sass
 ```
 
-**!!!要注意 npm、node-sass、sass-loader 之间的版本, 对应不上将无法运行!!!**
+**!!!要注意 nodejs、node-sass、sass-loader 之间的版本, 对应不上将无法运行!!!**
 
 -----
 
