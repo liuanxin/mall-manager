@@ -16,10 +16,12 @@ yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 ```
 
 -----
+
 安装包:   `yarn` 或 `yarn install`  
 本地运行: `yarn dev`  
 打包测试: `yarn test`  
 打包生产: `yarn build`
+
 -----
 
 如果执行 `yarn dev` 时提示 `Error: ENOENT: no such file or directory, scandir '.../node_modules/node-sass/vendor'` 错误, 运行下面命令
