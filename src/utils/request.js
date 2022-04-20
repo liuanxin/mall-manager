@@ -85,7 +85,7 @@ const handleError = (error, startRequest, errorReturn = false) => {
           location.reload()
         })
       })
-      break;
+      break
     }
     case statusMapping.notPermission: {
       // 无权限(403): 显示信息后跳到主页
@@ -96,7 +96,7 @@ const handleError = (error, startRequest, errorReturn = false) => {
           }
         })
       })
-      break;
+      break
     }
     default: {
       // 其他: 返回则由调用方的 catch 处理, 不返回则显示错误信息
@@ -109,6 +109,7 @@ const handleError = (error, startRequest, errorReturn = false) => {
           duration: 5000
         })
       }
+      break
     }
   }
 }
