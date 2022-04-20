@@ -77,32 +77,38 @@ const handleError = (error, startRequest, errorReturn = false) => {
   // data.msg || data.response.data.message || data.message
   const msg = getData(error, 'msg') || getData(error, 'response.data.message') || getData(error, 'message')
   const showMessage = defaultValue((code === 0 ? '接口无法请求, 网络有误或有跨域问题: ' : '') + msg, '错误码: ' + code)
-  if (code === statusMapping.notLogin) {
-    // 未登录(401): 显示信息后退出并重新加载当前页
-    MessageBox.alert(showMessage).finally(() => {
-      store.dispatch('logout').then(() => {
-        location.reload()
+  switch (code) {
+    case statusMapping.notLogin: {
+      // 未登录(401): 显示信息后退出并重新加载当前页
+      MessageBox.alert(showMessage).finally(() => {
+        store.dispatch('logout').then(() => {
+          location.reload()
+        })
       })
-    })
-  } else if (code === statusMapping.notPermission) {
-    // 无权限(403): 显示信息后跳到主页
-    MessageBox.alert(showMessage).finally(() => {
-      router.replace({path: '/'}).catch((e) => {
-        if (isNotTrue(process.env.VUE_APP_ONLINE)) {
-          console.debug(formatDateTimeMs() + 'no permission replace error: ' + e)
-        }
+      break;
+    }
+    case statusMapping.notPermission: {
+      // 无权限(403): 显示信息后跳到主页
+      MessageBox.alert(showMessage).finally(() => {
+        router.replace({path: '/'}).catch((e) => {
+          if (isNotTrue(process.env.VUE_APP_ONLINE)) {
+            console.debug(formatDateTimeMs() + 'no permission replace error: ' + e)
+          }
+        })
       })
-    })
-  } else {
-    // 其他: 返回则由调用方的 catch 处理, 不返回则显示错误信息
-    if (isTrue(errorReturn)) {
-      return Promise.reject(error)
-    } else {
-      Message({
-        message: showMessage,
-        type: 'error',
-        duration: 5000
-      })
+      break;
+    }
+    default: {
+      // 其他: 返回则由调用方的 catch 处理, 不返回则显示错误信息
+      if (isTrue(errorReturn)) {
+        return Promise.reject(error)
+      } else {
+        Message({
+          message: showMessage,
+          type: 'error',
+          duration: 5000
+        })
+      }
     }
   }
 }
