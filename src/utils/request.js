@@ -13,6 +13,13 @@ const serviceRequest = axios.create({
   timeout: 60000 // request timeout
 })
 
+// 状态映射
+const statusMapping = {
+  success: 200, // 正常返回
+  notLogin: 401, // 显示错误信息并跳到登录页
+  notPermission: 403 // 显示错误信息并跳到主页
+}
+
 serviceRequest.interceptors.request.use(
   (config) => {
     // if (store.getters.token) {
@@ -41,13 +48,13 @@ serviceRequest.interceptors.request.use(
   }
 )
 
-// 后端响应通常是两种, 比较好的是第一种, 只是通常会使用第 2 种方式(微信小程序只支持使用这样的方式)来返回
+// 后端响应通常是两种, 建议用第一种, 只是绝大部分应用使用第二种(比如微信小程序)
 // 1. HttpStatus 返回 400 500 这样的非 200 的错误码, 此种直接处理 response.message
 // 2. HttpStatus 返回 200 但返回的 json 数据是 { "code": 500, "msg": "xxx 错误" } 这样的格式
 serviceRequest.interceptors.response.use(
   (response) => {
     const res = response.data
-    if (toInt(res.code) === 200) {
+    if (toInt(res.code) === statusMapping.success) {
       return res
     } else {
       // 上面的第 2 种方式
@@ -70,14 +77,14 @@ const handleError = (error, startRequest, errorReturn = false) => {
   // data.msg || data.response.data.message || data.message
   const msg = getData(error, 'msg') || getData(error, 'response.data.message') || getData(error, 'message')
   const showMessage = defaultValue((code === 0 ? '接口无法请求, 网络有误或有跨域问题: ' : '') + msg, '错误码: ' + code)
-  if (code === 401) {
+  if (code === statusMapping.notLogin) {
     // 未登录(401): 显示信息后退出并重新加载当前页
     MessageBox.alert(showMessage).finally(() => {
       store.dispatch('logout').then(() => {
         location.reload()
       })
     })
-  } else if (code === 403) {
+  } else if (code === statusMapping.notPermission) {
     // 无权限(403): 显示信息后跳到主页
     MessageBox.alert(showMessage).finally(() => {
       router.replace({path: '/'}).catch((e) => {
