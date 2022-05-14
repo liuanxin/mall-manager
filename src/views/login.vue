@@ -55,6 +55,7 @@
 
 <script>
 import globalConfig from '@/config'
+import { isNotTrue } from '@/utils/util'
 
 export default {
   name: 'Login',
@@ -73,12 +74,10 @@ export default {
         callback()
       }
     }
+    const account = isNotTrue(process.env.VUE_APP_ONLINE) ? { userName: 'admin', password: '12345678' } : {}
     return {
       projectTitle: globalConfig.title,
-      loginForm: {
-        userName: 'admin',
-        password: '12345678'
-      },
+      loginForm: account,
       loginRules: {
         userName: [{ required: true, trigger: 'blur', validator: validateUserName }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]

@@ -1,11 +1,9 @@
 
 ### 运行
 
-使用国内镜像并安装项目所需包
+使用国内镜像
 ```bash
-yarn config set ignore-scripts true
 yarn config set registry https://registry.npm.taobao.org
-yarn
 ```
 
 如果执行 `yarn` 时提示 `... trouble with your network connection` 错误, 运行下面命令
@@ -24,13 +22,9 @@ yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 
 -----
 
-如果执行 `yarn dev` 时提示 `Error: ENOENT: no such file or directory, scandir '.../node_modules/node-sass/vendor'` 错误, 运行下面命令
-```bash
-# yarn 没有这个命令, 使用 yarn remove node-sass && yarn add -D node-sass@version (不加 @version 将会使用 ^ 版本) 并不起作用
-npm rebuild node-sass
-```
-
-**!!!要注意 nodejs、node-sass、sass-loader 之间的版本, 对应不上将无法运行!!!**
+**注意**
++ sass-loader 11 的版本跟 vue 2 并不兼容: [sass-loader vue2](https://stackoverflow.com/questions/66082397/typeerror-this-getoptions-is-not-a-function)
++ 不再建议使用 node-sass: 见 [sass replace node-sass](https://stackoverflow.com/questions/70281346/node-js-sass-version-7-0-0-is-incompatible-with-4-0-0-5-0-0-6-0-0)
 
 -----
 
