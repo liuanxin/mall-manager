@@ -6,15 +6,6 @@
 yarn config set registry https://registry.npm.taobao.org
 ```
 
-如果执行 `yarn` 时提示 `... trouble with your network connection` 错误, 运行下面命令
-```bash
-yarn config delete proxy
-yarn config delete https-proxy
-yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
-```
-
------
-
 安装包:   `yarn` 或 `yarn install`  
 本地运行: `yarn dev`  
 打包测试: `yarn test`  
