@@ -161,10 +161,10 @@ const routersRelation = [
 /** 管理员操作角色, 后端未提供数据时用到 */
 const getMockMenus = () => {
   let arr = getDepthMock(0, routersRelation).child
-  console.debug('/* ------------------------------ 深度优先 ------------------------------ */\n\n' + JSON.stringify(arr))
+  console.debug('/* ------------------------- 深度优先 ------------------------- */\n' + JSON.stringify(arr) + '\n\n')
 
   arr = getBreadthMock(0, routersRelation).child
-  console.debug('/* ------------------------------ 广度优先 ------------------------------ */\n\n' + JSON.stringify(arr))
+  console.debug('/* ------------------------- 广度优先 ------------------------- */\n' + JSON.stringify(arr) + '\n\n')
 
   return arr
 }
@@ -260,15 +260,15 @@ const getMenuSql = () => {
   arr.push("  PRIMARY KEY (`id`),\n")
   arr.push("  UNIQUE KEY `name` (`name`)\n")
   arr.push(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='菜单, 需要跟前端对应, 前端每增加一个菜单就需要添加一条记录, 与角色是 多对多 的关系';\n\n")
-  console.debug('/* ------------------------------ 建表语句 ------------------------------ */\n\n' + arr.join(''))
+  console.debug('/* ------------------------------ 建表语句 ------------------------------ */\n' + arr.join(''))
 
   arr.splice(0, arr.length)
   getDepthSql(0, 0, routersRelation, arr)
-  console.debug('/* ------------------------------ 深度优先 ------------------------------ */\n\n' + arr.join(''))
+  console.debug('/* ------------------------------ 深度优先 ------------------------------ */\n' + arr.join(''))
 
   arr.splice(0, arr.length)
   getBreadthSql(0, 0, routersRelation, arr)
-  console.debug('/* ------------------------------ 广度优先 ------------------------------ */\n\n' + arr.join(''))
+  console.debug('/* ------------------------------ 广度优先 ------------------------------ */\n' + arr.join(''))
 }
 /** 深度优先 */
 const getDepthSql = (lastId, pid, routers, arr) => {
