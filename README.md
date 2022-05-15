@@ -82,6 +82,12 @@ yarn add x --dev ===    npm install x --save-dev
 yarn upgrade     ===    npm update --save
 ```
 
+```
+运行 vue-cli-service serve 时 --mode 的默认值是 development, 也就是配置文件改成 .env.development 则会自动加载
+运行 vue-cli-service build 时 --mode 的默认值是 production, 也就是配置文件改成 .env.production 则会自动加载
+见: https://cli.vuejs.org/zh/guide/cli-service.html#vue-cli-service-serve
+```
+
 -----
 
 ### 权限控制
