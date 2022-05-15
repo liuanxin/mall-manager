@@ -49,9 +49,9 @@ yarn config set registry https://registry.npm.taobao.org
 │
 ├── .babelrc          打包时将一些语法(比如 import('/a/b/c') 这种)转换成 es 标准的工具配置(使用 babel.config.js 文件也是一样的)
 ├── .editorconfig     编辑器配置, 给 ide 用的(各种文件格式的缩进等)
-├── .env.development  本地开发的配置文件
-├── .env.production   生产环境的配置文件
-├── .env.staging      测试环境的配置文件
+├── .env.dev          本地开发的配置文件
+├── .env.prod         生产环境的配置文件
+├── .env.test         测试环境的配置文件
 ├── .eslintignore     不需要格式化的配置文件
 ├── .eslintrc.js      格式化代码的配置
 ├── jsconfig.json     给 ide 用的 js 配置(如 @ 表示 src 目录, 注意跟 webpack 保持一致), 见: https://code.visualstudio.com/docs/languages/jsconfig
