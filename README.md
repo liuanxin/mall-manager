@@ -6,7 +6,7 @@
 yarn config set registry https://registry.npm.taobao.org
 ```
 
-安装包:   `yarn` 或 `yarn install`  
+安装包:   `yarn`  
 本地运行: `yarn dev`  
 打包测试: `yarn test`  
 打包生产: `yarn build`
