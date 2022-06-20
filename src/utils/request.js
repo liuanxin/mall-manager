@@ -30,6 +30,15 @@ serviceRequest.interceptors.request.use(
     if (isTrue(req.isUploadFile)) {
       req.headers['Content-Type'] = 'multipart/form-data'
     }
+
+    // 如果请求是以 http|https 开头, 则将 baseURL 设置为空
+    const reqUrl = req.url.toLowerCase()
+    if (reqUrl.startsWith("http://") || reqUrl.startsWith("https://")) {
+      req.baseURL = ''
+    } else {
+      req.baseURL = process.env.VUE_APP_BASE_API
+    }
+
     // mock 时, 将 POST /user/info 请求改成 GET /api/example/post-user-info.json
     if (isTrue(process.env.VUE_APP_MOCK)) {
       const realMethod = req.method.toLowerCase()
