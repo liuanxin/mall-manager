@@ -259,7 +259,8 @@ const getMenuSql = () => {
   arr.push("  `front` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '前端对应的值(如 path 或 name)',\n")
   arr.push("  PRIMARY KEY (`id`),\n")
   arr.push("  UNIQUE KEY `name` (`name`)\n")
-  arr.push(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='菜单, 需要跟前端对应, 前端每增加一个菜单就需要添加一条记录, 与角色是 多对多 的关系';\n\n")
+  arr.push(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci")
+  arr.push(" COMMENT='菜单, 需要跟前端对应, 前端每增加一个菜单就需要添加一条记录, 与角色是 多对多 的关系';\n\n")
   console.debug('/* ------------------------------ 建表语句 ------------------------------ */\n' + arr.join(''))
 
   arr.splice(0, arr.length)
