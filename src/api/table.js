@@ -12,5 +12,4 @@ const getList = (params) => {
 
 export { getList }
 
-// 如果是 params 将使用表单发送请求, 如果是 data 则会使用 RequestBody 的方式进行请求
-// method 如果是 put 或 delete 无法使用表单发送请求, 只能使用 RequestBody 或者使用 PathVariable
+// params 将会把数据拼在 url 的后面(k1=v1&k2=v2), data 则会使用 RequestBody 的方式进行请求
