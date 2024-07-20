@@ -214,20 +214,6 @@ const parse = (str) => {
   }
 }
 
-const parseBigIntNumber = (str) => {
-  if (isBlank(str)) {
-    return null
-  }
-
-  try {
-    return JSON.parse(str.replace(/:\s*([-+Ee0-9.]+)/g, ': "BigInt$1"'), (key, value) => {
-      return value.startsWith('BigInt') ? new BigInt(value.substring('BigInt'.length)) : value
-    });
-  } catch (e) {
-    return null
-  }
-}
-
 /** 将字符串中指定位数的值模糊成 * 并返回. 索引位从 0 开始. 如: foggy('13012345678', 3, 7) 返回 130****5678 */
 const foggy = (str, start, end) => {
   if (isBlank(str)) {
@@ -278,11 +264,11 @@ const cardToGender = (str) => {
 
 /** 使用 base64 编码 */
 const base64Encode = (str) => {
-  return window.btoa(unescape(encodeURIComponent(str)))
+  return window.btoa(encodeURIComponent(str))
 }
 /** 使用 base64 解码 */
 const base64Decode = (str) => {
-  return decodeURIComponent(escape(window.atob(str)))
+  return decodeURIComponent(window.atob(str))
 }
 /** 将 url 进行编码(两次) */
 const encode = (url) => {
@@ -324,11 +310,17 @@ const getSuffix = (fileName) => {
 /** 生成 uuid */
 const uuid = () => {
   let now = Date.now()
-  return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, (c) => {
     const r = (now + Math.random() * 16) % 16 | 0
     now = Math.floor(now / 16)
-    return (c === 'x' ? r : (r & 0x7) | 0x8).toString(16)
+    return r.toString(16)
   })
+}
+const uuid32 = () => {
+  return uuid().replaceAll('-', '')
+}
+const uuid16 = () => {
+  return uuid().replaceAll('-', '').substring(8, 24)
 }
 
 /** 转义 */
@@ -370,22 +362,16 @@ const formatJson = (json) => {
 }
 
 /** 补全, 默认是不足 2 位就在前面补 0, 如 completionString(3) ==> 03, completionString(8, 3) ==> 008 */
-const completionString = (str, len, completion) => {
+const completionString = (str, len = 2, completion = '0') => {
   if (isBlank(str)) {
     return ''
   }
 
-  if (isBlank(len)) {
-    len = 2
-  }
   const s = String(str)
   if (s.length >= len) {
     return s
   }
 
-  if (isBlank(completion)) {
-    completion = '0'
-  }
   let r = ''
   const loop = len - s.length
   for (let i = 0; i < loop; i++) {
@@ -418,7 +404,7 @@ const msToHuman = (ms) => {
   return Math.floor(day / 365) + ' 年' + state
 }
 /** 格式化 时间 或 时间戳 成 年-月-日 时:分:秒 毫秒, 无参数则默认返回当前时间, 格式: yyyy-MM-dd HH:mm:ss SSS aaa */
-const formatDateTimeMs = (date, format) => {
+const format = (date, format) => {
   let datetime
   if (date instanceof Date) {
     datetime = date
@@ -428,9 +414,6 @@ const formatDateTimeMs = (date, format) => {
     datetime = new Date()
   }
 
-  if (isBlank(format)) {
-    format = 'yyyy-MM-dd HH:mm:ss SSS'
-  }
   const year = datetime.getFullYear()
   const month = datetime.getMonth()
   const day = datetime.getDate()
@@ -467,15 +450,18 @@ const formatDateTimeMs = (date, format) => {
 }
 /** 格式化 时间 或 时间戳 成: 年-月-日 */
 const formatDate = (date) => {
-  return formatDateTimeMs(date, 'yyyy-MM-dd')
+  return format(date, 'yyyy-MM-dd')
 }
 /** 格式化 时间 或 时间戳 成: 时:分:秒 */
 const formatTime = (date) => {
-  return formatDateTimeMs(date, 'HH:mm:ss')
+  return format(date, 'HH:mm:ss')
 }
 /** 格式化 时间 或 时间戳 成: 年-月-日 时:分:秒 */
 const formatDateTime = (date) => {
-  return formatDateTimeMs(date, 'yyyy-MM-dd HH:mm:ss')
+  return format(date, 'yyyy-MM-dd HH:mm:ss')
+}
+const formatDateTimeMs = (date) => {
+  return format(date, 'yyyy-MM-dd HH:mm:ss.SSS')
 }
 /** 日期如果是同一天就返回 true */
 const sameDay = (d1, d2) => {
@@ -616,12 +602,10 @@ const hasEnter = (event) => {
   }
 
   let handled
-  if (event.key !== undefined) {
-    handled = event.key.toUpperCase() === 'ENTER'
-  } else if (event.keyIdentifier !== undefined) {
-    handled = event.keyIdentifier.toUpperCase() === 'ENTER'
-  } else if (event.keyCode !== undefined) {
-    handled = event.keyCode === 13 || event.keyCode === '13'
+  if (event.key) {
+    handled = String(event.key).toUpperCase() === 'ENTER'
+  } else if (event.keyCode) {
+    handled = String(event.keyCode) === '13'
   } else {
     handled = false
   }
@@ -637,7 +621,7 @@ export {
   isEmptyArray, isNotEmptyArray, removeDuplicate, removeDuplicateObj,
   arrayBufferToString, stringToArrayBuffer, param2Obj, obj2Param, getData,
   removeNull, defaultValue, parse, foggy, checkPhone, checkEmail, checkImage, checkChinese, checkIdCard, cardToGender,
-  base64Encode, base64Decode, encode, decode, appendUrl, addPrefix, addSuffix, getSuffix, uuid,
+  base64Encode, base64Decode, encode, decode, appendUrl, addPrefix, addSuffix, getSuffix, uuid, uuid32, uuid16,
   escapeHtml, unescapeHtml, formatJson, completionString, msToHuman,
   formatDate, formatTime, formatDateTime, formatDateTimeMs,
   logTime, logBetweenTime, sameDay, cent2Yuan, thousands, money2Chinese, hasEnter
