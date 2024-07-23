@@ -520,7 +520,7 @@ const yuanToCent = (yuan) => {
   const v = String(value * 100)
   return v.includes('.') ? Number.parseInt(v) : v
 }
-/** 数字返回百分比, maxScale 表示返回的最大小数位, 如 toPercent(0.12345) 返回 12.34%, toPercent(0.12345, 5) 返回 12.345% */
+/** 数字返回百分比, maxScale 表示最大的小数位, 如 toPercent(0.12345) 返回 12.34%, toPercent(0.12345, 5) 返回 12.345% */
 const toPercent = (num, maxScale = 2) => {
   if (isBlank(num)) {
     return ''
