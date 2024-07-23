@@ -14,6 +14,13 @@ const isNotBlank = (obj) => {
 const toStr = (obj) => {
   return isBlank(obj) ? '' : String(obj)
 }
+const toNumFixed = (str, fixed = 0) => {
+  if (isBlank(str)) {
+    return ''
+  }
+  const arr = String(str).split('.')
+  return (arr.length > 1 && fixed > 0) ? (arr[0] + '.' + arr[1].substring(0, fixed)) : arr[0]
+}
 
 /** 是 true, 'true', 1, '1', 'yes', 'on 字符串则返回 true */
 const isTrue = (obj) => {
@@ -379,6 +386,33 @@ const completionString = (str, len = 2, completion = '0') => {
   }
   return r + s
 }
+const fileSizeToHuman = (bytes) => {
+  if (lessAndEquals0(bytes)) {
+    return ''
+  }
+
+  // B -> KB -> MB -> GB -> TB -> PB -> EB -> ZB
+  if (bytes < 1024) {
+    return bytes + 'B'
+  }
+  const kb = bytes / 1024;
+  if (kb < 1024) {
+    return toNumFixed(kb, 2) + 'KB'
+  }
+  const mb = kb / 1024;
+  if (mb < 1024) {
+    return toNumFixed(mb, 2) + 'MB'
+  }
+  const gb = mb / 1024
+  if (gb < 1024) {
+    return toNumFixed(gb, 2) + 'GB'
+  }
+  const tb = gb / 1024
+  if (tb < 1024) {
+    return toNumFixed(tb, 2) + 'TB'
+  }
+  return '>1PB'
+}
 /** 将毫秒格式化为可读性更强的, 如: 刚刚、3 分钟前、5 小时后、昨天、前天、明天、后天、10 天前、200 天后、2 年前 */
 const msToHuman = (ms) => {
   if (ms === 0) { return '刚刚' }
@@ -669,12 +703,12 @@ const hasEnter = (event) => {
 
 
 export {
-  isBlank, isNotBlank, toStr, isTrue, isNotTrue, toInt, toFloat, greater0, lessAndEquals0, greaterAndEquals0, less0,
+  isBlank, isNotBlank, toStr, toNumFixed, isTrue, isNotTrue, toInt, toFloat, greater0, lessAndEquals0, greaterAndEquals0, less0,
   isEmptyArray, isNotEmptyArray, removeDuplicate, removeDuplicateObj,
   arrayBufferToString, stringToArrayBuffer, paramToObj, objToParam, getData,
   removeNull, defaultValue, parse, foggy, checkPhone, checkEmail, checkImage, checkChinese, checkIdCard, cardToGender,
   base64Encode, base64Decode, encode, decode, appendUrl, addPrefix, addSuffix, getSuffix, uuid, uuid32, uuid16,
-  escapeHtml, unescapeHtml, formatJson, completionString, msToHuman,
+  escapeHtml, unescapeHtml, formatJson, completionString, fileSizeToHuman, msToHuman,
   formatDate, formatTime, formatDateTime, formatDateTimeMs,
   logTime, logBetweenTime, sameDay, centToYuan, yuanToCent, toPercent, toThousands, moneyToChinese, hasEnter
 }
