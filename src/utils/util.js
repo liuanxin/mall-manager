@@ -125,7 +125,7 @@ const stringToArrayBuffer = (str, uint) => {
 }
 
 /** 参数转换为对象. 如 http://abc.xyz.com?id=123&name=tom 返回 { id: '123', name: 'tom' } */
-const param2Obj = (url) => {
+const paramToObj = (url) => {
   const search = String(url).split('?')[1]
   const obj = {}
   if (isNotBlank(search)) {
@@ -139,7 +139,7 @@ const param2Obj = (url) => {
   return obj
 }
 /** 将对象转换成参数. 如 { id: '123', name: 'tom' } 返回 id=123&name=tom */
-const obj2Param = (obj) => {
+const objToParam = (obj) => {
   if (isNotBlank(obj)) {
     const arr = []
     Object.keys(obj).forEach(function(k) {
@@ -479,26 +479,69 @@ const logBetweenTime = (start) => {
 }
 
 
-/** 分显示成元 */
-const cent2Yuan = (cent) => {
+/** 分返回元, 如 12345 返回 123.45 */
+const centToYuan = (cent) => {
   if (isBlank(cent)) {
     return ''
   }
 
-  let money
-  const v = (typeof cent)
-  if (v === 'number') {
-    money = String(cent)
-  } else if (v === 'string') {
-    money = String(Number.parseInt(cent))
-  } else {
+  let value
+  switch (typeof cent) {
+    case "number":
+      value = String(Number.parseInt(String(cent)))
+      break
+    case "string":
+      value = String(Number.parseInt(cent))
+      break
+    default:
+      return ''
+  }
+  const len = value.length
+  return (len < 2) ? ('0.' + value) : (value.substring(0, len - 2) + '.' + value.substring(len - 2))
+}
+/** 元返回分, 如 123.455 返回 12345 */
+const yuanToCent = (yuan) => {
+  if (isBlank(yuan)) {
     return ''
   }
-  const len = money.length
-  return (len < 2) ? ('0.' + money) : (money.substring(0, len - 2) + '.' + money.substring(len - 2))
+
+  let value
+  switch (typeof yuan) {
+    case "number":
+      value = yuan
+      break
+    case "string":
+      value = Number.parseFloat(yuan)
+      break
+    default:
+      return ''
+  }
+  // 如果直接用 toFixed(0) 会导致 123.456 成 12346
+  const v = String(value * 100)
+  return v.includes('.') ? Number.parseInt(v) : v
+}
+/** 数字返回百分比, maxScale 表示返回的最大小数位, 如 toPercent(0.12345) 返回 12.34%, toPercent(0.12345, 5) 返回 12.345% */
+const toPercent = (num, maxScale = 2) => {
+  if (isBlank(num)) {
+    return ''
+  }
+
+  let value
+  switch (typeof num) {
+    case "number":
+      value = num
+      break
+    case "string":
+      value = Number.parseFloat(num)
+      break
+    default:
+      return ''
+  }
+  let arr = String(value * 100).split('.')
+  return ((arr.length > 1) ? (arr[0] + '.' + arr[1].substring(0, Math.min(arr[1].length, maxScale))) : arr[0]) + '%'
 }
 /** 将数字转换成千分位, 如 12345678.123 返回 12,345,678.123 */
-const thousands = (num) => {
+const toThousands = (num) => {
   if (isBlank(num)) {
     return ''
   }
@@ -519,7 +562,7 @@ const thousands = (num) => {
   return first.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') + second
 }
 /** 将金额转换成中文大写 */
-const money2Chinese = (money) => {
+const moneyToChinese = (money) => {
   if (isBlank(money)) {
     return ''
   }
@@ -619,10 +662,10 @@ const hasEnter = (event) => {
 export {
   isBlank, isNotBlank, toStr, isTrue, isNotTrue, toInt, toFloat, greater0, lessAndEquals0, greaterAndEquals0, less0,
   isEmptyArray, isNotEmptyArray, removeDuplicate, removeDuplicateObj,
-  arrayBufferToString, stringToArrayBuffer, param2Obj, obj2Param, getData,
+  arrayBufferToString, stringToArrayBuffer, paramToObj, objToParam, getData,
   removeNull, defaultValue, parse, foggy, checkPhone, checkEmail, checkImage, checkChinese, checkIdCard, cardToGender,
   base64Encode, base64Decode, encode, decode, appendUrl, addPrefix, addSuffix, getSuffix, uuid, uuid32, uuid16,
   escapeHtml, unescapeHtml, formatJson, completionString, msToHuman,
   formatDate, formatTime, formatDateTime, formatDateTimeMs,
-  logTime, logBetweenTime, sameDay, cent2Yuan, thousands, money2Chinese, hasEnter
+  logTime, logBetweenTime, sameDay, centToYuan, yuanToCent, toPercent, toThousands, moneyToChinese, hasEnter
 }
