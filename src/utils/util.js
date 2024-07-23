@@ -484,6 +484,9 @@ const centToYuan = (cent) => {
   if (isBlank(cent)) {
     return ''
   }
+  if (isNaN(cent)) {
+    return cent
+  }
 
   let value
   switch (typeof cent) {
@@ -503,6 +506,9 @@ const centToYuan = (cent) => {
 const yuanToCent = (yuan) => {
   if (isBlank(yuan)) {
     return ''
+  }
+  if (isNaN(yuan)) {
+    return yuan
   }
 
   let value
@@ -524,6 +530,9 @@ const yuanToCent = (yuan) => {
 const toPercent = (num, maxScale = 2) => {
   if (isBlank(num)) {
     return ''
+  }
+  if (isNaN(num)) {
+    return num
   }
 
   let value
