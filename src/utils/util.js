@@ -14,12 +14,16 @@ const isNotBlank = (obj) => {
 const toStr = (obj) => {
   return isBlank(obj) ? '' : String(obj)
 }
+/** 保留小数位后几位 */
 const toNumFixed = (str, fixed = 0) => {
   if (isBlank(str)) {
     return ''
   }
-  const arr = String(str).split('.')
-  return (arr.length > 1 && fixed > 0) ? (arr[0] + '.' + arr[1].substring(0, fixed)) : arr[0]
+  if (toFloat(str) !== 0 && fixed > 0) {
+    const arr = String(str).split('.')
+    return (arr.length > 1) ? (arr[0] + '.' + arr[1].substring(0, Math.min(arr[1].length, fixed))) : arr[0]
+  }
+  return str
 }
 
 /** 是 true, 'true', 1, '1', 'yes', 'on 字符串则返回 true */
