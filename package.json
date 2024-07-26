@@ -6,6 +6,7 @@
     "dev": "vue-cli-service serve --mode dev",
     "test": "vue-cli-service serve --mode test",
     "build": "vue-cli-service build --mode prod",
+    "prettie": "prettier --write \"./**/*.{html,vue,js,json,md}\"",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
