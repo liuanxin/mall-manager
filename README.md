@@ -1,7 +1,7 @@
-
 ### 运行
 
 使用国内镜像
+
 ```bash
 yarn config set registry https://registry.npm.taobao.org
 ```
@@ -11,13 +11,14 @@ yarn config set registry https://registry.npm.taobao.org
 打包测试: `yarn test`  
 打包生产: `yarn build`
 
------
+---
 
 **注意**
-+ sass-loader 11 的版本跟 vue 2 并不兼容: [sass-loader vue2](https://stackoverflow.com/questions/66082397/typeerror-this-getoptions-is-not-a-function)
-+ 不再建议使用 node-sass: 见 [sass replace node-sass](https://stackoverflow.com/questions/70281346/node-js-sass-version-7-0-0-is-incompatible-with-4-0-0-5-0-0-6-0-0)
 
------
+- sass-loader 11 的版本跟 vue 2 并不兼容: [sass-loader vue2](https://stackoverflow.com/questions/66082397/typeerror-this-getoptions-is-not-a-function)
+- 不再建议使用 node-sass: 见 [sass replace node-sass](https://stackoverflow.com/questions/70281346/node-js-sass-version-7-0-0-is-incompatible-with-4-0-0-5-0-0-6-0-0)
+
+---
 
 ### 目录
 
@@ -61,19 +62,22 @@ yarn config set registry https://registry.npm.taobao.org
 ```
 
 node 系的版本号是一个灾难, 比如有这么三个版本号
+
 ```
 "1.0.1"   表示指定的版本
 "~1.0.1"  表示 1.0.X 中最新的版本
 "^1.0.1"  表示 1.X.X 中最新的版本
 ```
+
 更要命的是即便项目中都是指定版本, 但是那些包里面是可能会依赖带有 `~^` 的其他包的,  
 为了避免同一份代码不同的打包环境导致的差异, 于是衍生出了 yarn.lock 这样的锁定文件.
 
 **宽松不严谨的选项带来数之不尽的麻烦!**
 
------
+---
 
 PS: 使用 `yarn cache dir` 命令可以查看 yarn 的本地缓存目录, 跟 npm 命令相比下面的命令是等同的
+
 ```conf
 yarn             ===    npm install
 yarn add x       ===    npm install x --save
@@ -88,16 +92,16 @@ yarn upgrade     ===    npm update --save
 见: https://cli.vuejs.org/zh/guide/cli-service.html#vue-cli-service-serve
 ```
 
------
+---
 
 ### 权限控制
 
 添加页面时, 需要在 `router.js` 中添加定义, 主要是 `routersMapping` 和 `routersRelation` 两个地方.  
-前者申明页面信息及映射, 后者定义页面之间的层级关系, 本地运行时会在浏览器打印出菜单相关的数据库表及定义的层级关系 sql.  
+前者申明页面信息及映射, 后者定义页面之间的层级关系, 本地运行时会在浏览器打印出菜单相关的数据库表及定义的层级关系 sql.
 
 用户登录成功后 以及 管理员操作角色时 后端返回的数据以 `routersRelation` 为准, 见其上面的注释
 
 如果权限需要加强到按钮级, 跟上面菜单的一样, 前端定义命名, 生成表结构及数据给后端.  
 操作角色时后端将菜单和按钮相关的 id 与角色关联在一起, 当用户登录后返回给前端, 前端控制显示与否
 
------
+---

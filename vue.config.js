@@ -31,7 +31,7 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: false,  // don't open Browse
+    open: false, // don't open Browse
     overlay: {
       warnings: false,
       errors: true
@@ -46,7 +46,8 @@ module.exports = {
         '@': resolve('src')
       }
     },
-    performance: { // https://webpack.docschina.org/configuration/performance/
+    performance: {
+      // https://webpack.docschina.org/configuration/performance/
       hints: false
     }
   },
@@ -55,10 +56,7 @@ module.exports = {
     config.plugins.delete('prefetch')
 
     // set svg-sprite-loader
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end()
+    config.module.rule('svg').exclude.add(resolve('src/icons')).end()
 
     config.module
       .rule('icons')
@@ -126,5 +124,4 @@ module.exports = {
     //   }
     // )
   }
-
 }
