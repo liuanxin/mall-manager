@@ -2,7 +2,7 @@ import { getRouter, getUserPaths, resetRouter } from '@/router'
 
 const state = {
   routes: [],
-  paths: []
+  paths: [],
 }
 
 const mutations = {
@@ -13,7 +13,7 @@ const mutations = {
   CLEAR_ROUTES: (state) => {
     state.routes = []
     state.paths = []
-  }
+  },
 }
 
 const actions = {
@@ -29,11 +29,11 @@ const actions = {
       resetRouter()
     }
     context.commit('CLEAR_ROUTES')
-  }
+  },
 }
 
 export default {
   state: state,
   mutations: mutations,
-  actions: actions
+  actions: actions,
 }

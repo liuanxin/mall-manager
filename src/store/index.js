@@ -14,9 +14,9 @@ const store = new Vuex.Store({
     app: app,
     menu: menu,
     settings: settings,
-    user: user
+    user: user,
   },
-  getters
+  getters,
 })
 
 export default store

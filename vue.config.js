@@ -34,8 +34,8 @@ module.exports = {
     open: false, // don't open Browse
     overlay: {
       warnings: false,
-      errors: true
-    }
+      errors: true,
+    },
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -43,13 +43,13 @@ module.exports = {
     name: name,
     resolve: {
       alias: {
-        '@': resolve('src')
-      }
+        '@': resolve('src'),
+      },
     },
     performance: {
       // https://webpack.docschina.org/configuration/performance/
-      hints: false
-    }
+      hints: false,
+    },
   },
   chainWebpack(config) {
     config.plugins.delete('preload')
@@ -123,5 +123,5 @@ module.exports = {
     //     config.optimization.runtimeChunk('single')
     //   }
     // )
-  }
+  },
 }

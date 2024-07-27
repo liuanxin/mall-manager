@@ -251,15 +251,15 @@ const getPath = (arr, router) => {
 
 const getMenuSql = () => {
   const arr = []
-  arr.push("DROP TABLE IF EXISTS `t_manager_menu`;\n")
-  arr.push("CREATE TABLE IF NOT EXISTS `t_manager_menu` (\n")
-  arr.push("  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,\n")
-  arr.push("  `pid` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父菜单, 0 则表示是根菜单',\n")
-  arr.push("  `name` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '菜单说明',\n")
-  arr.push("  `front` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '前端对应的值(如 path 或 name)',\n")
-  arr.push("  PRIMARY KEY (`id`),\n")
-  arr.push("  UNIQUE KEY `name` (`name`)\n")
-  arr.push(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci")
+  arr.push('DROP TABLE IF EXISTS t_manager_menu;\n')
+  arr.push('CREATE TABLE IF NOT EXISTS t_manager_menu (\n')
+  arr.push('  id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,\n')
+  arr.push("  pid BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父菜单, 0 则表示是根菜单',\n")
+  arr.push("  name VARCHAR(32) NOT NULL DEFAULT '' COMMENT '菜单说明',\n")
+  arr.push("  front VARCHAR(32) NOT NULL DEFAULT '' COMMENT '前端对应的值(如 path 或 name)',\n")
+  arr.push('  PRIMARY KEY (id),\n')
+  arr.push('  UNIQUE KEY name (name)\n')
+  arr.push(') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci')
   arr.push(" COMMENT='菜单, 需要跟前端对应, 前端每增加一个菜单就需要添加一条记录, 与角色是 多对多 的关系';\n\n")
   console.debug('/* ------------------------------ 建表语句 ------------------------------ */\n' + arr.join(''))
 
@@ -277,8 +277,8 @@ const getDepthSql = (lastId, pid, routers, arr) => {
     const router = routers[i]
     const id = lastId + 1
     lastId++
-    arr.push('REPLACE INTO `t_manager_menu`(`id`, `pid`, `name`, `front`) VALUES (')
-    arr.push(id + ', ' + pid + ', \'' + router.name + '\', \'' + router.front + '\');\n')
+    arr.push('REPLACE INTO t_manager_menu(id, pid, name, front) VALUES (')
+    arr.push(id + ', ' + pid + ", '" + router.name + "', '" + router.front + "');\n")
 
     const child = router.children
     if (isNotBlank(child)) {
@@ -297,8 +297,8 @@ const getBreadthSql = (lastId, pid, routers, arr) => {
     const router = routers[i]
     const id = lastId + 1
     lastId++
-    arr.push('REPLACE INTO `t_manager_menu`(`id`, `pid`, `name`, `front`) VALUES (')
-    arr.push(id + ', ' + pid + ', \'' + router.name + '\', \'' + router.front + '\');\n')
+    arr.push('REPLACE INTO t_manager_menu(id, pid, name, front) VALUES (')
+    arr.push(id + ', ' + pid + ", '" + router.name + "', '" + router.front + "');\n")
     tmp[i] = id
   }
   arr.push('\n')
@@ -380,7 +380,7 @@ const createRouter = (data) => {
   return new VueRouter({
     // 如果只有 ip 没有域名, 想用 二级目录 来路由, 不建议使用 history, 见 vue.config.js 中的 publicPath 配置
     // mode: 'history', // https://router.vuejs.org/zh/guide/essentials/history-mode.html
-    routes: getRouter(data)
+    routes: getRouter(data),
   })
 }
 const router = createRouter(getLocalData())

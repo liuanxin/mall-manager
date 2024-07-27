@@ -1,4 +1,3 @@
-
 import { isTrue, isNotTrue, toInt, getData, defaultValue, formatDateTimeMs } from '@/utils/util'
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
@@ -10,14 +9,14 @@ import router from '@/router'
 const serviceRequest = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
-  timeout: 60000 // request timeout
+  timeout: 60000, // request timeout
 })
 
 // 状态映射
 const STATUS_MAPPING = {
   success: 200, // 正常返回
   notLogin: 401, // 显示错误信息并跳到登录页
-  notPermission: 403 // 显示错误信息并跳到主页
+  notPermission: 403, // 显示错误信息并跳到主页
 }
 
 serviceRequest.interceptors.request.use(
@@ -33,7 +32,7 @@ serviceRequest.interceptors.request.use(
 
     // 如果请求是以 http|https 开头, 则将 baseURL 设置为空
     const reqUrl = req.url.toLowerCase()
-    if (reqUrl.startsWith("http://") || reqUrl.startsWith("https://")) {
+    if (reqUrl.startsWith('http://') || reqUrl.startsWith('https://')) {
       req.baseURL = ''
     } else {
       req.baseURL = process.env.VUE_APP_BASE_API
@@ -102,7 +101,7 @@ const handleError = (error, errorReturn = false) => {
   } else if (code === STATUS_MAPPING.notPermission) {
     // 无权限(403): 显示信息后跳到主页
     MessageBox.alert(showMessage).finally(() => {
-      router.replace({path: '/'}).catch((e) => {
+      router.replace({ path: '/' }).catch((e) => {
         if (isNotTrue(process.env.VUE_APP_ONLINE)) {
           console.debug(formatDateTimeMs() + 'no permission replace error: ' + e)
         }
@@ -116,7 +115,7 @@ const handleError = (error, errorReturn = false) => {
       Message({
         message: showMessage,
         type: 'error',
-        duration: 5000
+        duration: 5000,
       })
     }
   }

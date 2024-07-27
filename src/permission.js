@@ -78,7 +78,7 @@ router.beforeEach(async (to, from, next) => {
       Message({
         message: '不能访问(' + toPath + '), 无此地址或无权限',
         type: 'error',
-        duration: 2000
+        duration: 2000,
       })
       next(index)
       NProgress.done()

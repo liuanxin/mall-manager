@@ -4,7 +4,7 @@ import { isBlank } from '@/utils/util'
 
 const state = {
   name: '',
-  avatar: ''
+  avatar: '',
 }
 
 const mutations = {
@@ -13,7 +13,7 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
-  }
+  },
 }
 
 const doLogin = (context, fillRouter, data) => {
@@ -47,14 +47,16 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({
         userName: userInfo.userName.trim(),
-        password: userInfo.password
-      }).then((response) => {
-        const data = response.data
-        doLogin(context, true, data)
-        resolve(data)
-      }).catch((error) => {
-        reject(error)
+        password: userInfo.password,
       })
+        .then((response) => {
+          const data = response.data
+          doLogin(context, true, data)
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
 
@@ -64,17 +66,19 @@ const actions = {
       // 先从本地取, 没有再请求后台
       const data = getLocalData()
       if (isBlank(data)) {
-        getInfo().then((response) => {
-          const data = response.data
-          if (isBlank(data)) {
-            reject('获取失败, 请登录')
-          } else {
-            doLogin(context, false, data)
-            resolve(data)
-          }
-        }).catch((error) => {
-          reject(error)
-        })
+        getInfo()
+          .then((response) => {
+            const data = response.data
+            if (isBlank(data)) {
+              reject('获取失败, 请登录')
+            } else {
+              doLogin(context, false, data)
+              resolve(data)
+            }
+          })
+          .catch((error) => {
+            reject(error)
+          })
       } else {
         doLogin(context, false, data)
         resolve(data)
@@ -88,20 +92,22 @@ const actions = {
       doLogout(context, resetRouter)
 
       if (resetRouter) {
-        logout().then(() => {
-          resolve()
-        }).catch((error) => {
-          reject(error)
-        })
+        logout()
+          .then(() => {
+            resolve()
+          })
+          .catch((error) => {
+            reject(error)
+          })
       } else {
         resolve()
       }
     })
-  }
+  },
 }
 
 export default {
   state: state,
   mutations: mutations,
-  actions: actions
+  actions: actions,
 }

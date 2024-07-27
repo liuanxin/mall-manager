@@ -140,7 +140,7 @@ const paramToObj = (url) => {
   const search = String(url).split('?')[1]
   const obj = {}
   if (isNotBlank(search)) {
-    search.split('&').forEach(function(e) {
+    search.split('&').forEach((e) => {
       const arr = e.split('=')
       if (arr.length === 2) {
         obj[arr[0]] = arr[1]
@@ -153,7 +153,7 @@ const paramToObj = (url) => {
 const objToParam = (obj) => {
   if (isNotBlank(obj)) {
     const arr = []
-    Object.keys(obj).forEach(function(k) {
+    Object.keys(obj).forEach((k) => {
       const v = obj[k]
       if (isNotBlank(k) && isNotBlank(v)) {
         arr.push(k + '=' + v)
@@ -399,11 +399,11 @@ const fileSizeToHuman = (bytes) => {
   if (bytes < 1024) {
     return bytes + 'B'
   }
-  const kb = bytes / 1024;
+  const kb = bytes / 1024
   if (kb < 1024) {
     return toNumFixed(kb, 2) + 'KB'
   }
-  const mb = kb / 1024;
+  const mb = kb / 1024
   if (mb < 1024) {
     return toNumFixed(mb, 2) + 'MB'
   }
@@ -419,25 +419,39 @@ const fileSizeToHuman = (bytes) => {
 }
 /** 将毫秒格式化为可读性更强的, 如: 刚刚、3 分钟前、5 小时后、昨天、前天、明天、后天、10 天前、200 天后、2 年前 */
 const msToHuman = (ms) => {
-  if (ms === 0) { return '刚刚' }
+  if (ms === 0) {
+    return '刚刚'
+  }
 
-  const flag = (ms < 0)
+  const flag = ms < 0
   const absMs = flag ? -ms : ms
 
   const second = Math.floor(absMs / 1000)
-  if (second < 60) { return '刚刚' }
+  if (second < 60) {
+    return '刚刚'
+  }
 
   const state = flag ? '后' : '前'
   const minute = Math.floor(second / 60)
-  if (minute < 60) { return minute + ' 分钟' + state }
+  if (minute < 60) {
+    return minute + ' 分钟' + state
+  }
 
   const hour = Math.floor(minute / 60)
-  if (hour < 24) { return hour + ' 小时' + state }
+  if (hour < 24) {
+    return hour + ' 小时' + state
+  }
 
   const day = Math.floor(hour / 24)
-  if (day === 1) { return flag ? '明天' : '昨天' }
-  if (day === 2) { return flag ? '后天' : '前天' }
-  if (day < 365) { return day + ' 天' + state }
+  if (day === 1) {
+    return flag ? '明天' : '昨天'
+  }
+  if (day === 2) {
+    return flag ? '后天' : '前天'
+  }
+  if (day < 365) {
+    return day + ' 天' + state
+  }
 
   return Math.floor(day / 365) + ' 年' + state
 }
@@ -484,7 +498,8 @@ const format = (date, format) => {
     .replace('mm', mm).replace('MI', mm).replace('mi', mm).replace('m', String(minute))
     .replace('ss', ss).replace('s', String(second))
 
-    .replace('SSS', String(ms)).replace('aaa', aaa).replace('a', aaa)
+    .replace('SSS', String(ms))
+    .replace('aaa', aaa).replace('a', aaa)
 }
 /** 格式化 时间 或 时间戳 成: 年-月-日 */
 const formatDate = (date) => {
@@ -516,7 +531,6 @@ const logBetweenTime = (start) => {
   return '[' + formatDateTimeMs(start) + ' --> ' + formatDateTimeMs(now) + ', time: ' + (now - start) + 'ms] '
 }
 
-
 /** 分返回元, 如 12345 返回 123.45 */
 const centToYuan = (cent) => {
   if (isBlank(cent)) {
@@ -528,17 +542,17 @@ const centToYuan = (cent) => {
 
   let value
   switch (typeof cent) {
-    case "number":
+    case 'number':
       value = String(Number.parseInt(String(cent)))
       break
-    case "string":
+    case 'string':
       value = String(Number.parseInt(cent))
       break
     default:
       return ''
   }
   const len = value.length
-  return (len < 2) ? ('0.' + value) : (value.substring(0, len - 2) + '.' + value.substring(len - 2))
+  return len < 2 ? '0.' + value : value.substring(0, len - 2) + '.' + value.substring(len - 2)
 }
 /** 元返回分, 如 123.455 返回 12345 */
 const yuanToCent = (yuan) => {
@@ -551,10 +565,10 @@ const yuanToCent = (yuan) => {
 
   let value
   switch (typeof yuan) {
-    case "number":
+    case 'number':
       value = yuan
       break
-    case "string":
+    case 'string':
       value = Number.parseFloat(yuan)
       break
     default:
@@ -575,17 +589,17 @@ const toPercent = (num, maxScale = 2) => {
 
   let value
   switch (typeof num) {
-    case "number":
+    case 'number':
       value = num
       break
-    case "string":
+    case 'string':
       value = Number.parseFloat(num)
       break
     default:
       return ''
   }
   let arr = String(value * 100).split('.')
-  return ((arr.length > 1) ? (arr[0] + '.' + arr[1].substring(0, Math.min(arr[1].length, maxScale))) : arr[0]) + '%'
+  return (arr.length > 1 ? arr[0] + '.' + arr[1].substring(0, Math.min(arr[1].length, maxScale)) : arr[0]) + '%'
 }
 /** 将数字转换成千分位, 如 12345678.123 返回 12,345,678.123 */
 const toThousands = (num) => {

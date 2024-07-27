@@ -4,7 +4,7 @@ const { fixedHeader, sidebarLogo } = globalConfig
 
 const state = {
   fixedHeader: fixedHeader,
-  sidebarLogo: sidebarLogo
+  sidebarLogo: sidebarLogo,
 }
 
 const mutations = {
@@ -12,17 +12,17 @@ const mutations = {
     if (state.hasOwnProperty(data.key)) {
       state[data.key] = data.value
     }
-  }
+  },
 }
 
 const actions = {
   changeSetting(context, data) {
     context.commit('CHANGE_SETTING', data)
-  }
+  },
 }
 
 export default {
   state: state,
   mutations: mutations,
-  actions: actions
+  actions: actions,
 }

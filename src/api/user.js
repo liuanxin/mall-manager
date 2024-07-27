@@ -4,21 +4,21 @@ const login = (data) => {
   return request({
     url: '/user/login',
     method: 'post',
-    params: data
+    params: data,
   })
 }
 
 const getInfo = () => {
   return request({
     url: '/user/info',
-    method: 'get'
+    method: 'get',
   })
 }
 
 const logout = () => {
   return request({
     url: '/user/logout',
-    method: 'get'
+    method: 'get',
   })
 }
 

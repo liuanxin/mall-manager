@@ -5,8 +5,8 @@ const getList = (params) => {
   return request({
     url: '/table/list',
     method: 'get',
-    // data: params
-    params: params
+    // data: params,
+    params: params,
   })
 }
 
