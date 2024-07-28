@@ -7,7 +7,7 @@
     "test": "vue-cli-service serve --mode test",
     "build": "vue-cli-service build --mode prod",
     "prettie": "prettier --write \"./**/*.{html,vue,js,json,md}\"",
-    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
+    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.config.js"
   },
   "dependencies": {
     "axios": "1.6.0",
@@ -31,7 +31,7 @@
     "sass": "1.51.0",
     "sass-loader": "10.2.1",
     "svg-sprite-loader": "6.0.11",
-    "svgo": "2.8.0",
+    "svgo": "3.3.2",
     "webpack": "5.76.0"
   },
   "engines": {

@@ -599,7 +599,7 @@ const toPercent = (num, maxScale = 2) => {
       return ''
   }
   let arr = String(value * 100).split('.')
-  return (arr.length > 1 ? arr[0] + '.' + arr[1].substring(0, Math.min(arr[1].length, maxScale)) : arr[0]) + '%'
+  return ((arr.length > 1) ? (arr[0] + '.' + arr[1].substring(0, Math.min(arr[1].length, maxScale))) : arr[0]) + '%'
 }
 /** 将数字转换成千分位, 如 12345678.123 返回 12,345,678.123 */
 const toThousands = (num) => {
