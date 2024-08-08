@@ -516,6 +516,28 @@ const formatDateTime = (date) => {
 const formatDateTimeMs = (date) => {
   return format(date, 'yyyy-MM-dd HH:mm:ss.SSS')
 }
+/**
+ * 格式化 时间 或 时间戳 成 2020-01-02T03:04:05.678+08:00 带时区格式的串,
+ * 反过来只需要 Date.parse('2020-01-02T03:04:05.678+01:00') 就可以了
+ */
+const dateToIso = (date) => {
+  let datetime
+  if (date instanceof Date) {
+    datetime = date
+  } else if (typeof date === 'number') {
+    datetime = new Date(date)
+  } else {
+    datetime = new Date()
+  }
+  const off = datetime.getTimezoneOffset()
+  const abs = Math.abs(off)
+  return new Date(datetime.getTime() - off * 60 * 1000).toISOString().substring(0, 23)
+    + (off > 0 ? '-' : '+')
+    + Math.floor(abs / 60).toFixed(0).padStart(2,'0')
+    + ':'
+    + (abs % 60).toString().padStart(2,'0')
+}
+
 /** 日期如果是同一天就返回 true */
 const sameDay = (d1, d2) => {
   return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate()
