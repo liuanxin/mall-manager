@@ -10,7 +10,7 @@
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.config.js"
   },
   "dependencies": {
-    "axios": "1.6.0",
+    "axios": "1.7.4",
     "core-js": "3.22.5",
     "element-ui": "2.15.8",
     "js-cookie": "3.0.1",
